@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('caracteristique', 255);
             $table->string('image', 255);
             $table->float('prix');
-            $table->foreignId('sous_categorie_id')->constrained('categorie')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('panier_id');
+            $table->integer('sous_categorie_id');
+            // ->constrained('categorie')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('panier_id');
         });
     }
 
