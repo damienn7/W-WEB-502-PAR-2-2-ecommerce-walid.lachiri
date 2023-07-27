@@ -1,30 +1,40 @@
 <?php
 
-// LoginController.php
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
 
-    public function login(Request $request)
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $request->validate([
-            'pseudo' => 'required|string',
-            'password' => 'required|string',
-        ]);
-        if (Auth::attempt(['pseudo' => $request->pseudo, 'password' => $request->password])) {
-            return redirect()->intended('/');
-        } else {
-            return back()->with('error', 'Pseudo ou mot de passe incorrect.');
-        }
+        $this->middleware('guest')->except('logout');
     }
 }
