@@ -29,7 +29,7 @@ export default function StickyFooter() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '70vh',
+          minHeight: '1vh',
         }}
       >
         <CssBaseline />
