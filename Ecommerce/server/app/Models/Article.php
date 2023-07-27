@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $table = 'articles';
-
-    protected $fillable = ['nom', 'caracteristique', 'image', 'prix', 'sous_categorie_id', 'panier_id'];
+    protected $table = 'items';
+    protected $fillable = ['image', 'name', 'description', 'price', 'updated_at', 'created_at','caracteristiques_id','stocks_id'];
 
     public $timestamps = true; 
 

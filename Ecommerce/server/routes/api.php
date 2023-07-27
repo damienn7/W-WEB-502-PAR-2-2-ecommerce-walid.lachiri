@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Controllers\ArticleController;
+use App\Http\Controllers\ArticleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,5 +18,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('articles','App\Http\Controllers\ArticleController');
+// CREATE
+Route::post('articles/', [ArticleController::class, 'createArticle']);
+// --------------------------------
+
+// READ 
+Route::get('articles', [ArticleController::class, 'index']);
+Route::get('articles/{id}', [ArticleController::class, 'show']);
+// --------------------------------
+
+// UPDATE 
+Route::put('articles/{id}', [ArticleController::class, 'update']);
+// --------------------------------
+
+
+// Delete 
+Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
+// --------------------------------
+
+
+
 
