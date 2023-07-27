@@ -18,13 +18,13 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email',
+            'pseudo' => 'required|string',
             'password' => 'required|string',
         ]);
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['pseudo' => $request->pseudo, 'password' => $request->password])) {
             return redirect()->intended('/');
         } else {
-            return back()->with('error', 'Adresse email ou mot de passe incorrect.');
+            return back()->with('error', 'Pseudo ou mot de passe incorrect.');
         }
     }
 }
