@@ -10,6 +10,7 @@ import Video from './assets/Julien.mp4'
 import Pub from './assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
 import MCarousel from './Carousel/Carousel.js'
+import Table from './Table/Table'
 import { Typography } from '@mui/material';
 
 
@@ -20,6 +21,9 @@ function App() {
     <div className='foutre'>
     <MCarousel/>
     </div>
+    <Box padding={10}>
+    <Table></Table>
+    </Box>
     <Footer/>
     </>
     );}
