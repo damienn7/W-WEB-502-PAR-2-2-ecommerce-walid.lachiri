@@ -28,8 +28,11 @@ export default function StickyFooter() {
       <Box
         sx={{
           display: 'flex',
+          position: 'Absolute',
+          Bottom: '1px',
+          width: '100%',
           flexDirection: 'column',
-          minHeight: '1vh',
+          // minHeight: '100vh',
         }}
       >
         <CssBaseline />

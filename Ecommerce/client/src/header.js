@@ -15,6 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Dropdown from './Dropdown/dropdown'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -225,6 +226,7 @@ export default function PrimarySearchAppBar() {
             </IconButton>
           </Box>
         </Toolbar>
+      <Dropdown/>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}

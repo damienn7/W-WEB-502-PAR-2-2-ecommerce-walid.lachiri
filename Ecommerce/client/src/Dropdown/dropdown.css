@@ -1,0 +1,9 @@
+.dropdownz{
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.Buttonmui{
+    color: black;
+    background-color: black;
+}

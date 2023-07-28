@@ -10,7 +10,7 @@ function Item({item})
             <h2>{item.title}</h2>
             {/* <p>{props.item.description}</p> */}
             <Button className="CheckButton">
-                Check it out!
+                ACHÈTE !
             </Button>
             </div>
         </Paper>

@@ -19,7 +19,7 @@ function App() {
             <Header />
             <div className="Unique">
                 <Grid className="Unique" container spacing={2} >
-                    <Grid xs={9}>
+                    <Grid xs={10}>
                         {/* NOM du produit */}
                         <Typography variant='h4'>Sapphire PULSE AMD Radeon RX 7900 XTX 24GB</Typography>
                         {/* charactéristiques courte du produit */}
@@ -37,10 +37,13 @@ function App() {
                             </Grid>
                         </div>
                     </Grid >
-                    <Grid xs={3} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 1, mx: 'auto', width: 200 }}>
+                    <Grid xs={1} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 2, mx: 'auto', width: 200, height: 'auto', borderRadius:'5px' }}>
                         <div className="article__price">
                             {/* Prix du produit */}
+                            <Typography color ="grey">TTC</Typography>
                             <Typography variant='h3' color="red">420,69€</Typography>
+                            <Typography color ="grey">HT</Typography>
+
                             <Typography variant='h6'>12,50€</Typography>
                         </div>
                         <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
