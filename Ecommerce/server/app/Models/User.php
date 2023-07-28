@@ -2,44 +2,33 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = "users";
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        "id",
+        "email",
+        "password",
+        "admin",
+        "created_at",
+        "update_at",
+        "remember_token",
+        "email_verified_at",
+        "pseudo"
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public $timestamps = true;
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    // public function sousCategorie()
+    // {
+    //     return $this->belongsTo(SousCategorie::class, 'sous_categorie_id');
+    // }
+
+    // public function panier()
+    // {
+    //     return $this->belongsTo(Panier::class, 'panier_id');
+    // }
 }

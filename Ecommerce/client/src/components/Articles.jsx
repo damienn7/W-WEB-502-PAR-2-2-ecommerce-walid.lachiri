@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-const App = () => {
+const Articles = () => {
   const [users, setUsers] = useState([])
 
   const fetchUserData = () => {
@@ -30,4 +30,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default Articles;

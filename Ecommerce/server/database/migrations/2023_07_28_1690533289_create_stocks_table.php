@@ -10,7 +10,7 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->integer('quantite',)->default('0');
 		$table->string('adresse',45);
 		$table->float('frais_port')->default('0');

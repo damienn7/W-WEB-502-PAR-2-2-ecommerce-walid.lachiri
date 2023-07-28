@@ -10,7 +10,7 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments('id');
 		$table->string('image');
 		$table->string('nom');
 		$table->string('description',1000);

@@ -10,7 +10,7 @@ class CreatePaniersTable extends Migration
     {
         Schema::create('paniers', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->integer('users_id',);
 		$table->tinyInteger('is_validated',)->default('0');
 		$table->primary(['id','users_id']);

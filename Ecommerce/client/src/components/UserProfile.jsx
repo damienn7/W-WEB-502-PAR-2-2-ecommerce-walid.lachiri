@@ -15,7 +15,7 @@ const CurrentUser = () => {
 
   useEffect(() => {
     fetchCurrentUser()
-  }, [])
+  }, [user]);
 
   return (
     <div>
@@ -24,4 +24,4 @@ const CurrentUser = () => {
   );
 }
 
-export default UserProfile;
+export default CurrentUser;

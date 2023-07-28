@@ -12,7 +12,8 @@ class CreateArticlesCaracteristiquesTable extends Migration
 
 		$table->integer('id_articles',);
 		$table->integer('id_caracteristiques',);
-		$table->foreign('id_articles')->references('id')->on('articles');		$table->foreign('id_caracteristiques')->references('id')->on('caracteristiques');
+		$table->foreign('id_articles')->references('id')->on('articles');		
+        $table->foreign('id_caracteristiques')->references('id')->on('caracteristiques');
         });
     }
 
