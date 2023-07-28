@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import Video from './assets/Julien.mp4'
 import Pub from './assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
-import MCarousel from './Carousel/Carousel.js'
 import { Typography } from '@mui/material';
 
 

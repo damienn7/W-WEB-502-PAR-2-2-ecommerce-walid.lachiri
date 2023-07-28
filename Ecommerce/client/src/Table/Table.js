@@ -33,6 +33,7 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
+            {/* Map infini ici pour le back */}
           {rows.map((row) => (
             <TableRow
               key={row.name}
