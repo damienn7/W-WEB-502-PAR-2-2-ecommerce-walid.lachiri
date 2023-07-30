@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
+    const UPDATED_AT = null;
     protected $table = "users";
     protected $fillable = [
         "id",
@@ -21,14 +22,4 @@ class User extends Model
     ];
 
     public $timestamps = true;
-
-    // public function sousCategorie()
-    // {
-    //     return $this->belongsTo(SousCategorie::class, 'sous_categorie_id');
-    // }
-
-    // public function panier()
-    // {
-    //     return $this->belongsTo(Panier::class, 'panier_id');
-    // }
 }
