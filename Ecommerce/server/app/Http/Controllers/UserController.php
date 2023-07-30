@@ -8,10 +8,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        return User::all();
-    }
+
 
     function createUser(Request $request)
     {
@@ -27,9 +24,35 @@ class UserController extends Controller
         $user->pseudo = $request->pseudo;
         $user->save();
         return response()->json([
-            "message" => "Inscription réussie. ",
+            "message" => "Inscription réussie.",
             "user" => $user,
         ], 201);
+    }
+
+    public function indexUsers()
+    {
+        return User::all();
+    }
+
+    public function indexUser($id)
+    {
+        return User::findOrFail($id);
+    }
+
+    function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response([
+            'message' => 'Infos du compte mises à jour',
+            'donnees' => $user
+        ]);
+    }
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message' => 'Le compte a été supprimé.']);
     }
 
 }

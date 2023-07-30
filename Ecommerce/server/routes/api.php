@@ -37,5 +37,9 @@ Route::put('articles/{id}', [ArticleController::class, 'update']);
 Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
 // --------------------------------
 
-Route::get('users/', [UserController::class, 'index']);
+//Create marche pas tout à fait
 Route::post('users/', [UserController::class, 'createUser']);
+Route::get('users/', [UserController::class, 'indexUsers']);
+Route::get('users/{id}', [UserController::class, 'indexUser']);
+Route::put('users/{id}/', [UserController::class, 'updateUser']);
+Route::delete('users/{id}/', [UserController::class, 'deleteUser']);
