@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $table = 'items';
-    protected $fillable = ['image', 'name', 'description', 'price', 'updated_at', 'created_at','caracteristiques_id','stocks_id'];
+    protected $table = "articles";
+    protected $fillable = ["id", "image", "nom", "description", "prix", "updated_at", "created_at", "stocks_id", "note_totale"];
 
-    public $timestamps = true; 
+    public $timestamps = true;
 
     public function sousCategorie()
     {
