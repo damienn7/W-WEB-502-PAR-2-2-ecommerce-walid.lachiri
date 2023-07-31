@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 
 const Articles = () => {
-  const [users, setUsers] = useState([])
+  const [articles, setArticles] = useState([])
 
   const fetchUserData = () => {
     fetch("http://127.0.0.1:8000/api/articles")
@@ -9,7 +9,8 @@ const Articles = () => {
         return response.json()
       })
       .then(data => {
-        setUsers(data)
+        setArticles(data)
+        // console.log(data);
       })
   }
 
@@ -19,10 +20,10 @@ const Articles = () => {
 
   return (
     <div>
-      {users.length > 0 && (
+      {articles.length > 0 && (
         <ul>
-          {users.map(user => (
-            <li key={user.id}>{user.nom}</li>
+          {articles.map(articles => (
+            <li key={articles.id}><a href={"http://localhost:8000/api/articles/"+articles.id}>{articles.nom}</a></li>
           ))}
         </ul>
       )}
