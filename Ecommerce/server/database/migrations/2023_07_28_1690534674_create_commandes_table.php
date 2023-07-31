@@ -10,7 +10,7 @@ class CreateCommandesTable extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->string('adresse');
 		$table->string('codePostal',32);
 		$table->string('email');

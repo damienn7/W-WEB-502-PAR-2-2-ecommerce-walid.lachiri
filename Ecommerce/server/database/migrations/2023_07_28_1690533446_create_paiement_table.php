@@ -10,7 +10,7 @@ class CreatePaiementTable extends Migration
     {
         Schema::create('paiement', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->integer('cvv',)->nullable()->default('NULL');
 		$table->string('numero',45)->nullable()->default('NULL');
 		$table->integer('commandes_id',);

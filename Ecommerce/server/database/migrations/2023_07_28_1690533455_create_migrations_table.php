@@ -10,7 +10,7 @@ class CreateMigrationsTable extends Migration
     {
         Schema::create('migrations', function (Blueprint $table) {
 
-		$table->increments(id)->unsigned();
+		$table->increments("id")->unsigned();
 		$table->string('migration');
 		$table->integer('batch',);
 		$table->primary('id');
