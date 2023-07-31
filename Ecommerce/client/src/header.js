@@ -173,9 +173,7 @@ export default function PrimarySearchAppBar() {
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            LOGO STYLE
-          </Typography>
+          >HittaetTnamn</Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
