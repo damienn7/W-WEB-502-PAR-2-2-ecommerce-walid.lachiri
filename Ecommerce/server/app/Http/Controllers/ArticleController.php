@@ -16,11 +16,11 @@ public function index()
 function createArticle(Request $request){
     $article = new Article;  
     $article->image = $request->image;   
-   $article->name = $request->name;   
+   $article->nom = $request->nom;   
    $article->description = $request->description;  
-   $article->price =$request->price;  
-   $article->caracteristiques_id = $request->caracteristiques_id;  
+   $article->prix =$request->prix;  
    $article->stocks_id = $request->stocks_id;  
+   $article->note_totale = $request->note_totale;  
    $article->save();                  
 return response()->json([         
           "message" => "creation de l'article reussi",         
