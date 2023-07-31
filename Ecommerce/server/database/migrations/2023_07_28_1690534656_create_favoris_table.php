@@ -10,7 +10,7 @@ class CreateFavorisTable extends Migration
     {
         Schema::create('favoris', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->integer('users_id',);
 		$table->integer('articles_id',);
 		$table->integer('articles_caracteristiques_id',);

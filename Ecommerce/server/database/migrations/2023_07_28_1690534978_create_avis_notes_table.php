@@ -10,7 +10,7 @@ class CreateAvisNotesTable extends Migration
     {
         Schema::create('avis_notes', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->string('name',45)->nullable()->default('NULL');
 		$table->integer('users_id',);
 		$table->integer('articles_id',);

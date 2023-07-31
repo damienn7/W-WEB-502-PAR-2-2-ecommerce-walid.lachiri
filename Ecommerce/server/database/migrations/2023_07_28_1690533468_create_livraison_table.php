@@ -10,7 +10,7 @@ class CreateLivraisonTable extends Migration
     {
         Schema::create('livraison', function (Blueprint $table) {
 
-		$table->increments(id);
+		$table->increments("id");
 		$table->string('mode_de_livraison');
 		$table->float('frais_de_livraison');
 		$table->tinyInteger('is_delivered',)->default('0');
