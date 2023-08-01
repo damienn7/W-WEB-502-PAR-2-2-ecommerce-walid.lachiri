@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $table = 'items';
-    protected $fillable = ['image', 'name', 'description', 'price', 'updated_at', 'created_at','caracteristiques_id','stocks_id'];
+    protected $table = 'users';
+    protected $fillable = ['email', 'password', 'pseudo'];
 
     public $timestamps = true; 
 
