@@ -8,9 +8,13 @@ use App\Models\Article;
 class ArticleController extends Controller
 {
 
-public function index()
+public function index(Request $request)
 {
-    return Article::all();
+    Article::all();
+    return response()->json([
+        'Page d\'acceuil',
+        'donnée' => $request
+    ], 201);
 }
 
 function createArticle(Request $request){
