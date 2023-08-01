@@ -21,15 +21,15 @@ import Paper from '@mui/material/Paper';
 // ];
 
 export default function BasicTable() {
-  const [users, setUsers] = useState([])
+  const [articles, setArticles] = useState([])
 
   const fetchUserData = () => {
-    fetch("http://127.0.0.1:8000/api/articles")
+    fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
         return response.json()
       })
       .then(data => {
-        setUsers(data)
+        setArticles(data)
       })
   }
 
@@ -51,19 +51,15 @@ export default function BasicTable() {
         </TableHead>
         <TableBody>
             {/* Map infini ici pour le back */}
-          {users.map((article) => (
-            <TableRow
-              key={article.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {article.name}
-              </TableCell>
-              <TableCell align="right">{article.calories}</TableCell>
-              <TableCell align="right">{article.fat}</TableCell>
-              <TableCell align="right">{article.carbs}</TableCell>
-              <TableCell align="right">{article.protein}</TableCell>
+          {articles.map((article) => (
+            <TableRow key={article.nom} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row">{article.nom}</TableCell>
+              <TableCell align="right">{article.categorie_name}</TableCell>
+              <TableCell align="right">{article.note_totale}</TableCell>
+              <TableCell align="right">{article.stocks_id}</TableCell>
+              <TableCell align="right">{article.prix}€</TableCell>
             </TableRow>
+            
           ))}
         </TableBody>
       </Table>
