@@ -19,21 +19,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // CREATE
-Route::post('users/', [ArticleController::class, 'createUser']);
+Route::post('users/', [UserController::class, 'createUser']);
 // --------------------------------
 
 // READ 
-Route::get('users', [ArticleController::class, 'index']);
-Route::get('users/{id}', [ArticleController::class, 'show']);
+Route::get('users', [UserController::class, 'index']);
+Route::get('users/{id}', [UserController::class, 'show']);
 // --------------------------------
 
 // UPDATE 
-Route::put('users/{id}', [ArticleController::class, 'update']);
+Route::put('users/{id}', [UserController::class, 'update']);
 // --------------------------------
 
 
 // Delete 
-Route::delete('users/{id}/', [ArticleController::class, 'destroy']);
+Route::delete('users/{id}/', [UserController::class, 'destroy']);
 // --------------------------------
 
 
