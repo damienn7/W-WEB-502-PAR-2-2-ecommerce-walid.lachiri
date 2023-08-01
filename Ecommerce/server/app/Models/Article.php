@@ -9,7 +9,7 @@ class Article extends Model
     protected $table = 'items';
     protected $fillable = ['name', 'description', 'Id_category', 'image', 'views', 'views','stock','rating','created_at','updated_at'];
 
-    public $timestamps = true; 
+    public $timestamps = true;
 
     public function sousCategorie()
     {

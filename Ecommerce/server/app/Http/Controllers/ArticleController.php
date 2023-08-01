@@ -40,19 +40,20 @@ return response()->json([
 
 
 
-function update(Request $request, $id){
-    $article = Article::findOrFail($id);
-    $article->update($request->all());
-      return response([             
-      'message'=> 'mise a jour de article reussi',       
-       'donnees'=> $article       
-]); 
-}
+    function update(Request $request, $id)
+    {
+        $article = Article::findOrFail($id);
+        $article->update($request->all());
+        return response([
+            'message' => 'mise a jour de article reussi',
+            'donnees' => $article
+        ]);
+    }
 
-public function destroy($id)
-{
-    $article = Article::findOrFail($id);
-    $article->delete();
-    return response()->json(['message' => 'Article supprimé correctement']);
-}
+    public function destroy($id)
+    {
+        $article = Article::findOrFail($id);
+        $article->delete();
+        return response()->json(['message' => 'Article supprimé correctement']);
+    }
 }
