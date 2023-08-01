@@ -36,6 +36,7 @@ Route::put('users/{id}', [UserController::class, 'update']);
 Route::delete('users/{id}/', [UserController::class, 'destroy']);
 // --------------------------------
 
-
+// Login
+Route::post('users/login', [UserController::class, 'login']);
 
 

@@ -47,4 +47,22 @@ class UserController extends Controller
         $User->delete();
         return response()->json(['message' => 'User supprimé correctement']);
     }
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('api-token')->plainTextToken;
+            return response()->json([
+                'message' => 'Connexion réussie',
+                'user' => $user,
+                'token' => $token,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Identifiants invalides',
+            ], 401);
+        }
+    }
 }
