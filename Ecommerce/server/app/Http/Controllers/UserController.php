@@ -16,12 +16,9 @@ class UserController extends Controller
     function createUser(Request $request)
     {
         $User = new User;
-        $User->image = $request->image;
-        $User->name = $request->name;
-        $User->description = $request->description;
-        $User->price = $request->price;
-        $User->caracteristiques_id = $request->caracteristiques_id;
-        $User->stocks_id = $request->stocks_id;
+        $User->email = $request->email;
+        $User->password = $request->password;
+        $User->pseudo = $request->pseudo;
         $User->save();
         return response()->json([
             "message" => "creation de l'User reussi",
