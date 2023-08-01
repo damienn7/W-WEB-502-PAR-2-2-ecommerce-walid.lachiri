@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  Admin,
+  Resource,
+  EditGuesser,
+} from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+import {
+  UserList,
+  UserEdit
+} from './components/Articles';
+import React, { useEffect, useState } from "react"
+
+
+  
+const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
 
 function App() {
+  const [type, setType] = useState(0)
+
+  useEffect(() => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    setType(params.get('perPage'))
+  }, [window.location.search])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Admin dataProvider={dataProvider}>
+      <Resource
+        name={"articles"}
+        list={UserList}
+        edit={EditGuesser}
+      />
+            <Resource
+        name={"users"}
+        list={UserList}
+        edit={EditGuesser}
+      />
+            <Resource
+        name={"stock"}
+        list={UserList}
+        edit={EditGuesser}
+      />
+    </Admin>
+    
   );
 }
 
