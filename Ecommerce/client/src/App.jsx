@@ -12,10 +12,10 @@ function App() {
           path: "/",
           element: <Accueil />,
           children: [
-          //   {
-          //     path: location.pathname,
-          //     element: <Accueil />,
-          //   },
+            {
+              path: location.pathname,
+              element: <Accueil />,
+            },
             // { 
             //     path: "tasks", 
             //     element: <DashboardTasks /> 
