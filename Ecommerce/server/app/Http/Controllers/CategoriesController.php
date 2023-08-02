@@ -19,9 +19,13 @@ class CategoriesController extends Controller
         ], 201);
     }
 
-    public function showCategories()
+    public function showCategories(Request $request)
     {
-        return Category::all();
+        $end = $request->input('_end');  
+        $start = $request->input('_start');  
+        $category = Category::all()->skip($start)->take($end-$start)->values();
+        return response()
+            ->json($category, 200, ['X-Total-Count' => Category::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
     public function showCategory($id)

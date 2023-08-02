@@ -26,10 +26,13 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function indexUsers()
+    public function indexUsers(Request $request)
     {
-        return User::all();
-    }
+        $end = $request->input('_end');  
+        $start = $request->input('_start');  
+        $user = User::all()->skip($start)->take($end-$start)->values();
+        return response()
+            ->json($user, 200, ['X-Total-Count' => User::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);    }
 
     public function indexUser($id)
     {
