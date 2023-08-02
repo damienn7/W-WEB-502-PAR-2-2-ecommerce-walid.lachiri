@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 import { Breadcrumbs, Stack } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 /**
  *  Fil d'ariane fait en react
@@ -15,23 +16,20 @@ const BreadcrumbsComponent = (props) => {
   const dernierSegment = segments[segments.length - 1];
   const premierSegment = segments[0] = "acceuil";
 
-  const style = {
-    textDecoration: 'none',
-    display: 'flex',
-    gap: '0.2em',
-    alignItems: 'center',
-    margin: '0.2em'
-  }
   const fil_ariane = segments.map((segment, index) => (
-    <div key={uuidv4()} style={{display: 'flex', alignItems:"center", justifyContent: 'space-between', fontSize: '1.3em',}}>
+    <div key={uuidv4()}>
       
-      <Link to={ index > 0 ? segments.slice(1, index + 1).join('/') : ''} style={style}>
+      <Link style={{ 
+        textDecoration: 'none', 
+        fontSize: '1.4em'
+        }} to={ index > 0 ? segments.slice(1, index + 1).join('/') : ''}>
         {
-            segment !== premierSegment ? (
+            segment !== premierSegment ? (  
                 <span style={{ 
-                    background: '#c9e4ff', 
-                    color: segment !== dernierSegment ? 'gray' : 'black'}}
-                    >
+                    background: '#c9e4ff',
+                    color: segment !== dernierSegment ? 'gray' : 'black',
+                  }}
+                  >
                         {segment.replace(/-/g, " ")}
                     </span>
         ) : (
@@ -44,7 +42,7 @@ const BreadcrumbsComponent = (props) => {
 
   return (
     <Stack spacing={2}>
-        <Breadcrumbs separator=">" aria-label="breadcrumb">
+        <Breadcrumbs separator=">" aria-label="breadcrumb" style={{ display: "flex", justifyContent: 'center'}}>
             {fil_ariane}
         </Breadcrumbs>
     </Stack>
