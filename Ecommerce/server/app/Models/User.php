@@ -2,31 +2,61 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 class User extends Model implements Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
+    protected $table = 'users';
+    protected $fillable = ['mail', 'password', 'name'];
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    public $timestamps = true; 
+
+    // public function sousCategorie()
+    // {
+    //     return $this->belongsTo(SousCategorie::class, 'sous_categorie_id');
+    // }
+
+    // public function panier()
+    // {
+    //     return $this->belongsTo(Panier::class, 'panier_id');
+    // }
+    public function getAuthIdentifierName()
+    {
+        return 'id'; 
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->getKey(); 
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password; 
+    }
+
+    public function getRememberToken()
+    {
+        return $this->{$this->getRememberTokenName()}; 
+    }
 
     public function setRememberToken($value)
     {
-        $this->{$this->getRememberTokenName()} = $value; // Définit la valeur du jeton "remember me" de l'utilisateur
+        $this->{$this->getRememberTokenName()} = $value; 
     }
 
     public function getRememberTokenName()
     {
-        return 'remember_token'; // Renvoie le nom de la colonne où est stocké le jeton "remember me"
+        return 'remember_token'; 
     }
 }

@@ -23,12 +23,11 @@ class ArticleSeeder extends Seeder
                 'name' => $gpuBrand[rand(0, 1)] . " " . Str::random(3),
                 'description' => "Ce PC est ".Str::random(120),
                 'price' => rand(300, 700),
-                'stocks_id' => "1"
-            ]);
+                'Id_category' => "1",
+                'views' => rand(300, 700),
+                'stock' => rand(300, 700),
 
-            DB::table('items_categories')->insert([
-                "id_item" => $i,
-                "id_categorie" => rand(0, 25)
+
             ]);
         }
         ;

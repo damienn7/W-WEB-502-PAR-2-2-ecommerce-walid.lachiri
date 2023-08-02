@@ -8,26 +8,11 @@ use Illuminate\Support\Facades\DB;
 class ArticleController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         return Article::all();
     }
 
-function createArticle(Request $request){
-    $article = new Article;  
-    $article->image = $request->image;   
-   $article->name = $request->name;   
-   $article->description = $request->description;  
-   $article->price =$request->price;  
-//    $article->stocks_id = $request->stocks_id; 
-   $article->rating = $request->rating;  
-
-   $article->save();                  
-return response()->json([         
-          "message" => "creation de l'article reussix",         
-           "articles"=> $article,       
-      ], 201);  
-}
 
 public function METHODEDEFILSDEPUTE(Request $request){
     return DB::table('items')       
@@ -37,9 +22,28 @@ public function METHODEDEFILSDEPUTE(Request $request){
 }
 
     public function show($id)
-    {
-        return Article::findOrFail($id);
-    }
+{
+    return Article::findOrFail($id);
+}
+
+function createArticle(Request $request){
+    $article = new Article;  
+    $article->name = $request->name;   
+   $article->description = $request->description;   
+   $article->Id_category = $request->Id_category;  
+   $article->image =$request->image;  
+   $article->views = $request->views;
+   $article->price = $request->price;  
+   $article->stock = $request->stock;  
+   $article->rating = $request->rating;  
+   $article->save();                  
+return response()->json([         
+          "message" => "creation de l'article reussi",         
+           "articles"=> $article,       
+      ], 201);  
+}
+
+
 
     function update(Request $request, $id)
     {
