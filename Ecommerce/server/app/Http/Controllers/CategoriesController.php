@@ -10,12 +10,12 @@ class CategoriesController extends Controller
     function createCategory(Request $request)
     {
         $category = new Category;
-        $category->sous_categorie_name = $request->sous_categorie_name;
-        $category->categorie_name = $request->categorie_name;
+        $category->sub_category = $request->sub_category;
+        $category->category = $request->category;
         $category->save();
         return response()->json([
             "message" => "Catégorie créée !",
-            "articles" => $category
+            "category" => $category
         ], 201);
     }
 

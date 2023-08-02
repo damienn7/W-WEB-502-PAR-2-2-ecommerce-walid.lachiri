@@ -16,14 +16,19 @@ class ArticleSeeder extends Seeder
     public function run(): void
     {
 
-        $components = ["CPU", "Ventirad", "Motherboard", "RaM", "GPU", "SSD", "HDD", "Case", "PSU", "Reader/Burner", "Sound card", "Network card", "Assembled", "OS", "SATA Cables", "Case fan", "Mouse", "Keyboard", "KeyboardAndMouse", "Monitor", "Speaker", "Webcam", "USB Drive", "Mousepad", "Headset", "Printer"];
-        for ($i = 0; $i < 50; $i++) {
-            DB::table('articles')->insert([
+        $gpuBrand = ["NVIDIA RTX", "AMD Ryzen"];
+        for ($i = 3; $i < 53; $i++) {
+            DB::table('items')->insert([
                 "image" => "https://p1.hiclipart.com/preview/337/402/380/lol-trololo-meme-illustration-png-clipart.jpg",
-                'nom' => "NVIDIA " . Str::random(3) . " RTX",
-                'description' => $components[rand(0, 25)],
-                'prix' => rand(300, 700),
+                'name' => $gpuBrand[rand(0, 1)] . " " . Str::random(3),
+                'description' => "Ce PC est ".Str::random(120),
+                'price' => rand(300, 700),
                 'stocks_id' => "1"
+            ]);
+
+            DB::table('items_categories')->insert([
+                "id_item" => $i,
+                "id_categorie" => rand(0, 25)
             ]);
         }
         ;
