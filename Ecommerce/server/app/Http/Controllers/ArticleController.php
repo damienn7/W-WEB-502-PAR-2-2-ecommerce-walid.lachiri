@@ -31,9 +31,8 @@ return response()->json([
 
 public function METHODEDEFILSDEPUTE(Request $request){
     return DB::table('items')       
-            ->join('items_categories', 'items_categories.id_item', '=', 'items.id')
-            ->join('categories', 'categories.id', '=', 'items_categories.id_categorie')
-            ->join('stocks', 'stocks.id' ,'=', 'items.stocks_id')
+            ->join('categories', 'categories.id', '=', 'items.id_category')
+            // ->join('ratings', 'ratings.id_article', '=', 'items.id' )
             ->get();
 }
 
