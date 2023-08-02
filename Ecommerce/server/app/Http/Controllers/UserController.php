@@ -17,9 +17,10 @@ class UserController extends Controller
     function createUser(Request $request)
     {
         $User = new User;
-        $User->email = $request->email;
+        $User->mail = $request->mail;
         $User->password = $request->password;
-        $User->pseudo = $request->pseudo;
+        $User->name = $request->name;
+        $User->admin = 0;
         $User->save();
         return response()->json([
             "message" => "creation de l'User reussi",
@@ -50,8 +51,7 @@ class UserController extends Controller
     }
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
+        $credentials = $request->only('mail', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('api-token')->plainTextToken;
