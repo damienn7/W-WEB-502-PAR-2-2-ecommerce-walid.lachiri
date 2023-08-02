@@ -23,30 +23,6 @@ const ArticlesView = () => {
             setArticleItems(getData);
         }
     })
-    const article_items =
-        // Ici on mettra le retour de la db qui sera passé en paramètre du .map()
-        [
-            {
-                "title": "NVIDIA RTX 4080",
-                "description": "c'est cher sa mère",
-                "price": "1000",
-                "category": "gpu"
-            },
-            {
-                "title": "RADEON 7900 XT",
-                "description": "c'est cher sa mère",
-                "price": "1000",
-                "category": "gpu"
-            }
-            ,
-            {
-                "title": "BranliX 2000",
-                "description": "c'est cher sa mère",
-                "price": "1000",
-                "category": "gpu"
-            }
-        ]
-
 
     return (
         <>

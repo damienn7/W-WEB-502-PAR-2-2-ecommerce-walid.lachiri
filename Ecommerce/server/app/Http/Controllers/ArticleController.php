@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\DB;
 class ArticleController extends Controller
 {
 
-public function index()
-{
-    return Article::all();
-}
+    public function index()
+    {
+        return Article::all();
+    }
 
 function createArticle(Request $request){
     $article = new Article;  
@@ -36,24 +36,25 @@ public function METHODEDEFILSDEPUTE(Request $request){
             ->get();
 }
 
-public function show($id)
-{
-    return Article::findOrFail($id);
-}
+    public function show($id)
+    {
+        return Article::findOrFail($id);
+    }
 
-function update(Request $request, $id){
-    $article = Article::findOrFail($id);
-    $article->update($request->all());
-      return response([             
-      'message'=> 'mise a jour de article reussi',       
-       'donnees'=> $article       
-]); 
-}
+    function update(Request $request, $id)
+    {
+        $article = Article::findOrFail($id);
+        $article->update($request->all());
+        return response([
+            'message' => 'mise a jour de article reussi',
+            'donnees' => $article
+        ]);
+    }
 
-public function destroy($id)
-{
-    $article = Article::findOrFail($id);
-    $article->delete();
-    return response()->json(['message' => 'Article supprimé correctement']);
-}
+    public function destroy($id)
+    {
+        $article = Article::findOrFail($id);
+        $article->delete();
+        return response()->json(['message' => 'Article supprimé correctement']);
+    }
 }
