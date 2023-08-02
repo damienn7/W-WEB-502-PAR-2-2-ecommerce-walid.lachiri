@@ -7,18 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    const UPDATED_AT = null;
     protected $table = "users";
     protected $fillable = [
         "id",
-        "email",
+        "name",
+        "mail",
         "password",
         "admin",
-        "created_at",
-        "update_at",
         "remember_token",
-        "email_verified_at",
-        "pseudo"
+        "email_verified_at"
     ];
 
     public $timestamps = true;
