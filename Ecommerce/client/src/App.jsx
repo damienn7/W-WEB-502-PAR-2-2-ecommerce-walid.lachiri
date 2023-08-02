@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Breadcrumbs } from '@mui/material';
 import { Route, useRoutes } from 'react-router-dom';
@@ -13,10 +12,10 @@ function App() {
           path: "/",
           element: <Accueil />,
           children: [
-            {
-              path: location.pathname,
-              element: <Accueil />,
-            },
+          //   {
+          //     path: location.pathname,
+          //     element: <Accueil />,
+          //   },
             // { 
             //     path: "tasks", 
             //     element: <DashboardTasks /> 
