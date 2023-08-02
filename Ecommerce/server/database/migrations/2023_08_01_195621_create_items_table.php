@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->integer('stock')->default(5);
             $table->timestamps();
 
-            $table->foreign('Id_category')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

@@ -88,7 +88,7 @@ export default function SelectVariants() {
       <Button variant="contained" className='Buttonmui'>Promotions</Button>
 
       <FormControl variant="standard" sx={{ m: 1, minWidth: Frank }}>
-        <InputLabel id="demo-simple-select-standard-label">Composants</InputLabel>
+        <InputLabel id="demo-simple-select-standard-label">Placeholder</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
