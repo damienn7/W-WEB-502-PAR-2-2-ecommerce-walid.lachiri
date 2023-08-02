@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriesController;
 /*
@@ -20,6 +19,52 @@ use App\Http\Controllers\CategoriesController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// CREATE
+Route::post('users/', [UserController::class, 'createUser']);
+// --------------------------------
+
+// READ 
+Route::get('users', [UserController::class, 'index']);
+Route::get('users/{id}', [UserController::class, 'show']);
+// --------------------------------
+
+// UPDATE 
+Route::put('users/{id}', [UserController::class, 'update']);
+// --------------------------------
+
+
+// Delete 
+Route::delete('users/{id}/', [UserController::class, 'destroy']);
+// --------------------------------
+
+// Login
+Route::post('users/login', [UserController::class, 'login']);
+
+
+
+// CREATE
+Route::post('users/', [UserController::class, 'createUser']);
+// --------------------------------
+
+// READ 
+Route::get('users', [UserController::class, 'index']);
+Route::get('users/{id}', [UserController::class, 'show']);
+// --------------------------------
+
+// UPDATE 
+Route::put('users/{id}', [UserController::class, 'update']);
+// --------------------------------
+
+
+// Delete 
+Route::delete('users/{id}/', [UserController::class, 'destroy']);
+// --------------------------------
+
+// Login
+Route::post('users/login', [UserController::class, 'login']);
+
+
 
 // CREATE
 Route::post('articles', [ArticleController::class, 'createArticle']);

@@ -2,21 +2,31 @@
 
 namespace App\Models;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class User extends Model
+use Illuminate\Notifications\Notifiable;
+class User extends Model implements Authenticatable
 {
-    protected $table = "users";
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        "id",
-        "name",
-        "mail",
-        "password",
-        "admin",
-        "remember_token",
-        "email_verified_at"
+        'name',
+        'email',
+        'password',
     ];
 
-    public $timestamps = true;
+    public function setRememberToken($value)
+    {
+        $this->{$this->getRememberTokenName()} = $value; // Définit la valeur du jeton "remember me" de l'utilisateur
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token'; // Renvoie le nom de la colonne où est stocké le jeton "remember me"
+    }
 }
