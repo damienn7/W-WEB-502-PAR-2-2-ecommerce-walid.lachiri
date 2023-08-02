@@ -6,11 +6,11 @@ function Item({item})
     return (
         <Paper>
             <div style={{display:"flex",flexDirection: "column", justifyContent:"center"}}>
-            <img src={item.image} alt={item.title}/>
+            <img className='imgcarou' src={item.image} alt={item.title}/>
             <h2>{item.title}</h2>
             {/* <p>{props.item.description}</p> */}
             <Button className="CheckButton">
-                Check it out!
+                ACHÈTE !
             </Button>
             </div>
         </Paper>

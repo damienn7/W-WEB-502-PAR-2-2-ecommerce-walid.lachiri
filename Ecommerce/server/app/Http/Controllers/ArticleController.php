@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
-
+use Illuminate\Support\Facades\DB;
 class ArticleController extends Controller
 {
 
     public function index(Request $request)
     {
-        $end = $request->input('_end');  
-        $start = $request->input('_start');  
-        $articles = Article::all()->skip($start)->take($end-$start)->values();
-        return response()
-            ->json($articles, 200, ['X-Total-Count' => Article::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
+        return Article::all();
     }
+
+
+public function METHODEDEFILSDEPUTE(Request $request){
+    return DB::table('items')       
+            ->join('categories', 'categories.id', '=', 'items.id_category')
+            // ->join('ratings', 'ratings.id_article', '=', 'items.id' )
+            ->get();
+}
+
     public function show($id)
 {
     return Article::findOrFail($id);

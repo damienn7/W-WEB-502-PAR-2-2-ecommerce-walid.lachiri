@@ -1,0 +1,13 @@
+.imgcarou{
+    object-fit: cover;
+    height: 50vh;
+}
+
+/* .foutre{ */
+    /* margin-top: 1px; */
+/* } */
+
+h2{
+    display:flex;
+    justify-content: center;
+}
