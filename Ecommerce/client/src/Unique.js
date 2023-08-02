@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './style/Unique.css';
 import Button from '@mui/material/Button';
 import Header from './header.js'

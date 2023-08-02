@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './style/Unique.css';
 import './style/Accueil.css'
 import Button from '@mui/material/Button';
