@@ -15,6 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Dropdown from './Dropdown/dropdown'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -172,9 +173,7 @@ export default function PrimarySearchAppBar() {
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
+          >HittaetTnamn</Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -186,17 +185,17 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
+            {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit"> */}
+              {/* <Badge badgeContent={4} color="error">
                 <MailIcon />
-              </Badge>
-            </IconButton>
+              </Badge> */}
+            {/* </IconButton> */}
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={0} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -225,6 +224,7 @@ export default function PrimarySearchAppBar() {
             </IconButton>
           </Box>
         </Toolbar>
+      <Dropdown/>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}

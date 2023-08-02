@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 // import './index.css';
-import App from './App';
 import Articles from './Articles'
 import Unique from './Unique'
+import Accueil from './Accueil'
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Unique />
+    <Accueil />
+    {/* <Unique /> */}
+
   </React.StrictMode>
 );
 

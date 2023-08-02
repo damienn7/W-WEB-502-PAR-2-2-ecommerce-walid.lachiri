@@ -10,8 +10,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.youtube.com/watch?v=fKyXvNkGQKc&ab_channel=BMTHOfficialVEVO">
+      HittaetTnamn
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -28,8 +28,11 @@ export default function StickyFooter() {
       <Box
         sx={{
           display: 'flex',
+          position: 'Absolute',
+          Bottom: '1px',
+          width: '100%',
           flexDirection: 'column',
-          minHeight: '1vh',
+          // minHeight: '100vh',
         }}
       >
         <CssBaseline />
@@ -47,7 +50,7 @@ export default function StickyFooter() {
         >
           <Container maxWidth="sm">
             <Typography variant="body1">
-              My sticky footer can be found here.
+              Mdrr imagine t'as cru y'avais un vrai footer là.
             </Typography>
             <Copyright />
           </Container>
