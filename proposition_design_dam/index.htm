@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>TEST UI</title>
+  </head>
+  <body>
+    <script>
+        window.onload = function(){
+          var count = 0;
+            let btn = document.getElementsByClassName('btn-none')[0];
+            let colored_div = document.getElementsByClassName('colored-part')[0];
+            colored_div.style.width = '6rem';
+            colored_div.style.height = '3rem';
+            let top = document.getElementById('top');
+            let bot = document.getElementById('bot');
+            btn.addEventListener("click",(e)=>{
+              let bot = e.target.querySelector('#bot');
+              let top = e.target.querySelector('#top');
+              let compte = document.getElementById('compte');
+              let panier = document.getElementById('panier');
+              if (count%2==0) {
+                console.log("colored div : "+top.style);
+                colored_div.style.position = 'absolute';
+                colored_div.style.top = '0';
+                colored_div.style.right = '0';
+                colored_div.style.width = '100vw';
+                colored_div.style.height = '100vh';
+                btn.style.position = 'absolute';
+                btn.style.top = '20px';
+                btn.style.right = '20px';
+                btn.style.height = '100px';
+                btn.style.width = '100px';
+                bot.style.position = 'absolute';
+                top.style.position = 'absolute';
+                top.style.top = '20px';
+                bot.style.top = '20px';
+                bot.style.rotate = '-45deg';
+                top.style.rotate = '45deg';
+                compte.style.display = '';
+                panier.style.display = '';
+                compte.style.position = 'absolute';
+                panier.style.position = 'absolute';
+                compte.style.top = '35px';
+                compte.style.right = '6rem';
+                panier.style.top = '35px';
+                panier.style.right = '12rem';
+                
+                count++;
+              }else{
+                console.log("colored div : "+top.style);
+                colored_div.style.position = 'relative';
+                colored_div.style.top = '';
+                colored_div.style.right = '';
+                colored_div.style.width = '6rem';
+                colored_div.style.height = '3rem';
+                bot.style.position = 'absolute';
+                top.style.position = 'absolute';
+                top.style.top = '30px';
+                bot.style.top = '15px';
+                bot.style.rotate = '90deg';
+                top.style.rotate = '90deg';
+                btn.style.position = 'relative';
+                btn.style.top = '0';
+                btn.style.right = '0';
+                btn.style.height = '100px';
+                btn.style.width = '100px';
+                compte.style.display = 'none';
+                panier.style.display = 'none';
+                count++;
+              }
+              
+            })
+            
+            let brand = document.getElementById('brand');
+            let pub = document.getElementsByClassName('pub')[0];
+            let line1 = document.getElementById('line1');
+            let line2 = document.getElementById('line2');
+            let line3 = document.getElementById('line3');
+            let line4 = document.getElementById('line4');
+            let line5 = document.getElementById('line5');
+            let line6 = document.getElementById('line6');
+            pub.addEventListener('mouseover',(e)=>{
+              line1.style.width = '30px';
+              line2.style.width = '30px';
+              line3.style.width = '30px';
+              line4.style.width = '30px';
+              line5.style.width = '30px';
+              line6.style.width = '30px';
+              brand.style.scale = '1.5';
+            })
+
+            pub.addEventListener('mouseleave',(e)=>{
+              line1.style.width = '100px';
+              line2.style.width = '300px';
+              line3.style.width = '130px';
+              line4.style.width = '250px';
+              line5.style.width = '200px';
+              line6.style.width = '150px';
+              brand.style.scale = '0';
+            })
+            
+          }
+    </script>
+    <div class="bg1"></div>
+    <div class="bg2"></div>
+    <div class="container">
+      <nav
+        class="nav align-items"
+        style="background-color: #373f51; justify-content: space-between"
+      >
+        <h1 class="titles align-items">
+          <span style="margin-right: 20px"
+            ><img
+              src="./assets/logo_ecommerce.png"
+              class="logo_section"
+              width="120"
+              height="120"
+              style="
+                margin-left: 20px;
+                cursor: pointer;
+              " /></span
+          >
+        </h1>
+        <div class="align-items colored-part" id="menu">
+            <button class="btn-none">
+                    <span class="bar" id="top">&nbsp;</span>
+                    <span class="bar" id="bot">&nbsp;</span>
+                </button>
+                <img
+                  src="./assets/user.png"
+                  width="60"
+                  height="60"
+                  id="compte"
+                  style="margin-right: 15px;display:none;cursor: pointer;"
+                  alt="icone compte utilisateur"
+                />
+                <img
+                  src="./assets/panier.png"
+                  width="60"
+                  height="60"
+                  id="panier"
+                  style="cursor:pointer;display:none"
+                  alt="icone panier et achat"
+                />
+        </div>
+      </nav>
+      <div class="pub" style="position: relative;">
+        <style>
+          #line1{
+            position: absolute;
+            top:250px;
+            rotate:45deg;
+            width: 100px;
+            height: 30px;
+            background-color: #CACECA;
+            border-radius: 30px;
+            z-index:0;
+            left: 20%;
+            -webkit-transition:300ms linear;
+	          -moz-transition:300ms linear;
+	          -o-transition:300ms linear;
+	          -ms-transition:300ms linear;
+	          transition:300ms linear;
+          }
+
+          #line2{
+            position: absolute;
+            top:250px;
+            rotate:45deg;
+            width: 300px;
+            height: 30px;
+            background-color: #5859ec;
+            border-radius: 30px;
+            z-index:0;
+            left: 25%;
+            -webkit-transition:300ms linear;
+	          -moz-transition:300ms linear;
+	          -o-transition:300ms linear;
+	          -ms-transition:300ms linear;
+	          transition:300ms linear;
+          }
+
+          #line3{
+            position: absolute;
+            top:250px;
+            rotate:45deg;
+            width: 130px;
+            height: 30px;
+            background-color: #8E151D;
+            border-radius: 30px;
+            z-index:0;
+            left: 30%;
+            -webkit-transition:300ms linear;
+	          -moz-transition:300ms linear;
+	          -o-transition:300ms linear;
+	          -ms-transition:300ms linear;
+	          transition:300ms linear;
+          }
+
+          #line4{
+            position: absolute;
+            top:250px;
+            rotate:45deg;
+            width: 250px;
+            height: 30px;
+            background-color: #3772FF;
+            border-radius: 30px;
+            z-index:0;
+            left: 35%;
+            -webkit-transition:300ms linear;
+	          -moz-transition:300ms linear;
+	          -o-transition:300ms linear;
+	          -ms-transition:300ms linear;
+	          transition:300ms linear;
+          }
+
+          #line5{
+            position: absolute;
+            top:150px;
+            rotate:45deg;
+            width: 200px;
+            height: 30px;
+            background-color: #F2B202;
+            border-radius: 30px;
+            z-index:0;
+            left:40%;
+            -webkit-transition:300ms linear;
+	          -moz-transition:300ms linear;
+	          -o-transition:300ms linear;
+	          -ms-transition:300ms linear;
+	          transition:300ms linear;
+          }
+
+          #line6{
+            position: absolute;
+            top:250px;
+            rotate:45deg;
+            width: 150px;
+            height: 30px;
+            background-color: #5859ec;
+            border-radius: 30px;
+            z-index:0;
+            left: 45% ;
+            -webkit-transition:300ms linear;
+	          -moz-transition:300ms linear;
+	          -o-transition:300ms linear;
+	          -ms-transition:300ms linear;
+	          transition:300ms linear;
+          }
+        </style>
+        <div id='line1'></div>
+        <div id='line2'></div>
+        <div id='line3'></div>
+        <div id='line4'></div>
+        <div id='line5'></div>
+        <div id='line6'></div>
+        <h2 class="titles" id="brand" style="color: white;z-index: 1;">e-m@rket >></h2>
+      </div>
+      <div class="carroussel">
+        <div class="slide_left">
+          <p
+            class="titles"
+            style="
+              font-size: 2rem;
+              border-radius: 50%;
+              width: 3rem;
+              height: 3rem;
+              background-color: #5859ec;
+              filter: brightness(0.8);
+              align-items: center;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            <
+          </p>
+        </div>
+        <div class="slide">
+          <img
+            src="./assets/banière.jpg"
+            class="baniere"
+            alt="image de composants"
+          />
+          <p class="paragraph description_slide">Acheter un composant</p>
+        </div>
+        <!-- <div class="slide">
+            <img
+            src="./assets/banière.jpg"
+            class="baniere"
+            alt="image de composants"
+          />
+          <p class="paragraph" style="text-align: left;">"Nous offrons une gamme de produits <br>de qualités que nous sélectionnons avec <br>soin pour vous !"</p>
+        </div>
+        <div class="slide">
+            <img
+            src="./assets/banière.jpg"
+            class="baniere"
+            alt="image de composants"
+          />
+          <p class="paragraph" style="text-align: left;">"Nous offrons une gamme de produits <br>de qualités que nous sélectionnons avec <br>soin pour vous !"</p>
+        </div> -->
+        <div class="slide_right">
+          <p
+            class="titles"
+            style="
+              font-size: 2rem;
+              border-radius: 50%;
+              width: 3rem;
+              height: 3rem;
+              background-color: #5859ec;
+              filter: brightness(0.8);
+              align-items: center;
+              display: flex;
+              justify-content: center;
+            "
+          >
+            >
+          </p>
+        </div>
+      </div>
+      <div class="articles">
+        <div
+          class="card"
+          style="
+            background-color: #576480;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          "
+        >
+          <button class="btn btn-blue titles" style="margin: 10px">
+            Acheter
+          </button>
+          <button class="btn btn-black titles" style="margin: 10px">
+            Acheter
+          </button>
+          <button class="btn btn-pink titles" style="margin: 10px">
+            Acheter
+          </button>
+        </div>
+        <div class="card" style="background-color: #576480"></div>
+        <div class="card" style="background-color: #576480"></div>
+        <div class="card" style="background-color: #576480"></div>
+        <div class="card" style="background-color: #576480"></div>
+      </div>
+    </div>
+  </body>
+</html>
