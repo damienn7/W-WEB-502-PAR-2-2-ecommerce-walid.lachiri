@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 const DeleteUser = ({ user, onDelete }) => {
   const handleDelete = () => {

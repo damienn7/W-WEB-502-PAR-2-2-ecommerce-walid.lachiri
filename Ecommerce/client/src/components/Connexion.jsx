@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    mail: '',
     password: '',
   });
 
@@ -17,8 +17,9 @@ const LoginForm = () => {
     axios
       .post('http://localhost:8000/api/users/login', formData)
       .then((response) => {
+        // REDIRECTION A FAIRE SUR LA PAGE D'ACCEUIL (ROUTE A DEFINIR) + TOKEN DE CONNEXION SI BESOIN
         console.log('Utilisateur connecté:', response.data);
-        setFormData({ email: '', password: '' });
+        setFormData({ mail: '', password: '' });
       })
       .catch((error) => {
         console.error('Erreur lors de la connexion:', error);
@@ -29,8 +30,8 @@ const LoginForm = () => {
     <div>
       <h2>Connexion</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
-        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+        <label htmlFor="mail">mail:</label>
+        <input type="email" name="mail" value={formData.mail} onChange={handleChange} />
 
         <label htmlFor="password">Mot de passe:</label>
         <input

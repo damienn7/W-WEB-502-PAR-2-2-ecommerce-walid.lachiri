@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
-    pseudo: '',
-    email: '',
+    name: '',
+    mail: '',
     password: '',
-    admin: false,
   });
 
   const handleChange = (event) => {
@@ -14,6 +14,7 @@ const CreateUser = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log("test");
     event.preventDefault();
     axios
       .post('http://localhost:8000/api/users', formData)
@@ -21,20 +22,20 @@ const CreateUser = () => {
         console.log('Nouvel utilisateur créé:', response.data);
       })
       .catch((error) => {
-        console.error('Erreur lors de la création de l\'utilisateur:', error);
+        console.error('Erreur lors de la création de l\'utilisateur:', error.response.data);
       });
     // console.log('Nouvel utilisateur :', formData);
   };
 
   return (
     <div>
-      <h2>Créer un utilisateur</h2>
+      <h2>Inscription</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="pseudo">Pseudo:</label>
-        <input type="text" name="pseudo" value={formData.pseudo} onChange={handleChange} />
+        <label htmlFor="name">Name:</label>
+        <input type="text" name="name" value={formData.pseudo} onChange={handleChange} />
 
-        <label htmlFor="email">Email:</label>
-        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+        <label htmlFor="mail">mail:</label>
+        <input type="email" name="mail" value={formData.mail} onChange={handleChange} />
 
         <label htmlFor="password">Mot de passe:</label>
         <input
@@ -43,18 +44,7 @@ const CreateUser = () => {
           value={formData.password}
           onChange={handleChange}
         />
-
-        <label htmlFor="admin">Admin:</label>
-        <input
-          type="checkbox"
-          name="admin"
-          checked={formData.admin}
-          onChange={() =>
-            setFormData((prevFormData) => ({ ...prevFormData, admin: !prevFormData.admin }))
-          }
-        />
-
-        <button type="submit">Créer</button>
+        <button type="submit">Inscription</button>
       </form>
     </div>
   );
