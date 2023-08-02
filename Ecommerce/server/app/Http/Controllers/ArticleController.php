@@ -24,7 +24,7 @@ function createArticle(Request $request){
 
    $article->save();                  
 return response()->json([         
-          "message" => "creation de l'article reussi",         
+          "message" => "creation de l'article reussix",         
            "articles"=> $article,       
       ], 201);  
 }
