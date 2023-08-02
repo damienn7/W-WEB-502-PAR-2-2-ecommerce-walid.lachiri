@@ -42,7 +42,6 @@ class UserController extends Controller
             'donnees' => $User
         ]);
     }
-
     public function destroy($id)
     {
         $User = User::findOrFail($id);
