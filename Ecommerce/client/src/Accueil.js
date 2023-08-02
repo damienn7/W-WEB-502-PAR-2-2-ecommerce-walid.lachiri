@@ -11,20 +11,25 @@ import Carousel from 'react-material-ui-carousel'
 import MCarousel from './Carousel/Carousel.js'
 import Table from './Table/Table'
 import { Typography } from '@mui/material';
+import { useLocation } from "react-router-dom";
+import BreadcrumbsComponent from "./components/breadcrumbs";
 
 
-function App() {
+function Accueil() {
+  const location = useLocation();
   return (
-    <>
-    <Header/>
-    <div className='foutre'>
-    <MCarousel/>
+    <div>
+      <Header />
+      <BreadcrumbsComponent navigation={location} />
+      <div className="carrousel">
+        <MCarousel />
+      </div>
+      <Box padding={10}>
+        <Table></Table>
+      </Box>
+      <Footer />
     </div>
-    <Box padding={10}>
-    <Table></Table>
-    </Box>
-    <Footer/>
-    </>
-    );}
+  );
+}
 
-    export default App;
+export default Accueil;

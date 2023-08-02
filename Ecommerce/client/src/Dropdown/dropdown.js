@@ -6,9 +6,10 @@ import Select from '@mui/material/Select';
 import './dropdown.css'
 import Button from '@mui/material/Button';
 
+
 export default function SelectVariants() {
     const [Composants, setComposants] = React.useState('');
-    
+
     const handleChange = (event) => {
         setComposants(event.target.value);
     };
@@ -41,6 +42,7 @@ export default function SelectVariants() {
           <MenuItem value={"Réseau"}>Carte réseau</MenuItem>
         </Select>
       </FormControl>
+
       <FormControl variant="standard" sx={{ m: 1, minWidth: Frank }}>
         <InputLabel id="demo-simple-select-standard-label">Périphériques</InputLabel>
         <Select
@@ -62,6 +64,7 @@ export default function SelectVariants() {
           <MenuItem value={"Casque"}>Casque-Micro</MenuItem>
         </Select>
       </FormControl>
+
       <FormControl variant="standard" sx={{ m: 1, minWidth: Frank }}>
         <InputLabel id="demo-simple-select-standard-label">Accessoires</InputLabel>
         <Select
@@ -81,6 +84,7 @@ export default function SelectVariants() {
 
         </Select>
       </FormControl>
+      
       <Button variant="contained" className='Buttonmui'>Promotions</Button>
 
       <FormControl variant="standard" sx={{ m: 1, minWidth: Frank }}>
@@ -100,7 +104,7 @@ export default function SelectVariants() {
         </Select>
       </FormControl>
       <Button variant="contained"  className='Buttonmui'>Services</Button>
-     
     </div>
+    
   );
 }

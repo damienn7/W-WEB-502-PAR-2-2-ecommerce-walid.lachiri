@@ -12,15 +12,14 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->unsignedBigInteger('Id_category');
+            $table->unsignedBigInteger('id_category');
             $table->string('image');
             $table->integer('views');
             $table->integer('price');
             $table->integer('stock')->default(5);
-            $table->integer('rating')->nullable();
             $table->timestamps();
 
-            $table->foreign('Id_category')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('id_category')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

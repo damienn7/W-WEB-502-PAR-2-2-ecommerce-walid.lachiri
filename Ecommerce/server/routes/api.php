@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriesController;
 /*
@@ -33,7 +34,7 @@ Route::get('articles/{id}', [ArticleController::class, 'show']);
 // UPDATE 
 Route::put('articles/{id}', [ArticleController::class, 'update']);
 // --------------------------------
-
+    
 
 // Delete 
 Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);

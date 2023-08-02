@@ -2,17 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 // import './index.css';
 import Articles from './Articles'
-import Unique from './Unique'
 import Accueil from './Accueil'
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Accueil />
+  <BrowserRouter>
+  { < App /> }
     {/* <Unique /> */}
-
-  </React.StrictMode>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
