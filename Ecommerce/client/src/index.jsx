@@ -10,6 +10,7 @@ import Accueil from './Accueil'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-<Accueil/>
+    <Accueil/>
+    {/* <Unique /> */}
   </React.StrictMode>
 );
