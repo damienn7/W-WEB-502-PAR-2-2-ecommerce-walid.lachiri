@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,6 +25,7 @@ Route::post('articles/', [ArticleController::class, 'createArticle']);
 
 // READ 
 Route::get('articles', [ArticleController::class, 'index']);
+Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 

@@ -23,6 +23,15 @@ import Paper from '@mui/material/Paper';
 export default function BasicTable() {
   const [articles, setArticles] = useState([])
 
+  function isAvailable(quantite = 0){
+    if(quantite > 0){
+      return <div className='greenbox'></div>
+    }
+    else if(quantite === 0){
+      return <div className='redbox'></div>
+    } 
+  }
+
   const fetchUserData = () => {
     fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
@@ -44,6 +53,7 @@ export default function BasicTable() {
           <TableRow>
             <TableCell>Nom</TableCell>
             <TableCell align="right">Type</TableCell>
+            <TableCell align="right">Catégorie</TableCell>
             <TableCell align="right">Note</TableCell>
             <TableCell align="right">Disponibilité</TableCell>
             <TableCell align="right">Prix</TableCell>
@@ -52,12 +62,13 @@ export default function BasicTable() {
         <TableBody>
             {/* Map infini ici pour le back */}
           {articles.map((article) => (
-            <TableRow key={article.nom} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">{article.nom}</TableCell>
-              <TableCell align="right">{article.categorie_name}</TableCell>
-              <TableCell align="right">{article.note_totale}</TableCell>
-              <TableCell align="right">{article.stocks_id}</TableCell>
-              <TableCell align="right">{article.prix}€</TableCell>
+            <TableRow key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row">{article.name}</TableCell>
+              <TableCell align="right">{article.category}</TableCell>
+              <TableCell align="right">{article.sub_category}</TableCell>
+              <TableCell align="right">{article.rating}</TableCell>
+              <TableCell align-self="right">{isAvailable(article.stock)}</TableCell>
+              <TableCell align="right">{article.price}€</TableCell>
             </TableRow>
             
           ))}
