@@ -1,18 +1,18 @@
-import './style/Unique.css';
-import './style/Accueil.css'
+import '../style/Unique.css';
+import '../style/Accueil.css'
 import Button from '@mui/material/Button';
 import Header from './header.js'
 import Footer from './footer.js'
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Box from '@mui/material/Box';
-import Video from './assets/Julien.mp4'
-import Pub from './assets/Pub.png'
+import Video from '../assets/Julien.mp4'
+import Pub from '../assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
 import MCarousel from './Carousel/Carousel.js'
 import Table from './Table/Table'
 import { Typography } from '@mui/material';
 import { useLocation } from "react-router-dom";
-import BreadcrumbsComponent from "./components/breadcrumbs";
+import BreadcrumbsComponent from "./breadcrumbs";
 
 
 function Accueil() {

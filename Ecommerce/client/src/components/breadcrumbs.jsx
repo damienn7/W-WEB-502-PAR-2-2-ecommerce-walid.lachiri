@@ -1,5 +1,5 @@
 import { Link, useRoutes } from "react-router-dom";
-import App from "../Accueil";
+import App from "./Accueil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
