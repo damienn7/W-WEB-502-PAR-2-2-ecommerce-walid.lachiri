@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserVerification;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +23,18 @@ class UserController extends Controller
         $User->name = $request->name;
         $User->admin = 1;
         $User->save();
-        return response()->json([
-            "message" => "creation de l'User reussi",
+        try{
+            Mail::mailer('stmp')->to($user->mail)->send(new UserVerification($user)); 
+            return response()->json([
+            "message" => "creation de l'User reussi veuillez vérifer votre mail pour se connecter",
             "Users" => $User,
         ], 201);
+        }catch (\Exception $e)
+        {
+            return response()->json([
+                "message" => "erreur d'envoi de mail, ressayez",
+            ], 500);
+        }
     }
 
     public function show($id)

@@ -91,3 +91,6 @@ Route::get("categories/", [CategoriesController::class, "showCategories"]);
 Route::get("categories/{id}", [CategoriesController::class, "showCategory"]);
 Route::put("categories/{id}", [CategoriesController::class, "updateCategory"]);
 Route::delete("categories/{id}", [CategoriesController::class, "deleteCategory"]);
+
+
+Route::get('email/verify/{id}', [\App\Http\Controllers\VerificationController::class, "verify"])->name('verification.verify');
