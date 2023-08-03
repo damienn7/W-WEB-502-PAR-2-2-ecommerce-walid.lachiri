@@ -1,0 +1,22 @@
+.foutre {
+    width: 100%;
+    height: fit-content;
+
+}
+
+.greenbox,
+.redbox {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    float: right;
+}
+
+.greenbox{
+    background-color: green;
+}
+
+.redbox{
+    background-color: red;
+
+}

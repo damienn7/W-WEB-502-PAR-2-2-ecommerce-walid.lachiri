@@ -4,55 +4,65 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
 
+    public function index()
+    {
+        return User::all();
+    }
 
     function createUser(Request $request)
     {
-        $user = new User;
-        $user->name = $request->name;
-        $user->mail = $request->mail;
-        $user->password = $request->password;
-        $user->admin = $request->admin;
-        $user->remember_token = $request->remember_token;
-        $user->email_verified_at = $request->email_verified_at;
-        $user->save();
+        $User = new User;
+        $User->mail = $request->mail;
+        $User->password = $request->password;
+        $User->name = $request->name;
+        $User->admin = 1;
+        $User->save();
         return response()->json([
-            "message" => "Inscription réussie.",
-            "user" => $user,
+            "message" => "creation de l'User reussi",
+            "Users" => $User,
         ], 201);
     }
 
-    public function indexUsers(Request $request)
-    {
-        $end = $request->input('_end');  
-        $start = $request->input('_start');  
-        $user = User::all()->skip($start)->take($end-$start)->values();
-        return response()
-            ->json($user, 200, ['X-Total-Count' => User::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);    }
-
-    public function indexUser($id)
+    public function show($id)
     {
         return User::findOrFail($id);
     }
 
-    function updateUser(Request $request, $id)
+    function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
+        $User = User::findOrFail($id);
+        $User->update($request->all());
         return response([
-            'message' => 'Infos du compte mises à jour',
-            'donnees' => $user
+            'message' => 'mise a jour de User reussi',
+            'donnees' => $User
         ]);
     }
-    public function deleteUser($id)
+    public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return response()->json(['message' => 'Le compte a été supprimé.']);
+        $User = User::findOrFail($id);
+        $User->delete();
+        return response()->json(['message' => 'User supprimé correctement']);
     }
-
+    public function login(Request $request)
+    {
+        $credentials = $request->only('mail', 'password');
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('api-token')->plainTextToken;
+            return response()->json([
+                'message' => 'Connexion réussie',
+                'user' => $user,
+                'token' => $token,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Identifiants invalides',
+            ], 401);
+        }
+    }
 }
