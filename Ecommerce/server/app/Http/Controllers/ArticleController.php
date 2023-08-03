@@ -12,7 +12,7 @@ class ArticleController extends Controller
     {
         $end = $request->input('_end');  
         $start = $request->input('_start');  
-        $articles = Article::all()->skip($start)->take($end-$start)->values();
+        $articles = Article::skip($start)->take($end-$start)->get();
         return response()
             ->json($articles, 200, ['X-Total-Count' => Article::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
@@ -25,12 +25,11 @@ function createArticle(Request $request){
     $article = new Article;  
     $article->name = $request->name;   
    $article->description = $request->description;   
-   $article->Id_category = $request->Id_category;  
+   $article->id_category = $request->id_category;  
    $article->image =$request->image;  
    $article->views = $request->views;
    $article->price = $request->price;  
    $article->stock = $request->stock;  
-   $article->rating = $request->rating;  
    $article->save();                  
 return response()->json([         
           "message" => "creation de l'article reussi",         
