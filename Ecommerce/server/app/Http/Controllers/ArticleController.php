@@ -22,6 +22,13 @@ public function METHODEDEFILSDEPUTE(Request $request){
             ->get();
 }
 
+public function methodetotalementraisonnable($id){
+    return DB::table('items')  
+    ->where('items.id', '=', $id)
+    ->join('categories', 'categories.id', '=', 'items.id_category')
+    ->get();
+}
+
     public function show($id)
 {
     return Article::findOrFail($id);
