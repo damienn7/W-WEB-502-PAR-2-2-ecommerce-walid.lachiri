@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 class ArticleController extends Controller
 {
@@ -60,5 +61,8 @@ return response()->json([
         $article = Article::findOrFail($id);
         $article->delete();
         return response()->json(['message' => 'Article supprimé correctement']);
+    }
+    public function search($category, $sous_category){
+        return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
     }
 }

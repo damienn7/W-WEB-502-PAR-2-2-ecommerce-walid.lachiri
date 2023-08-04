@@ -10,39 +10,13 @@ import Category from "./categorie";
 function App() {
   const location = useLocation();
 
-  // let element = useRoutes([
+  // useRoutes([
   //   {
-  //     path: '/',
+  //     path: '/articles/search/:categorie/:sub_categorie',
   //     element: <Accueil />,
-  //     children: [
-  //       {
-  //         path: ![
-  //           '/login',
-  //           '/inscription',
-  //           '/articles/search/:categorie}/:sub_categorie}'
-  //         ].includes(location.pathname) ? location.pathname : '',
-  //         element: <Accueil />
-  //       },
-  //     ]
-  //   },
-  //   {
-  //     path: '/login',
-  //     element: < LoginForm />
-  //   },
-  //   {
-  //     path: '/admin',
-  //     // element: < />
-  //   },
-  //   {
-  //     path: '/inscription',
-  //     element: < CreateUser />
-  //   },
-  //   // {
-  //   //   path: '/articles/search/:categorie/:sub_categorie',
-  //   //   element: <Category />,
-  //   // }
-  //   // articles/search/{category}/{sub_category}/{search}
+  //   }
   // ]);
+  //   // articles/search/{category}/{sub_category}/{search}
   let categorieName = location.pathname.split('/')[3];
   let sous_categorieName = location.pathname.split('/')[4];
   
@@ -51,6 +25,7 @@ function App() {
       <Route path="/" element={<Accueil />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/inscription" element={< CreateUser/>} />
+      {/* <Route path="/articles/search/:categorie/:sub_categorie/search" */}
       {/* <Route path="/articles/search/" element={<Accueil />} /> */}
       <Route
         path="/articles/search/:categorie/:sub_categorie"
