@@ -18,6 +18,7 @@ public function METHODEDEFILSDEPUTE(Request $request){
     return DB::table('items')       
             ->join('categories', 'categories.id', '=', 'items.id_category')
             // ->join('ratings', 'ratings.id_article', '=', 'items.id' )
+            ->orderBy('views', 'desc')
             ->get();
 }
 
