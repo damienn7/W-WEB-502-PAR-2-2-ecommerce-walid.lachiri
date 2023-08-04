@@ -34,15 +34,13 @@ import {
   Order_itemCreate
 } from './order_item';
 
-
 const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
 
-function App() {
-
+function AdminPage() { 
   return (
-    <Admin dataProvider={dataProvider}>
-      <Resource
-        name={"admin/articles"}
+    <Admin basename="/admin" dataProvider={dataProvider}>
+      <Resource   
+        name={"articles"}
         list={Articlelist}
         edit={ArticleEdit}
         create={ArticleCreate} />
@@ -77,8 +75,7 @@ function App() {
         create={Order_itemCreate}
       />
     </Admin>
-
   );
 }
 
-export default App;
+export default AdminPage;

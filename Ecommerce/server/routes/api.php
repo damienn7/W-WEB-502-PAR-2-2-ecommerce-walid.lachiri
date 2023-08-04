@@ -72,13 +72,13 @@ Route::post('users/login', [UserController::class, 'login']);
 
 
 // CREATE
-Route::post('admin/articles', [ArticleController::class, 'createArticle']);
+Route::post('articles', [ArticleController::class, 'createArticle']);
 // --------------------------------
 
 // READ
-Route::get('admin/articles', [ArticleController::class, 'index']);
+Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
-Route::get('admin/articles/{id}', [ArticleController::class, 'show']);
+Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
@@ -90,12 +90,12 @@ Route::get('articles/search/{category}/{sub_category}/{search}', [ArticleControl
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
 // UPDATE
-Route::put('admin/articles/{id}', [ArticleController::class, 'update']);
+Route::put('articles/{id}', [ArticleController::class, 'update']);
 // --------------------------------
 
 
 // Delete
-Route::delete('admin/articles/{id}/', [ArticleController::class, 'destroy']);
+Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
 // --------------------------------
 
 //CRUD Utilisateur

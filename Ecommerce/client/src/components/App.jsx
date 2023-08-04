@@ -1,33 +1,27 @@
 import { Breadcrumbs } from '@mui/material';
-import { Route, useRoutes } from 'react-router-dom';
+import { Route, useRoutes, useLocation } from 'react-router-dom';
 import Accueil from './Accueil';
-import { useLocation } from "react-router-dom";
+import AdminPage from './AdminPage';
 
 function App() {
   const location = useLocation();
+  
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <Accueil />,
+    },
+    {
+      path: "/admin/*",
+      element: <AdminPage />
+    },
+    {
+      path: "/model",
+      element: <Breadcrumbs />
+    }
+  ]);
 
-    let element = useRoutes([
-        {
-          path: "/",
-          element: <Accueil />,
-          children: [
-            {
-              path: location.pathname,
-              element: <Accueil />,
-            },
-            // { 
-            //     path: "tasks", 
-            //     element: <DashboardTasks /> 
-            // },
-          ],
-        },
-        {
-          path: location.pathname !== 'model' ? '/' : '/model',
-          element: < Breadcrumbs />
-        }
-      ]);
-
-      return element;
+  return element;
 }
 
 export default App;
