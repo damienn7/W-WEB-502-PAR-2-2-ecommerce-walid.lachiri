@@ -7,6 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMedal, faFire } from "@fortawesome/free-solid-svg-icons";
+
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -22,18 +25,39 @@ import Paper from '@mui/material/Paper';
 
 export default function BasicTable() {
   const [articles, setArticles] = useState([])
+  let i = 0;
 
-  function isAvailable(quantite = 0){
-    if(quantite > 0){
+  function isAvailable(quantite = 0) {
+    if (quantite > 0) {
       return <div className='greenbox'></div>
     }
-    else if(quantite === 0){
+    else if (quantite === 0) {
       return <div className='redbox'></div>
-    } 
+    }
   }
-const random = () => {
-  return Math.floor(Math.random() * 6);
-}
+  const random = () => {
+    return Math.floor(Math.random() * 6);
+  }
+
+  const istop3 = (name) => {
+    if (i === 0) {
+      i++;
+      return (
+      <>
+      <div className="indice" style={{ fontSize: "10px", fontStyle:"italic", color:"grey" }}>Article le plus vu <FontAwesomeIcon icon={faFire} style={{color: "#d15400",}} /><FontAwesomeIcon icon={faFire} style={{color: "#d15400",}} /></div> 
+      <FontAwesomeIcon icon={faMedal} style={{ color: "#ccbb00", }}/> {name} 
+      </>
+      )}
+    else if (i === 1) {
+      i++;
+      return <><FontAwesomeIcon icon={faMedal} style={{ color: "#9c9c9c", }} /> {name} </>}
+    else if (i === 2) {
+      i++;
+      return <><FontAwesomeIcon icon={faMedal} style={{ color: "#895206", }} /> {name} </>}
+      else {
+        return name;
+      }
+  }
   const fetchUserData = () => {
     fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
@@ -62,10 +86,10 @@ const random = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-            {/* Map infini ici pour le back */}
+          {/* Map infini ici pour le back */}
           {articles.map((article) => (
             <TableRow key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">{article.name}</TableCell>
+              <TableCell component="th" scope="row">{istop3(article.name)}</TableCell>
               <TableCell align="right">{article.category}</TableCell>
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
@@ -74,7 +98,7 @@ const random = () => {
               <TableCell align-self="right">{isAvailable(article.stock)}</TableCell>
               <TableCell align="right">{article.price}€</TableCell>
             </TableRow>
-            
+
           ))}
         </TableBody>
       </Table>

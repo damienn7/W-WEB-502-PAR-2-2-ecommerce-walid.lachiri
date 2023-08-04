@@ -24,17 +24,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('users/', [UserController::class, 'createUser']);
 // --------------------------------
 
-// READ 
+// READ
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/{id}', [UserController::class, 'show']);
 // --------------------------------
 
-// UPDATE 
+// UPDATE
 Route::put('users/{id}', [UserController::class, 'update']);
 // --------------------------------
 
 
-// Delete 
+// Delete
 Route::delete('users/{id}/', [UserController::class, 'destroy']);
 // --------------------------------
 
@@ -47,17 +47,17 @@ Route::post('users/login', [UserController::class, 'login']);
 Route::post('users/', [UserController::class, 'createUser']);
 // --------------------------------
 
-// READ 
+// READ
 Route::get('users', [UserController::class, 'index']);
 Route::get('users/{id}', [UserController::class, 'show']);
 // --------------------------------
 
-// UPDATE 
+// UPDATE
 Route::put('users/{id}', [UserController::class, 'update']);
 // --------------------------------
 
 
-// Delete 
+// Delete
 Route::delete('users/{id}/', [UserController::class, 'destroy']);
 // --------------------------------
 
@@ -70,21 +70,28 @@ Route::post('users/login', [UserController::class, 'login']);
 Route::post('articles', [ArticleController::class, 'createArticle']);
 // --------------------------------
 
-// READ 
+// READ
 Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 
-// UPDATE 
+// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
+// READ | WHERE | ORDER BY
+
+// Route::get('articles/search?q={search}&c={category}&sc={sub_category}', [ArticleController::class, 'search']);
+Route::get('articles/search/{category}/{sub_category}/{search}', [ArticleController::class, 'search']);
+
+// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
+
+// UPDATE
 Route::put('articles/{id}', [ArticleController::class, 'update']);
 // --------------------------------
-    
 
-// Delete 
+
+// Delete
 Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
 // --------------------------------
-
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 // READ | WHERE | ORDER BY
 
