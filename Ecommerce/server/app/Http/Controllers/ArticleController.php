@@ -62,7 +62,7 @@ return response()->json([
         $article->delete();
         return response()->json(['message' => 'Article supprimé correctement']);
     }
-    public function search($category, $sous_category){
+    public function searchNavigation($category, $sous_category){
         return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
     }
 }
