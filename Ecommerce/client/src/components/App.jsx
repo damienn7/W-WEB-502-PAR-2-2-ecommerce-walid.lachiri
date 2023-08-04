@@ -1,4 +1,3 @@
-import './App.css';
 import { Breadcrumbs } from '@mui/material';
 import { Route, useRoutes } from 'react-router-dom';
 import Accueil from './Accueil';
