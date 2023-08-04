@@ -49,7 +49,7 @@ Route::post('users/login', [UserController::class, 'login']);
 
 
 // CREATE
-Route::post('users/', [UserController::class, 'createUser']);
+Route::post('users/', [UserController::class, 'create']);
 // --------------------------------
 
 // READ
@@ -72,13 +72,13 @@ Route::post('users/login', [UserController::class, 'login']);
 
 
 // CREATE
-Route::post('articles', [ArticleController::class, 'createArticle']);
+Route::post('admin/articles', [ArticleController::class, 'createArticle']);
 // --------------------------------
 
 // READ
-Route::get('articles', [ArticleController::class, 'index']);
+Route::get('admin/articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
-Route::get('articles/{id}', [ArticleController::class, 'show']);
+Route::get('admin/articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
@@ -90,83 +90,83 @@ Route::get('articles/search/{category}/{sub_category}/{search}', [ArticleControl
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
 // UPDATE
-Route::put('articles/{id}', [ArticleController::class, 'update']);
+Route::put('admin/articles/{id}', [ArticleController::class, 'update']);
 // --------------------------------
 
 
 // Delete
-Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
+Route::delete('admin/articles/{id}/', [ArticleController::class, 'destroy']);
 // --------------------------------
 
 //CRUD Utilisateur
-Route::post('users/', [UserController::class, 'createUser']);
-Route::get('users/', [UserController::class, 'indexUsers']);
-Route::get('users/{id}', [UserController::class, 'indexUser']);
-Route::put('users/{id}/', [UserController::class, 'updateUser']);
-Route::delete('users/{id}/', [UserController::class, 'deleteUser']);
+Route::post('users/', [UserController::class, 'create']);
+Route::get('users/', [UserController::class, 'index']);
+Route::get('users/{id}', [UserController::class, 'show']);
+Route::put('users/{id}/', [UserController::class, 'update']);
+Route::delete('users/{id}/', [UserController::class, 'delete']);
 
 
 
 // CREATE
-Route::post('order', [OrderController::class, 'createOrder']);
+Route::post('order', [OrderController::class, 'create']);
 // --------------------------------
 
 // READ 
-Route::get('order', [OrderController::class, 'indexOrder']);
-Route::get('order/{id}', [OrderController::class, 'showOrder']);
+Route::get('order', [OrderController::class, 'index']);
+Route::get('order/{id}', [OrderController::class, 'show']);
 // --------------------------------
 
 // UPDATE 
-Route::put('order/{id}', [OrderController::class, 'updateOrder']);
+Route::put('order/{id}', [OrderController::class, 'update']);
 // --------------------------------
 
 
 // Delete 
-Route::delete('order/{id}/', [OrderController::class, 'destroyOrder']);
+Route::delete('order/{id}/', [OrderController::class, 'destroy']);
 // --------------------------------
 
 //CRUD Categories pour ADMIN ONLY ATTENTION
-Route::post("categories/", [CategoriesController::class, "createCategory"]);
-Route::get("categories/", [CategoriesController::class, "showCategories"]);
-Route::get("categories/{id}", [CategoriesController::class, "showCategory"]);
-Route::put("categories/{id}", [CategoriesController::class, "updateCategory"]);
-Route::delete("categories/{id}", [CategoriesController::class, "deleteCategory"]);
+Route::post("categories/", [CategoriesController::class, "create"]);
+Route::get("categories/", [CategoriesController::class, "index"]);
+Route::get("categories/{id}", [CategoriesController::class, "show"]);
+Route::put("categories/{id}", [CategoriesController::class, "update"]);
+Route::delete("categories/{id}", [CategoriesController::class, "delete"]);
 
 // CREATE
-Route::post('rating', [RatingController::class, 'createRating']);
+Route::post('rating', [RatingController::class, 'create']);
 // --------------------------------
 
 // READ 
-Route::get('rating', [RatingController::class, 'indexRating']);
-Route::get('rating/{id}', [RatingController::class, 'showRating']);
+Route::get('rating', [RatingController::class, 'index']);
+Route::get('rating/{id}', [RatingController::class, 'show']);
 // --------------------------------
 
 // UPDATE 
-Route::put('rating/{id}', [RatingController::class, 'updateRating']);
+Route::put('rating/{id}', [RatingController::class, 'update']);
 // --------------------------------
 
 
 // Delete 
-Route::delete('rating/{id}/', [RatingController::class, 'destroyRating']);
+Route::delete('rating/{id}/', [RatingController::class, 'destroy']);
 // --------------------------------
 
 
 
 
 // CREATE
-Route::post('order_item', [Order_itemController::class, 'createOrder_item']);
+Route::post('order_item', [Order_itemController::class, 'create']);
 // --------------------------------
 
 // READ 
-Route::get('order_item', [Order_itemController::class, 'indexOrder_item']);
-Route::get('order_item/{id}', [Order_itemController::class, 'showOrder_item']);
+Route::get('order_item', [Order_itemController::class, 'index']);
+Route::get('order_item/{id}', [Order_itemController::class, 'show']);
 // --------------------------------
 
 // UPDATE 
-Route::put('order_item/{id}', [Order_itemController::class, 'updateOrder_item']);
+Route::put('order_item/{id}', [Order_itemController::class, 'update']);
 // --------------------------------
 
 
 // Delete 
-Route::delete('order_item/{id}/', [Order_itemController::class, 'destroyOrder_item']);
+Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
 // --------------------------------

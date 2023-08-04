@@ -7,7 +7,7 @@ use App\Models\Category;
 
 class CategoriesController extends Controller
 {
-    function createCategory(Request $request)
+    function create(Request $request)
     {
         $category = new Category;
         $category->sub_category = $request->sub_category;
@@ -19,7 +19,7 @@ class CategoriesController extends Controller
         ], 201);
     }
 
-    public function showCategories(Request $request)
+    public function index(Request $request)
     {
         $end = $request->input('_end');  
         $start = $request->input('_start');  
@@ -28,21 +28,20 @@ class CategoriesController extends Controller
             ->json($category, 200, ['X-Total-Count' => Category::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
-    public function showCategory($id)
+    public function show($id)
     {
         return Category::findOrFail($id);
     }
 
-    function updateCategory(Request $request, $id)
+    function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
         $category->update($request->all());
-        return response([
-            'message' => 'Catégorie mise à jour',
-            'donnees' => $category
-        ]);
+
+        return response()->json($category, 200);
+        
     }
-    public function deleteCategory($id)
+    public function delete($id)
     {
         $category = Category::findOrFail($id);
         $category->delete();

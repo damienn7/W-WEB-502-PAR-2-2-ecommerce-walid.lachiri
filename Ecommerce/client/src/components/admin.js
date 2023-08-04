@@ -1,39 +1,39 @@
 import {
   Admin,
   Resource,
-  EditGuesser,
 } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import {
   Articlelist,
   ArticleEdit,
   ArticleCreate,
-} from './components/Articles';
+} from './Articles';
 import {
   Userlist,
   UserEdit,
   UserCreate
-} from './components/User';
+} from './User';
 import {
   Categorieslist,
   CategoriesEdit,
   CategoriesCreate
-} from './components/categories';
+} from './categories';
 import {
   ratingist,
   ratingEdit,
   ratingCreate
-} from './components/Rating';
+} from './Rating';
 import {
   Orderlist,
   OrderEdit,
   OrderCreate
-} from './components/order';
+} from './order';
 import {
   Order_itemlist,
   Order_itemEdit,
   Order_itemCreate
-} from './components/order_item';
+} from './order_item';
+
 
 const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
 
@@ -42,7 +42,7 @@ function App() {
   return (
     <Admin dataProvider={dataProvider}>
       <Resource
-        name={"articles"}
+        name={"admin/articles"}
         list={Articlelist}
         edit={ArticleEdit}
         create={ArticleCreate} />
@@ -70,7 +70,7 @@ function App() {
         edit={OrderEdit}
         create={OrderCreate}
       />
-            <Resource
+      <Resource
         name={"order_item"}
         list={Order_itemlist}
         edit={Order_itemEdit}

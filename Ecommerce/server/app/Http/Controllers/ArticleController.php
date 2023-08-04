@@ -106,10 +106,8 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $article->update($request->all());
-        return response([
-            'message' => 'mise a jour de article reussi',
-            'donnees' => $article
-        ]);
+        return response()->json($article, 200);
+
     }
 
     public function destroy($id)

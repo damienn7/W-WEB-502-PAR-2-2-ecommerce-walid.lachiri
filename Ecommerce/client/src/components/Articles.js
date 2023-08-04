@@ -2,7 +2,6 @@ import {
   List,
   Datagrid,
   TextField,
-  EmailField,
   Edit,
   SimpleForm,
   TextInput,
@@ -25,7 +24,7 @@ export const Articlelist = (props) => (
 export const ArticleEdit = props => (
   <Edit {...props}>
     <SimpleForm>
-      <TextInput source="id" disabled/>
+      <TextInput source="id"/>
       <TextInput source="image" />
       <TextInput source="name" />
       <TextInput source="description" />

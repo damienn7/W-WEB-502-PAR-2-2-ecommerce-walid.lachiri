@@ -8,7 +8,7 @@ use App\Models\Order_item;
 class Order_itemController extends Controller
 {
 
-    public function indexOrder_item(Request $request)
+    public function index(Request $request)
     {
         $end = $request->input('_end');  
         $start = $request->input('_start');  
@@ -21,7 +21,7 @@ class Order_itemController extends Controller
     return Order_item::findOrFail($id);
 }
 
-function createOrder_item(Request $request){
+function create(Request $request){
     $article = new Order_item;  
     $article->order_id = $request->order_id;   
    $article->item_id = $request->item_id;  
@@ -38,17 +38,16 @@ return response()->json([
 
 
 
-    function updateOrder_item(Request $request, $id)
+    function update(Request $request, $id)
     {
         $article = Order_item::findOrFail($id);
         $article->update($request->all());
-        return response([
-            'message' => 'mise a jour de la commande reussi',
-            'donnees' => $article
-        ]);
+ 
+        return response()->json($article, 200);
+        
     }
 
-    public function destroyOrder_item($id)
+    public function destroy($id)
     {
         $article = Order_item::findOrFail($id);
         $article->delete();
