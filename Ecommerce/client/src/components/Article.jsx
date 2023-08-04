@@ -2,14 +2,14 @@ import { Container, Card, TableCell, TableRow } from "@mui/material";
 
 export default function Article({ article }) {
   return article.map((article, index) => (
-    <div key={index} style={{backgroundColor: "blue", display: "flex", flexDirection: 'column', margin: '0 auto'}} >
+    <div key={index} style={{backgroundColor: "blue", margin: '0 auto'}} >
         <div style={{ backgroundColor: 'bluecyan', border: '1px solid black', padding: '1em'}}>
           <h1 style={{ fontSize: '1.4em'}}>{article.name}</h1>
           <h2 style={{ fontSize: '1em'}}>{article.description}</h2>
           <img src={article.image} width={300} />
           <h4>{article.views}</h4>
           <h5>{article.price}</h5>
-          <h5>{article.price}</h5>
+          <h5>{article.stock}</h5>
         </div>
     </div>
   ));

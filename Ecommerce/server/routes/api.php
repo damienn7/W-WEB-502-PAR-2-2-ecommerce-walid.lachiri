@@ -95,7 +95,7 @@ Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 // READ | WHERE | ORDER BY
 
-Route::get('articles/search/{category}/{sub_category}', [ArticleController::class, 'search']);
+Route::get('articles/search/{category}/{sub_category}', [ArticleController::class, 'searchNavigation']);
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
