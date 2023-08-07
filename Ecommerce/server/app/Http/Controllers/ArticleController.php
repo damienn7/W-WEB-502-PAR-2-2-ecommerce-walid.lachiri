@@ -20,6 +20,15 @@ class ArticleController extends Controller
             ->json($articles, 200, ['X-Total-Count' => Article::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
+    public function searchSuggestion(Request $request)
+    {
+        return DB::table('items')
+            ->where("item.name", "like", $request)
+            ->orderBy('views', 'desc')
+            ->limit(10)
+            ->get();
+    }
+
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
     // READ | WHERE | ORDER BY
     // route : 'articles/search?q={search}&c={category}&sc={sub_category}'
@@ -93,9 +102,11 @@ class ArticleController extends Controller
         return Article::findOrFail($id);
     }
 
+
+
     public function createArticle(Request $request)
     {
-        $article= Article::create($request->all());
+        $article = Article::create($request->all());
         return response()->json([
             "message" => "creation de l'article reussi",
             "articles" => $article,
@@ -118,8 +129,9 @@ class ArticleController extends Controller
         $article->delete();
         return response()->json(['message' => 'Article supprimé correctement']);
     }
-    public function searchNavigation($category, $sous_category, $id = null){
-        if($id){
+    public function searchNavigation($category, $sous_category, $id = null)
+    {
+        if ($id) {
             return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ? AND i.id = ?', [$category, $sous_category, $id]);
         } else {
             return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);

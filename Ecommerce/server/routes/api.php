@@ -190,3 +190,6 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 // Route::get("categories/{id}", [CategoriesController::class, "showCategory"]);
 // Route::put("categories/{id}", [CategoriesController::class, "updateCategory"]);
 // Route::delete("categories/{id}", [CategoriesController::class, "deleteCategory"]);
+
+//Route suggestion dans la recherche
+Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);

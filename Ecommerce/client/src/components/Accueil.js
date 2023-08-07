@@ -1,8 +1,8 @@
 import '../style/Unique.css';
 import '../style/Accueil.css'
 import Button from '@mui/material/Button';
-import Header from './header.js'
-import Footer from './footer.js'
+import Header from './Header'
+import Footer from './Footer'
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import Box from '@mui/material/Box';
 import Video from '../assets/Julien.mp4'
