@@ -1,3 +1,7 @@
+import { Breadcrumbs } from '@mui/material';
+import { Route, useRoutes, useLocation } from 'react-router-dom';
+import Accueil from './Accueil';
+import AdminPage from './AdminPage';
 import { Breadcrumbs } from "@mui/material";
 import { Route, Routes, useParams, useRoutes } from "react-router-dom";
 import Accueil from "./Accueil";
@@ -9,6 +13,21 @@ import Category from "./categorie";
 
 function App() {
   const location = useLocation();
+  
+  let element = useRoutes([
+    {
+      path: "/",
+      element: <Accueil />,
+    },
+    {
+      path: "/admin/*",
+      element: <AdminPage />
+    },
+    {
+      path: "/model",
+      element: <Breadcrumbs />
+    }
+  ]);
 
   // useRoutes([
   //   {

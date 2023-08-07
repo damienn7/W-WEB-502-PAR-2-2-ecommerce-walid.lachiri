@@ -13,59 +13,63 @@ class ArticleController extends Controller
 
     public function index(Request $request)
     {
-        return Article::all();
+        $end = $request->input('_end');
+        $start = $request->input('_start');
+        $articles = Article::skip($start)->take($end - $start)->get();
+        return response()
+            ->json($articles, 200, ['X-Total-Count' => Article::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
     // READ | WHERE | ORDER BY
     // route : 'articles/search?q={search}&c={category}&sc={sub_category}'
-    public function search($category, $sub_category,$search)
+    public function search($category, $sub_category, $search)
     {
         if ($category === "unset" && $sub_category !== "unset" && $search !== "unset") {
             $result = DB::table('items')
-            ->join('categories', 'categories.id', '=', 'items.id_category')
-            ->where('sub_category', 'like', "%$sub_category%")
-            ->where('name','like' ,"%$search%")
-            ->get();
+                ->join('categories', 'categories.id', '=', 'items.id_category')
+                ->where('sub_category', 'like', "%$sub_category%")
+                ->where('name', 'like', "%$search%")
+                ->get();
         } elseif ($category === "unset" && $sub_category === "unset" && $search !== "unset") {
             $result = DB::table('items')
-            ->where('name','like' ,"%$search%")
-            ->get();
+                ->where('name', 'like', "%$search%")
+                ->get();
         } elseif ($category !== "unset" && $sub_category !== "unset" && $search === "unset") {
             $result = DB::table('items')
-            ->join('categories', 'categories.id', '=', 'items.id_category')
-            ->where('category', 'like', "%$category%")
-            ->where('sub_category', 'like', "%$sub_category%")
-            ->get();
+                ->join('categories', 'categories.id', '=', 'items.id_category')
+                ->where('category', 'like', "%$category%")
+                ->where('sub_category', 'like', "%$sub_category%")
+                ->get();
         } elseif ($category !== "unset" && $sub_category !== "unset" && $search !== "unset") {
             $result = DB::table('items')
-            ->join('categories', 'categories.id', '=', 'items.id_category')
-            ->where('category', 'like', "%$category%")
-            ->where('sub_category', 'like', "%$sub_category%")
-            ->where('name','like' ,"%$search%")
-            ->get();
+                ->join('categories', 'categories.id', '=', 'items.id_category')
+                ->where('category', 'like', "%$category%")
+                ->where('sub_category', 'like', "%$sub_category%")
+                ->where('name', 'like', "%$search%")
+                ->get();
         } elseif ($category !== "unset" && $sub_category === "unset" && $search !== "unset") {
             $result = DB::table('items')
-            ->join('categories', 'categories.id', '=', 'items.id_category')
-            ->where('category', 'like', "%$category%")
-            ->where('name','like' ,"%$search%")
-            ->get();
+                ->join('categories', 'categories.id', '=', 'items.id_category')
+                ->where('category', 'like', "%$category%")
+                ->where('name', 'like', "%$search%")
+                ->get();
         } elseif ($category === "unset" && $sub_category !== "unset" && $search === "unset") {
             $result = DB::table('items')
-            ->join('categories', 'categories.id', '=', 'items.id_category')
-            ->where('category', 'like', "%$sub_category%")
-            ->get();
+                ->join('categories', 'categories.id', '=', 'items.id_category')
+                ->where('category', 'like', "%$sub_category%")
+                ->get();
         } elseif ($category !== "unset" && $sub_category === "unset" && $search === "unset") {
             $result = DB::table('items')
-            ->join('categories', 'categories.id', '=', 'items.id_category')
-            ->where('category', 'like', "%$sub_category%")
-            ->get();
+                ->join('categories', 'categories.id', '=', 'items.id_category')
+                ->where('category', 'like', "%$sub_category%")
+                ->get();
         } else {
-            $result = ["Erreur"=>"Veuillez renseigner une catégorie et/ou une sous-catégorie et/ou un nom de produits."];
+            $result = ["Erreur" => "Veuillez renseigner une catégorie et/ou une sous-catégorie et/ou un nom de produits."];
         }
 
         if (empty($result)) {
-            return ["Erreur"=>"Nous n'avons pas pu trouver de résultat associé à votre recherche."];
+            return ["Erreur" => "Nous n'avons pas pu trouver de résultat associé à votre recherche."];
         } else {
             return $result;
         }
@@ -89,18 +93,9 @@ class ArticleController extends Controller
         return Article::findOrFail($id);
     }
 
-    function createArticle(Request $request)
+    public function createArticle(Request $request)
     {
-        $article = new Article;
-        $article->name = $request->name;
-        $article->description = $request->description;
-        $article->Id_category = $request->Id_category;
-        $article->image = $request->image;
-        $article->views = $request->views;
-        $article->price = $request->price;
-        $article->stock = $request->stock;
-        $article->rating = $request->rating;
-        $article->save();
+        $article= Article::create($request->all());
         return response()->json([
             "message" => "creation de l'article reussi",
             "articles" => $article,
@@ -109,14 +104,12 @@ class ArticleController extends Controller
 
 
 
-    function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $article = Article::findOrFail($id);
         $article->update($request->all());
-        return response([
-            'message' => 'mise a jour de article reussi',
-            'donnees' => $article
-        ]);
+        return response()->json($article, 200);
+
     }
 
     public function destroy($id)

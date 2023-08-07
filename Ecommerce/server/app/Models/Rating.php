@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class rating extends Model
 {
-    protected $table = "categories";
-    protected $fillable = ["id", "sub_category", "category"];
+    protected $table = "ratings";
+    protected $fillable = ["id", "id_user", "id_article","rating"];
     public $timestamps = true;
 }
