@@ -6,6 +6,9 @@ import LoginForm from "./Connexion";
 import { Children } from "react";
 import CreateUser from "./Inscription";
 import Category from "./categorie";
+import Admin from "./AdminPage";
+
+
 
 function App() {
   const location = useLocation();
@@ -16,6 +19,8 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/admin/*" element={< Admin/>} />
+
       <Route path="/" element={<Accueil />} />
       <Route path="/articles" element={<Accueil />} />
       <Route path="/login" element={<LoginForm />} />
