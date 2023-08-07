@@ -125,7 +125,14 @@ class ArticleController extends Controller
         $article->delete();
         return response()->json(['message' => 'Article supprimé correctement']);
     }
-    public function searchNavigation($category, $sous_category){
-        return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
+    public function searchNavigation($category, $sous_category, $id = null){
+        if($id){
+            return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ? AND i.id = ?', [$category, $sous_category, $id]);
+        } else {
+            return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
+        }
     }
+    // public function searchNavigationArticle($category , $sous_category, $id){
+    //     // return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
+    // }
 }
