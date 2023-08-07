@@ -79,7 +79,6 @@ Route::get('articles/{id}', [ArticleController::class, 'show']);
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 // READ | WHERE | ORDER BY
 
-// Route::get('articles/search?q={search}&c={category}&sc={sub_category}', [ArticleController::class, 'search']);
 Route::get('articles/search/{category}/{sub_category}/{search}', [ArticleController::class, 'search']);
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒

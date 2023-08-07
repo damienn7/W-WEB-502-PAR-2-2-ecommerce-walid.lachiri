@@ -17,7 +17,7 @@ class ArticleController extends Controller
 
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
     // READ | WHERE | ORDER BY
-    // route : 'articles/search?q={search}&c={category}&sc={sub_category}'
+    // route : 'articles/search/{category}/{sub_category}/{search}'
     public function search($category, $sub_category,$search)
     {
         if ($category === "unset" && $sub_category !== "unset" && $search !== "unset") {
