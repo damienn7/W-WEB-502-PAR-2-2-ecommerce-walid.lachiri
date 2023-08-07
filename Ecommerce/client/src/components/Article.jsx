@@ -1,3 +1,4 @@
+import { faDisplay } from "@fortawesome/free-solid-svg-icons";
 import { Container, Card, TableCell, TableRow } from "@mui/material";
 import { Link } from "react-router-dom";
 

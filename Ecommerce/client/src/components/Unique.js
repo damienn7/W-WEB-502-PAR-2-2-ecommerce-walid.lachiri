@@ -11,7 +11,7 @@ import { Typography } from '@mui/material';
 
 
 
-function App() {
+function Articleunique() {
     return (
         <div className="App">
             <Header />
@@ -20,6 +20,7 @@ function App() {
                     <Grid xs={10}>
                         {/* NOM du produit */}
                         <Typography variant='h4'>Sapphire PULSE AMD Radeon RX 7900 XTX 24GB</Typography>
+                                    <Typography>12 restant</Typography>
                         {/* charactéristiques courte du produit */}
                         <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI Express (AMD Radeon RX 7900 XTX)</Typography>
                         <div className='Description'>
@@ -104,4 +105,4 @@ function App() {
     );
 }
 
-export default App;
+export default Articleunique;
