@@ -97,6 +97,8 @@ Route::put('articles/{id}', [ArticleController::class, 'update']);
 // Delete
 Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
 // --------------------------------
+// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
+// READ | WHERE | ORDER BY
 
 //CRUD Utilisateur
 Route::post('users/', [UserController::class, 'create']);
@@ -170,3 +172,21 @@ Route::put('order_item/{id}', [Order_itemController::class, 'update']);
 // Delete 
 Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
 // --------------------------------
+Route::get('articles/search/{category}/{sub_category}', [ArticleController::class, 'searchNavigation']);
+
+// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
+
+
+// //CRUD Utilisateur
+// Route::post('users/', [UserController::class, 'createUser']);
+// Route::get('users/', [UserController::class, 'indexUsers']);
+// Route::get('users/{id}', [UserController::class, 'indexUser']);
+// Route::put('users/{id}/', [UserController::class, 'updateUser']);
+// Route::delete('users/{id}/', [UserController::class, 'deleteUser']);
+
+// //CRUD Categories pour ADMIN ONLY ATTENTION
+// Route::post("categories/", [CategoriesController::class, "createCategory"]);
+// Route::get("categories/", [CategoriesController::class, "showCategories"]);
+// Route::get("categories/{id}", [CategoriesController::class, "showCategory"]);
+// Route::put("categories/{id}", [CategoriesController::class, "updateCategory"]);
+// Route::delete("categories/{id}", [CategoriesController::class, "deleteCategory"]);
