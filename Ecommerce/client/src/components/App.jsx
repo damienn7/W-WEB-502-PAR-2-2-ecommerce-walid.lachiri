@@ -22,11 +22,11 @@ function App() {
       <Route path="/admin/*" element={< Admin/>} />
 
       <Route path="/" element={<Accueil />} />
+      <Route path="/articles" element={<Accueil />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/inscription" element={< CreateUser/>} />
-
       <Route
-        path="/articles/search/:categorie/:sub_categorie"
+        path="/articles/search/:categorie/:sub_categorie" 
         element={<Category categorie={categorieName} sous_categorie={sous_categorieName}/>}
       />
        <Route

@@ -85,7 +85,6 @@ Route::get('articles/{id}', [ArticleController::class, 'show']);
 // READ | WHERE | ORDER BY
 
 // Route::get('articles/search?q={search}&c={category}&sc={sub_category}', [ArticleController::class, 'search']);
-Route::get('articles/search/{category}/{sub_category}/{search}', [ArticleController::class, 'search']);
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
@@ -173,6 +172,7 @@ Route::put('order_item/{id}', [Order_itemController::class, 'update']);
 Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
 // --------------------------------
 Route::get('articles/search/{category}/{sub_category}', [ArticleController::class, 'searchNavigation']);
+Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController::class, 'searchNavigation']);
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
