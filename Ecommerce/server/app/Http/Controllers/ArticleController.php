@@ -20,11 +20,12 @@ class ArticleController extends Controller
             ->json($articles, 200, ['X-Total-Count' => Article::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
-    public function searchSuggestion(Request $request)
+    public function searchSuggestion($request)
     {
+        
         return DB::table('items')
-            ->where("item.name", "like", $request)
-            ->orderBy('views', 'desc')
+            ->where("items.name", "like", "%$request%")
+            // ->orderBy('views', 'desc')
             ->limit(10)
             ->get();
     }

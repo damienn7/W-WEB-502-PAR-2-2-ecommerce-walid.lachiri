@@ -59,21 +59,45 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const handleSearch = (e.target) => {
-// const [searchQuery, setSearchQuery] = useState();
-  fetch("articles/searchSuggestion/" + searchQuery)
-  .then(response => {
-    return response.json()
-  })
-  .then(data => {
-    setSearchQuery(data)
-  })
-
-
-}
 
 export default function PrimarySearchAppBar() {
+  const [searchText, setSearchText] = useState("");
+  const [searchQuery, setSearchQuery] = useState([]);
+
+  const handleSearch = (search) => {
+    // console.log(searchText);
+    setSearchText(search.currentTarget.value)
+    if (searchText.length > 2) {
+      fetch("http://localhost:8000/api/articles/searchSuggestion/" + searchText)
+        .then(response => {
+          if (response.status === 200) {
+            return response.json()
+          }
+        })
+        .then(data => {
+          console.log(data)
+          setSearchQuery(data)
+        })
+    }
+  }
+
+  const SearchSuggestions = () => {
+    console.log(searchQuery)
+    return (
+      <div>
+        {searchQuery.map(article => (
+          <div>
+            <p >{article.name}</p>
+            <p align="right">{article.price}</p>
+          </div>
+
+        ))}
+      </div>
+    )
+  }
+
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -196,13 +220,17 @@ export default function PrimarySearchAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
-              onChange={handleSearch}
+              onChange={(e) => handleSearch(e)}
             />
+
           </Search>
+            {searchQuery.length !== 0 &&
+            <SearchSuggestions />
+            }
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit"> */}
-              {/* <Badge badgeContent={4} color="error">
+            {/* <Badge badgeContent={4} color="error">
                 <MailIcon />
               </Badge> */}
             {/* </IconButton> */}
@@ -240,7 +268,7 @@ export default function PrimarySearchAppBar() {
             </IconButton>
           </Box>
         </Toolbar>
-      <Dropdown/>
+        <Dropdown />
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
