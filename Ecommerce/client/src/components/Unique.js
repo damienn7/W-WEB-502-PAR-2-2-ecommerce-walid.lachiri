@@ -8,10 +8,31 @@ import Video from '../assets/Julien.mp4'
 import Pub from '../assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
 import { Typography } from '@mui/material';
+import React, { useEffect, useState } from "react"
 
 
 
-function Articleunique() {
+function Articleunique({ categorie, sous_categorie, id }) {
+    const [articles, setArticles] = useState([])
+
+    // console.log(categorie);
+    // console.log(sous_categorie);
+    // console.log(id);
+
+    const fetchUserData = () => {
+        fetch(`http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                setArticles(data[0])
+            })
+    }
+
+    useEffect(() => {
+        fetchUserData()
+    }, [])
+
     return (
         <div className="App">
             <Header />
@@ -19,29 +40,29 @@ function Articleunique() {
                 <Grid className="Unique" container spacing={2} >
                     <Grid xs={10}>
                         {/* NOM du produit */}
-                        <Typography variant='h4'>Sapphire PULSE AMD Radeon RX 7900 XTX 24GB</Typography>
-                                    <Typography>12 restant</Typography>
+                        <Typography variant='h4'>{articles.name}</Typography>
                         {/* charactéristiques courte du produit */}
-                        <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI Express (AMD Radeon RX 7900 XTX)</Typography>
+                        <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI </Typography>
+                        <Typography>{articles.stock} restant(s)</Typography>
                         <div className='Description'>
                             <Grid container spacing={2} disableEqualOverflow>
                                 <Grid xs={3} >
                                     {/* Image du produit */}
-                                    <img src='https://media.ldlc.com/r1600/ld/products/00/06/00/56/LD0006005688.jpg' width='100%'></img>
+                                    <img src={articles.image} width='100%'></img>
                                 </Grid>
                                 <Grid xs={9} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
                                     {/* Description du produit */}
-                                    <Typography sx={{}} >Basée sur l'architecture RDNA 3, la carte graphique Sapphire PULSE AMD Radeon RX 7900 XTX 24GB est conçue pour le Jeu en 4K UHD. Puissante et efficace, elle ravira joueurs et créatifs à la recherche d'une solution graphique performante et novatrice.</Typography>
+                                    <Typography sx={{}} >{articles.description}</Typography>
                                 </Grid>
                             </Grid>
                         </div>
                     </Grid >
-                    <Grid xs={1} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 2, mx: 'auto', width: 200, height: 'auto', borderRadius:'5px' }}>
+                    <Grid xs={1} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 2, mx: 'auto', width: 200, height: 'auto', borderRadius: '5px' }}>
                         <div className="article__price">
                             {/* Prix du produit */}
-                            <Typography color ="grey">TTC</Typography>
-                            <Typography variant='h3' color="red">420,69€</Typography>
-                            <Typography color ="grey">HT</Typography>
+                            <Typography color="grey">TTC</Typography>
+                            <Typography variant='h3' color="red">{articles.price}€</Typography>
+                            <Typography color="grey">HT</Typography>
 
                             <Typography variant='h6'>12,50€</Typography>
                         </div>
@@ -63,7 +84,7 @@ function Articleunique() {
                     </Grid>
                 </Grid>
                 <hr className='Marginextop'></hr>
-                <Grid container spacing={2} sx={{display: "flex", justifyContent: 'space-Evenly' }}>
+                <Grid container spacing={2} sx={{ display: "flex", justifyContent: 'space-Evenly' }}>
                     <Grid xs={12}>
                         <Typography align="center" fontSize={18} color="red">Les autres raclo achètent ça aussi</Typography>
                     </Grid>
