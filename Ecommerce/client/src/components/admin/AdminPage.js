@@ -12,7 +12,7 @@ import {
   Userlist,
   UserEdit,
   UserCreate
-} from '../User';
+} from './User';
 import {
   Categorieslist,
   CategoriesEdit,
