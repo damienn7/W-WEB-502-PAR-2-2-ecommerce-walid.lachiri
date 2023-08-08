@@ -1,6 +1,7 @@
 import { Breadcrumbs } from "@mui/material";
 import { Route, Routes, useParams, useRoutes } from "react-router-dom";
 import Accueil from "./Accueil";
+import ArticleUnique from "./Unique";
 import { useLocation } from "react-router-dom";
 import LoginForm from "./Connexion";
 import { Children } from "react";
@@ -31,7 +32,7 @@ function App() {
       />
        <Route
         path="/articles/search/:categorie/:sub_categorie/:id"
-        element={<Category categorie={categorieName} sous_categorie={sous_categorieName} id={id}/>}
+        element={<ArticleUnique categorie={categorieName} sous_categorie={sous_categorieName} id={id}/>}
       />
     </Routes>
   );
