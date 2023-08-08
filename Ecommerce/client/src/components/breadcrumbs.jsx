@@ -22,7 +22,7 @@ const BreadcrumbsComponent = (props) => {
       <Link style={{ 
         textDecoration: 'none', 
         fontSize: '1.4em'
-        }} to={ index > 0 ? segments.slice(1, index + 1).join('/') : ''}>
+        }} to={ index > 0 ? segments.slice(0, index + 1).join('/') : ''}>
         {
             segment !== premierSegment ? (  
                 <span style={{ 

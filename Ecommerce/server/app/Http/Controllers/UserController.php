@@ -9,22 +9,26 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return User::all();
+        $end = $request->input('_end');  
+        $start = $request->input('_start');  
+        $articles = User::skip($start)->take($end-$start)->get();
+        return response()
+            ->json($articles, 200, ['X-Total-Count' => User::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
-    function createUser(Request $request)
+    function create(Request $request)
     {
-        $User = new User;
-        $User->mail = $request->mail;
-        $User->password = $request->password;
-        $User->name = $request->name;
-        $User->admin = 1;
-        $User->save();
+        $user = new User;
+        $user->mail = $request->mail;
+        $user->password = $request->password;
+        $user->name = $request->name;
+        $user->admin = 1;
+        $user->save();
         return response()->json([
             "message" => "creation de l'User reussi",
-            "Users" => $User,
+            "Users" => $user,
         ], 201);
     }
 
@@ -35,17 +39,16 @@ class UserController extends Controller
 
     function update(Request $request, $id)
     {
-        $User = User::findOrFail($id);
-        $User->update($request->all());
-        return response([
-            'message' => 'mise a jour de User reussi',
-            'donnees' => $User
-        ]);
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json($user, 200);
     }
+    
+    
     public function destroy($id)
     {
-        $User = User::findOrFail($id);
-        $User->delete();
+        $user = User::findOrFail($id);
+        $user->delete();
         return response()->json(['message' => 'User supprimé correctement']);
     }
     public function login(Request $request)
