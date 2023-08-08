@@ -6,6 +6,7 @@ import {
   Edit,
   SimpleForm,
   TextInput,
+  BooleanInput,
   Create
 } from 'react-admin';
 
@@ -26,7 +27,7 @@ export const UserEdit = props => (
     <SimpleForm>
       <TextInput source="id" disabled />
       <TextInput source="name" />
-      <TextInput source="admin" />
+      <BooleanInput label="admin" source="admin" />
       <TextInput source="password" />
       <TextInput source="mail" />
       <TextInput source="remember_token"/>

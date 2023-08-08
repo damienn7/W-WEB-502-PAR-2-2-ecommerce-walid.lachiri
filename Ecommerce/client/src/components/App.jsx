@@ -6,7 +6,7 @@ import LoginForm from "./Connexion";
 import { Children } from "react";
 import CreateUser from "./Inscription";
 import Category from "./categorie";
-import Admin from "./AdminPage";
+import Admin from "./admin/AdminPage";
 
 
 
