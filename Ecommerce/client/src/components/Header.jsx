@@ -18,6 +18,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Dropdown from './Dropdown/dropdown'
 import { useState } from 'react';
 
+const MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS = 3;
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -61,38 +63,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 export default function PrimarySearchAppBar() {
-  const [searchText, setSearchText] = useState("");
   const [searchQuery, setSearchQuery] = useState([]);
 
   const handleSearch = (search) => {
     // console.log(searchText);
-    setSearchText(search.currentTarget.value)
-    if (searchText.length > 2) {
-      fetch("http://localhost:8000/api/articles/searchSuggestion/" + searchText)
+    let research = search.currentTarget.value
+    if (research.length >= MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS) {
+      fetch("http://localhost:8000/api/articles/searchSuggestion/" + research)
         .then(response => {
           if (response.status === 200) {
             return response.json()
           }
         })
         .then(data => {
-          console.log(data)
+          // console.log(data)
           setSearchQuery(data)
         })
+    }
+    else {
+      setSearchQuery([])
     }
   }
 
   const SearchSuggestions = () => {
-    console.log(searchQuery)
+
+    // console.log(searchQuery)
+
+
+
     return (
-      <div>
+      <Box sx={{position:"absolute", marginTop:"40px", background:"white", color:"black", width:"20rem", zIndex:"1000", padding:"2rem", border:"1px solid black"}}>
+      <div className='search__suggestions'>
         {searchQuery.map(article => (
-          <div>
-            <p >{article.name}</p>
+          
+          <div className='search__suggestion'>
+            <img src={article.image} className="search__image" alt="product" />
+            <p>{article.name}</p>
             <p align="right">{article.price}</p>
           </div>
 
         ))}
       </div>
+      </Box>
     )
   }
 
@@ -213,6 +225,7 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >HittaetTnamn</Typography>
+            <Box sx={{display: "flex", flexDirection:"column"}}>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -224,9 +237,10 @@ export default function PrimarySearchAppBar() {
             />
 
           </Search>
-            {searchQuery.length !== 0 &&
+          {searchQuery.length !== 0 &&
             <SearchSuggestions />
-            }
+          }
+                    </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit"> */}
