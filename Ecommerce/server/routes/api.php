@@ -78,6 +78,7 @@ Route::post('articles', [ArticleController::class, 'createArticle']);
 // READ
 Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
+Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraisonnable']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 
