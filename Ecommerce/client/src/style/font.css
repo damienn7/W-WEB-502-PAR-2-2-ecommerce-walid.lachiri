@@ -1,0 +1,5 @@
+@font-face {
+    font-family: 'MGS';
+    src: local('MGS'),
+    url("../components/fonts/METAG.TTF") format('truetype');
+}
