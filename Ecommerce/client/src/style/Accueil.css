@@ -18,7 +18,11 @@
 
 .redbox{
     background-color: red;
+}
 
+.lepainperdu:hover{
+    background-color: rgba(9, 154, 238, 0.209);
+    cursor: pointer;
 }
 
 .search__image {
@@ -35,3 +39,4 @@
     background-color: rgb(138, 138, 231);
     color:white;
 }
+

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Article({ article }) {
   return article.map((article, index) => (
     <Link
-      to={`http://locahost:8000/api/articles/search/${article.category}/${article.sub_category}/${article.id}`}
+      to={`http://localhost:3000/articles/search/${article.category}/${article.sub_category}/${article.id}`}
     >
       <div key={index} style={{ margin: "0 auto" }}>
         <div
