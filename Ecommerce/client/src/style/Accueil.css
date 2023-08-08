@@ -25,3 +25,18 @@
     cursor: pointer;
 }
 
+.search__image {
+    max-width: 50px;
+}
+
+.search__suggestion {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem 0;
+}
+
+.search__suggestion:hover {
+    background-color: rgb(138, 138, 231);
+    color:white;
+}
+
