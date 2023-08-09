@@ -193,3 +193,6 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
+Route::get('peripherals', [CategoriesController::class, 'showPeripherals']);
+Route::get('components', [CategoriesController::class, 'showComponents']);
+Route::get('optionsandaccessories', [CategoriesController::class, 'showOptionsAccessories']);
