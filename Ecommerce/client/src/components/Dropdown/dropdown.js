@@ -24,7 +24,7 @@ export default function SelectVariants() {
 
   useEffect(() => {
     //On récupère toutes les catégories. Chaque catégorie est un tableau qui contient toutes ses sous-catégories
-    fetch("http://127.0.0.1:8000/api/components")
+    fetch("http://127.0.0.1:8000/api/categories")
       .then(response => {
         if (response.status === 200) {
           return response.json()

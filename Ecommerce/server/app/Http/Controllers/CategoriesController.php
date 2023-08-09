@@ -36,7 +36,7 @@ class CategoriesController extends Controller
 
 
     //Peut probablement être amélioré pour être dynamique, mais ces 3 méthodes affichent chacune un type de produit
-    public function showComponents()
+    public function showCategories()
     {
         //recup query param et le mettre après le égal
         return Category::query()
@@ -49,23 +49,6 @@ class CategoriesController extends Controller
         ->pluck("sub_category")
         //Renvoie un tableau
         ->toArray();
-    }
-
-
-    public function showOptionsAccessories()
-    {
-        return DB::table('categories')
-        ->select("sub_category")
-        ->where("categories.category", "=", "%Options &%")
-        ->get();
-    }
-
-
-    public function showPeripherals()
-    {
-        return DB::table('categories')
-        ->where("categories.category", "=", "%Périphériques%")
-        ->get();
     }
 
     function update(Request $request, $id)
