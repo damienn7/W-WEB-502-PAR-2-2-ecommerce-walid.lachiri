@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order_item;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ArticleController;
 
 class Order_itemController extends Controller
 {
@@ -21,16 +23,62 @@ class Order_itemController extends Controller
     return Order_item::findOrFail($id);
 }
 
-function create(Request $request){
-    $article = new Order_item;  
-    $article->order_id = $request->order_id;   
-   $article->item_id = $request->item_id;  
-   $article->quantity =$request->quantity;  
-   $article->unit_price =$request->unit_price;  
+function create(Request $request, $order = []){
+    
+    foreach ($order as $key => $value) {
+        $array_key=$key;
+    }
 
-   
-   $article->save();                  
-return response()->json([         
+    if ($order === []) {        
+        $article = new Order_item;  
+        $article->order_id = $request->order_id;   
+        $article->item_id = $request->item_id; 
+        $order_id = $request->order_id;
+        $item_id = $request->item_id;
+    } else {
+        $article = new Order_item;
+        $article->order_id = $order->id;
+        $article->item_id = $request->item_id;
+
+        $order_id = $order->id;
+        $item_id = $request->item_id;
+    }
+
+    // incrémentation de la quantité si la ligne existe dans la table order_items
+    if ($array_key === 0) {
+        $order_item = DB::table('order_items')
+        ->where('order_id', '=', $order[0]->id)
+        ->where('item_id',"=",$request->item_id)
+        ->get();
+    } else {
+        $order_item = DB::table('order_items')
+        ->where('order_id', '=', $order->id)
+        ->where('item_id',"=",$request->item_id)
+        ->get();
+    }
+
+    if (count($order_item)>0) {
+        foreach ($order_item as $key => $value) {
+            DB::table('order_items')->where('id', '=', $value->id)->increment('quantity');
+        }
+        $article->quantity =count($order_item)+1;        
+    } else {
+        $article->quantity =1;  
+        $article->unit_price = $request->unit_price;
+        $article->save();
+    }
+    
+    
+    //mettre à jour le stock de l'article
+    $item = DB::table('items')
+    ->where('id', '=', $request->item_id)
+    ->get();
+
+    if ($item[0]->stock > 0) {
+        DB::table('items')->where('id', '=', $item[0]->id)->decrement('stock');
+    }
+
+    return response()->json([         
           "message" => "creation de la commande reussi",         
            "articles"=> $article,       
       ], 201);  
