@@ -23,13 +23,13 @@ class Order_itemController extends Controller
     return Order_item::findOrFail($id);
 }
 
-function create(Request $request, $order = []){
+function create(Request $request, $order = [], $quantity = ""){
     
     foreach ($order as $key => $value) {
         $array_key=$key;
     }
 
-    if ($order === []) {        
+    if ($order === []) {
         $article = new Order_item;  
         $article->order_id = $request->order_id;   
         $article->item_id = $request->item_id; 
@@ -57,16 +57,21 @@ function create(Request $request, $order = []){
         ->get();
     }
 
-    if (count($order_item)>0) {
-        foreach ($order_item as $key => $value) {
-            DB::table('order_items')->where('id', '=', $value->id)->increment('quantity');
+    if ($quantity === "") {        
+        if (count($order_item)>0) {
+            foreach ($order_item as $key => $value) {
+                DB::table('order_items')->where('id', '=', $value->id)->increment('quantity');
+            }
+            $article->quantity =count($order_item)+1;        
+        } else {
+            $article->quantity =1;  
+            $article->unit_price = $request->unit_price;
+            $article->save();
         }
-        $article->quantity =count($order_item)+1;        
     } else {
-        $article->quantity =1;  
-        $article->unit_price = $request->unit_price;
-        $article->save();
+        $article->quantity = $quantity;
     }
+    
     
     
     //mettre à jour le stock de l'article
