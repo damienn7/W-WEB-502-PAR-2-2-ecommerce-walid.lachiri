@@ -89,6 +89,7 @@ class ArticleController extends Controller
     }
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
+
 public function METHODEDEFILSDEPUTE(Request $request){
     return DB::table('items')
             ->select('*', 'items.id as idefix')     
