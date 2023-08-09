@@ -15,7 +15,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import Dropdown from './Dropdown/dropdown'
+import Dropdown from './Dropdown/dropdown';
+import "./fonts/METAG.TTF";
+import "../style/font.css"
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -168,11 +170,15 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          <Typography onClick={()=> window.location.href="/" }
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+         // style={-_-}
+              //   /|\
+              //   /-\
+              //  /   \
+            sx={{fontSize:"12px", cursor: "pointer",fontFamily:"MGS",width:"9%", display: { xs: 'none', sm: 'block' } }}
           >HittaetTnamn</Typography>
           <Search>
             <SearchIconWrapper>

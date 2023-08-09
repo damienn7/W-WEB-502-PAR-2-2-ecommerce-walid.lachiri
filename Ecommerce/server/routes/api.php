@@ -78,6 +78,7 @@ Route::post('articles', [ArticleController::class, 'createArticle']);
 // READ
 Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
+Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraisonnable']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 
@@ -85,7 +86,6 @@ Route::get('articles/{id}', [ArticleController::class, 'show']);
 // READ | WHERE | ORDER BY
 
 // Route::get('articles/search?q={search}&c={category}&sc={sub_category}', [ArticleController::class, 'search']);
-Route::get('articles/search/{category}/{sub_category}/{search}', [ArticleController::class, 'search']);
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
@@ -173,6 +173,7 @@ Route::put('order_item/{id}', [Order_itemController::class, 'update']);
 Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
 // --------------------------------
 Route::get('articles/search/{category}/{sub_category}', [ArticleController::class, 'searchNavigation']);
+Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController::class, 'searchNavigation']);
 
 // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
@@ -190,3 +191,9 @@ Route::get('articles/search/{category}/{sub_category}', [ArticleController::clas
 // Route::get("categories/{id}", [CategoriesController::class, "showCategory"]);
 // Route::put("categories/{id}", [CategoriesController::class, "updateCategory"]);
 // Route::delete("categories/{id}", [CategoriesController::class, "deleteCategory"]);
+
+//Route suggestion dans la recherche
+Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
+Route::get('peripherals', [CategoriesController::class, 'showPeripherals']);
+Route::get('components', [CategoriesController::class, 'showComponents']);
+Route::get('optionsandaccessories', [CategoriesController::class, 'showOptionsAccessories']);

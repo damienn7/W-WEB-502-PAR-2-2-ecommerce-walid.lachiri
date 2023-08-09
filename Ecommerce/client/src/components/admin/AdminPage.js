@@ -33,6 +33,7 @@ import {
   Order_itemEdit,
   Order_itemCreate
 } from './order_item';
+import '../../style/Admin.css'
 
 const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
 

@@ -107,8 +107,8 @@ export default function BasicTable() {
         <TableBody>
           {/* Map infini ici pour le back */}
           {articles.map((article) => (
-            // console.log(article)
-            <TableRow key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow className='lepainperdu' onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`} 
+            key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">{istop3(article.name)}</TableCell>
               <TableCell align="right">{article.category}</TableCell>
               <TableCell align="right">{article.sub_category}</TableCell>
