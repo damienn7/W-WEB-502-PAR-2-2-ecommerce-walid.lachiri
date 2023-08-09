@@ -93,7 +93,6 @@ public function METHODEDEFILSDEPUTE(Request $request){
     return DB::table('items')
             ->select('*', 'items.id as idefix')     
             ->join('categories', 'categories.id', '=', 'items.id_category')
-            // ->join('ratings', 'ratings.id_article', '=', 'items.id' )
             ->orderBy('views', 'desc')
             ->get();
     }
@@ -139,7 +138,10 @@ public function methodetotalementraisonnable($id){
     }
     public function searchNavigation($category, $sous_category, $id = null)
     {
+        
         if ($id) {
+        $query = DB::table('items');   
+        $query->increment('views');
             return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ? AND i.id = ?', [$category, $sous_category, $id]);
         } else {
             return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
