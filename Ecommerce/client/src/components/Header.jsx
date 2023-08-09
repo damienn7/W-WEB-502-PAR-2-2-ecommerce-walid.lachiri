@@ -62,11 +62,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
+
+document.addEventListener("click", (event) => {
+  // if(event.target !== suggestionMenu){
+  //   research = "";
+  // }
+})
 export default function PrimarySearchAppBar() {
   const [searchQuery, setSearchQuery] = useState([]);
 
   const handleSearch = (search) => {
     // console.log(searchText);
+
+    const suggestionMenu = document.getElementById("turbozizi");
+
+    
     let research = search.currentTarget.value
     if (research.length >= MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS) {
       fetch("http://localhost:8000/api/articles/searchSuggestion/" + research)
@@ -86,27 +96,26 @@ export default function PrimarySearchAppBar() {
   }
 
   const SearchSuggestions = () => {
-
     // console.log(searchQuery)
 
-
-
     return (
-      <Box sx={{position:"absolute", marginTop:"40px", background:"white", color:"black", width:"20rem", zIndex:"1000", padding:"2rem", border:"1px solid black"}}>
-      <div className='search__suggestions'>
-        {searchQuery.map(article => (
-          
-          <div className='search__suggestion'>
-            <img src={article.image} className="search__image" alt="product" />
-            <p>{article.name}</p>
-            <p align="right">{article.price}</p>
-          </div>
+      <Box id="turbozizi" sx={{ position: "absolute", marginTop: "40px", background: "white", color: "black", width: "20rem", zIndex: "1000", padding: "2rem", border: "1px solid black" }}>
+        <div className='search__suggestions'>
+          {searchQuery.map(article => (
 
-        ))}
-      </div>
+            <div className='search__suggestion'>
+              <img src={article.image} className="search__image" alt="product" />
+              <p>{article.name}</p>
+              <p align="right">{article.price}</p>
+            </div>
+
+          ))}
+        </div>
       </Box>
     )
   }
+
+
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -151,7 +160,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      
+
     </Menu>
   );
 
@@ -226,22 +235,22 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >HittaetTnamn</Typography>
-            <Box sx={{display: "flex", flexDirection:"column"}}>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => handleSearch(e)}
-            />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={(e) => handleSearch(e)}
+              />
 
-          </Search>
-          {searchQuery.length !== 0 &&
-            <SearchSuggestions />
-          }
-                    </Box>
+            </Search>
+            {searchQuery.length !== 0 &&
+              <SearchSuggestions />
+            }
+          </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit"> */}
