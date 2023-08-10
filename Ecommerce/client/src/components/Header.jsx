@@ -90,7 +90,7 @@ export default function PrimarySearchAppBar() {
           }
         })
         .then(data => {
-          // console.log(data)
+          console.log(data)
           setSearchQuery(data)
         })
     }
@@ -100,25 +100,19 @@ export default function PrimarySearchAppBar() {
   }
 
   const SearchSuggestions = () => {
-    // console.log(searchQuery)
-
-
     return (
-      <Box id="turbozizi" sx={{ position: "absolute", marginTop: "40px", background: "white", color: "black", width: "20rem", zIndex: "1000", padding: "2rem", border: "1px solid black" }}>
-        <div className='search__suggestions'>
+      <Box id="turbozizi" sx={{ position: "absolute", marginTop: "40px", background: "white", color: "black", width: "20rem", zIndex: "1000", padding: "2rem", border: "1px solid black"}}>
+        <div className='search__suggestions' >
           {searchQuery.map(article => (
-
-            <div className='search__suggestion'>
+            <a className='search__suggestion' href={'/articles/search/'+article.category+"/"+article.sub_category+"/"+article.idefix+"/"} onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
               <img src={article.image} className="search__image" alt="product" />
               <p>{article.name}</p>
               <p align="right">{article.price}</p>
-            </div>
-
+            </a>
           ))}
         </div>
       </Box>
     )
-    
   }
 
 
@@ -259,7 +253,7 @@ export default function PrimarySearchAppBar() {
 
             </Search>
             {searchQuery.length !== 0 &&
-              <SearchSuggestions />
+            <SearchSuggestions />
             }
           </Box>
           <Box sx={{ flexGrow: 1 }} />
