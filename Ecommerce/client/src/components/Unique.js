@@ -65,7 +65,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                     {/* Image du produit */}
                                     <img src={articles.image} width='100%'></img>
                                 </Grid>
-                                <Grid xs={9} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+                                <Grid xs={9} sx={{ display: 'flex'}}>
                                     {/* Description du produit */}
                                     <Typography sx={{}} >{articles.description}</Typography>
                                 </Grid>
@@ -79,7 +79,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             <Typography variant='h3' color="red">{articles.price}€</Typography>
                             <Typography color="grey">HT</Typography>
 
-                            <Typography variant='h6 indice' style={{fontStyle:"italic", color:"grey"}}>{articles.price*0.8}€</Typography>
+                            <Typography variant='h6 indice' style={{fontStyle:"italic", color:"grey"}}>{parseFloat(articles.price*0.8).toFixed(2)}€</Typography>
                         </div>
                         <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
                             <Button variant="outlined" sx={{ marginBottom: "10px" }}>Ajouter au panier</Button>

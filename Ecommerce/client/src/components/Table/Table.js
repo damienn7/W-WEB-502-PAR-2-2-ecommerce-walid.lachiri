@@ -60,6 +60,15 @@ export default function BasicTable() {
         return name;
       }
   }
+
+  const isthistheblood= (rank) =>{
+    if(rank){
+      return rank
+    }
+    else if(!rank){
+      return "?"
+    }
+  }
   const fetchUserData = () => {
     fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
@@ -113,7 +122,8 @@ export default function BasicTable() {
               <TableCell align="right">{article.category}</TableCell>
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
-                {random()}/5
+                {/* {random()}/5 */}
+                {isthistheblood(article.rating)}/5
               </TableCell>
               <TableCell align-self="right">{isAvailable(article.stock)}</TableCell>
               <TableCell align="right">{article.price}€</TableCell>
