@@ -90,15 +90,17 @@ class ArticleController extends Controller
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
 
-public function METHODEDEFILSDEPUTE(Request $request){
+public function peripheriquenordsortieA3(Request $request){
     return DB::table('items')
             ->select('*', 'items.id as idefix')     
             ->join('categories', 'categories.id', '=', 'items.id_category')
+            ->leftJoin('ratings', 'items.id', '=', 'id_article')
+            ->avg('ratings')
             ->orderBy('views', 'desc')
             ->get();
-    }
-
-public function methodetotalementraisonnable($id){
+        }
+        
+        public function methodetotalementraisonnable($id){
     return DB::table('items')  
     ->where('items.id', '=', $id)
     ->join('categories', 'categories.id', '=', 'items.id_category')
