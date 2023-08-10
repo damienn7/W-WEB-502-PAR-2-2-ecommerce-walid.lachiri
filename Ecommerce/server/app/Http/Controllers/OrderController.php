@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Http\Controllers\Order_itemController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class OrderController extends Controller
 {
@@ -25,11 +28,27 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
-        $article = new Order;
-        $article->user_id = $request->user_id;
-        $article->status = $request->status;
-        $article->delivery_address = $request->delivery_address;
-        $article->save();
+        $article = DB::table('orders')
+        ->where('user_id', '=', $request->user_id)
+        ->where('status','=','panier')
+        ->get();
+        Schema::disableForeignKeyConstraints();
+        if (count($article)<1) {
+            $article = new Order;
+            $article->user_id = $request->user_id;
+            $article->status = 'panier';
+            $article->delivery_address = $request->delivery_address;
+            $article->save();
+ 
+            $order_item = new Order_itemController;
+            $order_item->create($request,$article);
+            
+        } else {
+            $order_item = new Order_itemController;
+            $order_item->create($request,$article[0]);
+        }
+        Schema::enableForeignKeyConstraints();
+        
 
         return response()->json([
             "message" => "creation de la commande reussi",

@@ -14,6 +14,8 @@ import React, { useEffect, useState } from "react"
 
 function Articleunique({ categorie, sous_categorie, id }) {
     const [articles, setArticles] = useState([])
+    const [list, setList] = useState([])
+
 
     // console.log(categorie);
     // console.log(sous_categorie);
@@ -32,7 +34,20 @@ function Articleunique({ categorie, sous_categorie, id }) {
     useEffect(() => {
         fetchUserData()
     }, [])
-
+    
+    const fetchArticles = () => {
+        fetch("http://127.0.0.1:8000/api/gozizi")
+          .then(response => {
+            return response.json()
+          })
+          .then(data => {
+            setList(data)
+          })
+      }
+    
+      useEffect(() => {
+        fetchArticles()
+      }, [])
     return (
         <div className="App">
             <Header />
@@ -64,7 +79,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             <Typography variant='h3' color="red">{articles.price}€</Typography>
                             <Typography color="grey">HT</Typography>
 
-                            <Typography variant='h6'>12,50€</Typography>
+                            <Typography variant='h6 indice' style={{fontStyle:"italic", color:"grey"}}>{articles.price*0.8}€</Typography>
                         </div>
                         <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
                             <Button variant="outlined" sx={{ marginBottom: "10px" }}>Ajouter au panier</Button>
@@ -88,34 +103,12 @@ function Articleunique({ categorie, sous_categorie, id }) {
                     <Grid xs={12}>
                         <Typography align="center" fontSize={18} color="red">Les autres raclo achètent ça aussi</Typography>
                     </Grid>
-                    <Grid xs={2}>
-                        <img src='https://infomaxparis.com/13752-medium_default/pc-gamer-waterforce-lian-li-o11.jpg' width={150} />
-                        <Typography>Los Articlos</Typography>
-                    </Grid>
-                    <Grid xs={2}>
-                        <img src='https://infomaxparis.com/13752-medium_default/pc-gamer-waterforce-lian-li-o11.jpg' width={150} />
-                        <Typography>Los Articlos</Typography>
-                    </Grid>
-                    <Grid xs={2}>
-                        <img src='https://infomaxparis.com/13752-medium_default/pc-gamer-waterforce-lian-li-o11.jpg' width={150} />
-                        <Typography>Los Articlos</Typography>
-
-                    </Grid>
-                    <Grid xs={2}>
-                        <img src='https://infomaxparis.com/13752-medium_default/pc-gamer-waterforce-lian-li-o11.jpg' width={150} />
-                        <Typography>Los Articlos</Typography>
-
-                    </Grid>
-                    <Grid xs={2}>
-                        <img src='https://infomaxparis.com/13752-medium_default/pc-gamer-waterforce-lian-li-o11.jpg' width={150} />
-                        <Typography>Los Articlos</Typography>
-
-                    </Grid>
-                    <Grid xs={2}>
-                        <img src='https://infomaxparis.com/13752-medium_default/pc-gamer-waterforce-lian-li-o11.jpg' width={150} />
-                        <Typography>Los Articlos</Typography>
-
-                    </Grid>
+                    {list.slice(0, 6).map((listed) => (
+                        <Grid xs={2}>
+                            <img src={listed.image} width={150} />
+                            <Typography>{listed    .name}</Typography>
+                        </Grid>
+                            ))}
                 </Grid>
 
                 <hr></hr>

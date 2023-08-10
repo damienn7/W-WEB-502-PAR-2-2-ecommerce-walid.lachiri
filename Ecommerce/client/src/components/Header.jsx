@@ -17,6 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Dropdown from './Dropdown/dropdown'
 import { useState, useEffect } from 'react';
+import "../style/font.css";
 
 const MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS = 3;
 
@@ -235,11 +236,15 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          <Typography onClick={()=> window.location.href="/" }
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+         // style={-_-}
+              //   /|\
+              //   /-\
+              //  /   \
+            sx={{fontSize:"12px", cursor: "pointer",fontFamily:"MGS",width:"9%", display: { xs: 'none', sm: 'block' } }}
           >HittaetTnamn</Typography>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Search>
