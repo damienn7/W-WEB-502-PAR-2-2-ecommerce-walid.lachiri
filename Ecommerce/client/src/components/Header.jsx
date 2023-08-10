@@ -16,7 +16,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Dropdown from './Dropdown/dropdown'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS = 3;
 
@@ -60,24 +60,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-
-
-
-document.addEventListener("click", (event) => {
-  // if(event.target !== suggestionMenu){
-  //   research = "";
-  // }
-})
 export default function PrimarySearchAppBar() {
   const [searchQuery, setSearchQuery] = useState([]);
 
+  // console.log(searchText);
+  useEffect(() => {
+  }, [])
+  
+  
+  
   const handleSearch = (search) => {
-    // console.log(searchText);
-
-    const suggestionMenu = document.getElementById("turbozizi");
-
     
+    // let suggestionMenu = document.getElementById("turbozizi");
     let research = search.currentTarget.value
+    document.addEventListener("click", (event) => {
+      if(event.target.id !== "turbozizi"){
+        // research = "";
+        setSearchQuery([])
+      }
+    })
+
+
     if (research.length >= MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS) {
       fetch("http://localhost:8000/api/articles/searchSuggestion/" + research)
         .then(response => {
@@ -98,6 +101,7 @@ export default function PrimarySearchAppBar() {
   const SearchSuggestions = () => {
     // console.log(searchQuery)
 
+
     return (
       <Box id="turbozizi" sx={{ position: "absolute", marginTop: "40px", background: "white", color: "black", width: "20rem", zIndex: "1000", padding: "2rem", border: "1px solid black" }}>
         <div className='search__suggestions'>
@@ -113,7 +117,9 @@ export default function PrimarySearchAppBar() {
         </div>
       </Box>
     )
+    
   }
+
 
 
 
