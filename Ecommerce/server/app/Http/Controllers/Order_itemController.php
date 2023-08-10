@@ -37,10 +37,10 @@ function create(Request $request, $order = [], $quantity = ""){
         $item_id = $request->item_id;
     } else {
         $article = new Order_item;
-        $article->order_id = $order->id;
+        $article->order_id = $order[0]->id;
         $article->item_id = $request->item_id;
 
-        $order_id = $order->id;
+        $order_id = $order[0]->id;
         $item_id = $request->item_id;
     }
 
@@ -52,7 +52,7 @@ function create(Request $request, $order = [], $quantity = ""){
         ->get();
     } else {
         $order_item = DB::table('order_items')
-        ->where('order_id', '=', $order->id)
+        ->where('order_id', '=', $order[0]->id)
         ->where('item_id',"=",$request->item_id)
         ->get();
     }
