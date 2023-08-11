@@ -9,6 +9,7 @@ import Pub from '../assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from "react"
+import axios from 'axios';
 
 
 
@@ -29,6 +30,23 @@ function Articleunique({ categorie, sous_categorie, id }) {
             })
     }
 
+    function handlePanier(e,item,item_id){
+        var data = new FormData();
+        data.set('item_id',item.id);
+        data.set('user_id',1);
+        data.set('unit_price',item.price);
+        data.set('delivery_address','24 rue Pasteur');
+        data.set('quantity',1);
+        axios
+          .post('http://localhost:8000/api/order', data)
+          .then((response) => {
+            console.log('Nouvel article ajouté au panier : ', response.data);
+          })
+          .catch((error) => {
+            console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
+          });
+      }
+
     useEffect(() => {
         fetchUserData()
     }, [])
@@ -41,7 +59,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                     <Grid xs={10}>
                         {/* NOM du produit */}
                         <Typography variant='h4'>{articles.name}</Typography>
-                        {/* charactéristiques courte du produit */}
+                        {/* caractéristiques courte du produit */}
                         <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI </Typography>
                         <Typography>{articles.stock} restant(s)</Typography>
                         <div className='Description'>
@@ -67,7 +85,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             <Typography variant='h6'>12,50€</Typography>
                         </div>
                         <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
-                            <Button variant="outlined" sx={{ marginBottom: "10px" }}>Ajouter au panier</Button>
+                            <Button variant="outlined" sx={{ marginBottom: "10px" }} onClick={(e) => {handlePanier(e,articles,articles.id)}}>Ajouter au panier</Button>
                             <Button variant="contained">Acheter l'article</Button>
                         </Grid>
                         <Typography fontSize={10} color='blue'>être informé d'une baisse de prix</Typography>

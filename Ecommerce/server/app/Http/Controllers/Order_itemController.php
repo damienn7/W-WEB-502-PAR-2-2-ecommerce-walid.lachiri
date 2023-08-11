@@ -25,10 +25,16 @@ class Order_itemController extends Controller
 
 function create(Request $request, $order = [], $quantity = ""){
     
+    
+    return response()->json([
+        "message" => "creation de la commande reussi",
+        "articles" => $request,
+    ], 201);
+
     foreach ($order as $key => $value) {
         $array_key=$key;
     }
-
+    
     if ($order === []) {
         $article = new Order_item;  
         $article->order_id = $request->order_id;   
@@ -39,7 +45,6 @@ function create(Request $request, $order = [], $quantity = ""){
         $article = new Order_item;
         $article->order_id = $order->id;
         $article->item_id = $request->item_id;
-
         $order_id = $order->id;
         $item_id = $request->item_id;
     }

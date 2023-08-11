@@ -28,6 +28,12 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
+        foreach ($request as $key => $value) {
+            if ($key === "quantity") {
+                $quantity = $request->quantity;
+            }
+        }
+
         $article = DB::table('orders')
         ->where('user_id', '=', $request->user_id)
         ->where('status','=','panier')
@@ -41,9 +47,15 @@ class OrderController extends Controller
             $article->save();
  
             $order_item = new Order_itemController;
-            $order_item->create($request,$article);
+            if (isset($quantity)) {
+                $order_item->create($request,$article,$quantity);
+            } else {
+                $order_item->create($request,$article);
+            }
             
+
         } else {
+            // return $request;
             $order_item = new Order_itemController;
             $order_item->create($request,$article[0]);
         }
@@ -51,7 +63,7 @@ class OrderController extends Controller
         
 
         return response()->json([
-            "message" => "creation de la commande reussi",
+            "message" => "creation de la commande reussi, super !",
             "articles" => $article,
         ], 201);
     }
