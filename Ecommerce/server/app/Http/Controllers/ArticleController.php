@@ -20,8 +20,6 @@ class ArticleController extends Controller
             ->json($articles, 200, ['X-Total-Count' => Article::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
 
-
-
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
     // READ | WHERE | ORDER BY
     // route : 'articles/search?q={search}&c={category}&sc={sub_category}'
@@ -81,6 +79,17 @@ class ArticleController extends Controller
     }
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
+
+    public function METHODEDEFILSDEPUTE(Request $request)
+    {
+    return DB::table('items')
+            ->select('*', 'items.id as idefix')     
+            ->join('categories', 'categories.id', '=', 'items.id_category')
+            ->orderBy('views', 'desc')
+            ->get();
+
+    }
+
     public function searchSuggestion($request)
     {
 
@@ -95,6 +104,7 @@ class ArticleController extends Controller
     }
   
 public function peripheriquenordsortieA3(Request $request){
+
     return DB::table('items')
             ->select('*', 'items.id as idefix')     
             ->join('categories', 'categories.id', '=', 'items.id_category')
@@ -102,14 +112,14 @@ public function peripheriquenordsortieA3(Request $request){
             ->avg('ratings')
             ->orderBy('views', 'desc')
             ->get();
-    }
-
+}
     public function methodetotalementraisonnable($id)
     {
         return DB::table('items')
             ->where('items.id', '=', $id)
             ->join('categories', 'categories.id', '=', 'items.id_category')
             ->get();
+
     }
 
     public function show($id)
@@ -117,11 +127,9 @@ public function peripheriquenordsortieA3(Request $request){
         return Article::findOrFail($id);
     }
 
-
-
     public function createArticle(Request $request)
     {
-        $article = Article::create($request->all());
+        $article= Article::create($request->all());
         return response()->json([
             "message" => "creation de l'article reussi",
             "articles" => $article,
@@ -144,6 +152,7 @@ public function peripheriquenordsortieA3(Request $request){
         $article->delete();
         return response()->json(['message' => 'Article supprimé correctement']);
     }
+
     public function searchNavigation($category, $sous_category, $id = null)
     {
 
@@ -155,7 +164,4 @@ public function peripheriquenordsortieA3(Request $request){
             return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
         }
     }
-    // public function searchNavigationArticle($category , $sous_category, $id){
-    //     // return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
-    // }
 }
