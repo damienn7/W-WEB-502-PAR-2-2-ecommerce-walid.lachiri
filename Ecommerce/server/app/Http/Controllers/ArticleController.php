@@ -79,12 +79,45 @@ class ArticleController extends Controller
     }
     // G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
+
     public function METHODEDEFILSDEPUTE(Request $request)
     {
     return DB::table('items')
             ->select('*', 'items.id as idefix')     
             ->join('categories', 'categories.id', '=', 'items.id_category')
             ->orderBy('views', 'desc')
+            ->get();
+
+    }
+
+    public function searchSuggestion($request)
+    {
+
+        return DB::table('items')
+            ->select('*', 'items.id as idefix')
+            ->join('categories', 'categories.id', '=', 'items.id_category')
+            ->where("items.name", "like", "%$request%")
+            // ->orderBy('views', 'desc')
+            ->limit(10)
+            ->get();
+
+    }
+  
+public function peripheriquenordsortieA3(Request $request){
+
+    return DB::table('items')
+            ->select('*', 'items.id as idefix')     
+            ->join('categories', 'categories.id', '=', 'items.id_category')
+            ->leftJoin('ratings', 'items.id', '=', 'id_article')
+            ->avg('ratings')
+            ->orderBy('views', 'desc')
+            ->get();
+}
+    public function methodetotalementraisonnable($id)
+    {
+        return DB::table('items')
+            ->where('items.id', '=', $id)
+            ->join('categories', 'categories.id', '=', 'items.id_category')
             ->get();
 
     }
@@ -119,7 +152,16 @@ class ArticleController extends Controller
         $article->delete();
         return response()->json(['message' => 'Article supprimé correctement']);
     }
-    public function searchNavigation($category, $sous_category){
-        return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
+
+    public function searchNavigation($category, $sous_category, $id = null)
+    {
+
+        if ($id) {
+            $query = DB::table('items');
+            $query->increment('views');
+            return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ? AND i.id = ?', [$category, $sous_category, $id]);
+        } else {
+            return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
+        }
     }
 }

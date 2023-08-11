@@ -77,7 +77,7 @@ Route::post('articles', [ArticleController::class, 'createArticle']);
 
 // READ
 Route::get('articles', [ArticleController::class, 'index']);
-Route::get('gozizi', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
+Route::get('gozizi', [ArticleController::class, 'peripheriquenordsortieA3']);
 Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraisonnable']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
@@ -194,6 +194,4 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
-Route::get('peripherals', [CategoriesController::class, 'showPeripherals']);
-Route::get('components', [CategoriesController::class, 'showComponents']);
-Route::get('optionsandaccessories', [CategoriesController::class, 'showOptionsAccessories']);
+Route::get('categories', [CategoriesController::class, 'showCategories']);

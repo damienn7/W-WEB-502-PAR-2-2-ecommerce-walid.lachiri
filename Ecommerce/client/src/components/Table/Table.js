@@ -62,6 +62,15 @@ export default function BasicTable() {
         return name;
       }
   }
+
+  const isthistheblood= (rank) =>{
+    if(rank){
+      return rank
+    }
+    else if(!rank){
+      return "?"
+    }
+  }
   const fetchUserData = () => {
     fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
@@ -126,11 +135,14 @@ export default function BasicTable() {
           {articles.map((article) => (
             <TableRow className='lepainperdu' 
             key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{istop3(article.name)}</TableCell>
-              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.category}</TableCell>
-              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.sub_category}</TableCell>
-              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
-                {random()}/5
+
+              <TableCell component="th" scope="row">{istop3(article.name)}</TableCell>
+              <TableCell align="right">{article.category}</TableCell>
+              <TableCell align="right">{article.sub_category}</TableCell>
+              <TableCell align="right">
+                {/* {random()}/5 */}
+                {isthistheblood(article.rating)}/5
+
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
               <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.price}€</TableCell>

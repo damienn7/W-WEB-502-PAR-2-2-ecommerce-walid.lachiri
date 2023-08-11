@@ -51,21 +51,21 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message' => 'User supprimé correctement']);
     }
-    public function login(Request $request)
-    {
-        $credentials = $request->only('mail', 'password');
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('api-token')->plainTextToken;
-            return response()->json([
-                'message' => 'Connexion réussie',
-                'user' => $user,
-                'token' => $token,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Identifiants invalides',
-            ], 401);
-        }
-    }
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->only('mail', 'password');
+    //     if (Auth::attempt($credentials)) {
+    //         $user = Auth::user();
+    //         $token = $user->createToken('api-token')->plainTextToken;
+    //         return response()->json([
+    //             'message' => 'Connexion réussie',
+    //             'user' => $user,
+    //             'token' => $token,
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'message' => 'Identifiants invalides',
+    //         ], 401);
+    //     }
+    // }
 }
