@@ -55,9 +55,18 @@ class OrderController extends Controller
             
 
         } else {
-            // return $request;
+
             $order_item = new Order_itemController;
-            $order_item->create($request,$article[0]);
+            // $order_item->create($request,$article[0]);
+            // return response()->json([
+            //     "message" => "request",
+            //     "request" => $request,
+            // ], 201);
+            if (isset($request->quantity)) {
+                $order_item->create($request,$article[0],$request->quantity);
+            } else {
+                $order_item->create($request,$article[0]);
+            }
         }
         Schema::enableForeignKeyConstraints();
         

@@ -88,6 +88,7 @@ export default function BasicTable() {
   function handlePanier(e,item,item_id){
 
     let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+    console.log(quantity);
     var data = new FormData();
     data.set('item_id',item.idefix);
     data.set('user_id',1);
@@ -102,6 +103,7 @@ export default function BasicTable() {
       .catch((error) => {
         console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
       });
+      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
   }
 
   return (
@@ -142,7 +144,6 @@ export default function BasicTable() {
                 /></TableCell>
               <TableCell align="right"><Button onClick={(e) => {handlePanier(e,article,article.idefix)}}>Ajouter au panier</Button></TableCell>
             </TableRow>
-
           ))}
         </TableBody>
       </Table>

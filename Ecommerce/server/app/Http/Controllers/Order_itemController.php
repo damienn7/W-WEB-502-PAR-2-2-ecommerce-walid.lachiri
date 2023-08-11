@@ -24,12 +24,6 @@ class Order_itemController extends Controller
 }
 
 function create(Request $request, $order = [], $quantity = ""){
-    
-    
-    return response()->json([
-        "message" => "creation de la commande reussi",
-        "articles" => $request,
-    ], 201);
 
     foreach ($order as $key => $value) {
         $array_key=$key;
@@ -74,7 +68,18 @@ function create(Request $request, $order = [], $quantity = ""){
             $article->save();
         }
     } else {
-        $article->quantity = $quantity;
+        if (count($order_item)>=1) {
+            for ($i=0; $i < $quantity; $i++) { 
+                foreach ($order_item as $key => $value) {
+                    DB::table('order_items')->where('id', '=', $value->id)->increment('quantity');
+                }
+            }
+        }else{
+            $article->quantity = $quantity;
+            $article->unit_price = $request->unit_price;
+            $article->save();
+        }
+
     }
     
     
