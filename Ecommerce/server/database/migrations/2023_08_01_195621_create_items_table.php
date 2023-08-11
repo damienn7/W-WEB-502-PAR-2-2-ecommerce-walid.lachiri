@@ -17,6 +17,7 @@ class CreateItemsTable extends Migration
             $table->integer('views');
             $table->integer('price');
             $table->integer('stock')->default(5);
+            $table->integer('promotion')->default(0);
             $table->timestamps();
 
             $table->foreign('Id_category')->references('id')->on('categories')->onDelete('cascade');
