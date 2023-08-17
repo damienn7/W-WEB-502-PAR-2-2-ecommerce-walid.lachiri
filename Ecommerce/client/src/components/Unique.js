@@ -34,7 +34,12 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
     useEffect(() => {
         fetchUserData()
-        fetch("http://127.0.0.1:8000/api/characteristic/"+id)
+        fetchCharacteristics();
+    }, [])
+
+
+    const fetchCharacteristics = async () => {
+        await fetch("http://127.0.0.1:8000/api/characteristic/"+id)
             .then(response => {
                 console.log("requête sur http://127.0.0.1:8000/api/characteristic/" + id)
                 return response.json()
@@ -42,8 +47,11 @@ function Articleunique({ categorie, sous_categorie, id }) {
             .then(data => {
                 setMultipleCharacteristics(data);
                 console.log(multipleCharacteristics);
+                multipleCharacteristics.map((characteristic) => {
+                    // if(characteristic)
+                })
             })
-    }, [])
+    }
 
     const fetchArticles = () => {
         fetch("http://127.0.0.1:8000/api/gozizi")
@@ -82,7 +90,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 </Grid>
                             </Grid>
                         </div>
-                        { }
+                        {/* {multipleCharacteristics ?? <Characteristics />} */}
                     </Grid >
                     <Grid xs={1} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 2, mx: 'auto', width: 200, height: 'auto', borderRadius: '5px' }}>
                         <div className="article__price">
