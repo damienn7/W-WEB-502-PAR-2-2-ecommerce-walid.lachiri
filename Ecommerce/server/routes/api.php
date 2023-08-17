@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CharacteristicsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Order_itemController;
@@ -195,3 +196,5 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
 Route::get('categories', [CategoriesController::class, 'showCategories']);
+Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
+Route::get('characteristic/', [CharacteristicsController::class, 'index']);

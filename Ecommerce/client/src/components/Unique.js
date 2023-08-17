@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react"
 function Articleunique({ categorie, sous_categorie, id }) {
     const [articles, setArticles] = useState([])
     const [list, setList] = useState([])
+    const [multipleCharacteristics, setMultipleCharacteristics] = useState([])
 
 
     // console.log(categorie);
@@ -33,21 +34,31 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
     useEffect(() => {
         fetchUserData()
+        fetch("http://127.0.0.1:8000/api/characteristic/"+id)
+            .then(response => {
+                console.log("requête sur http://127.0.0.1:8000/api/characteristic/" + id)
+                return response.json()
+            })
+            .then(data => {
+                setMultipleCharacteristics(data);
+                console.log(multipleCharacteristics);
+            })
     }, [])
-    
+
     const fetchArticles = () => {
         fetch("http://127.0.0.1:8000/api/gozizi")
-          .then(response => {
-            return response.json()
-          })
-          .then(data => {
-            setList(data)
-          })
-      }
-    
-      useEffect(() => {
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                setList(data)
+            })
+
+    }
+
+    useEffect(() => {
         fetchArticles()
-      }, [])
+    }, [])
     return (
         <div className="App">
             <Header />
@@ -65,12 +76,13 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                     {/* Image du produit */}
                                     <img src={articles.image} width='100%'></img>
                                 </Grid>
-                                <Grid xs={9} sx={{ display: 'flex'}}>
+                                <Grid xs={9} sx={{ display: 'flex' }}>
                                     {/* Description du produit */}
                                     <Typography sx={{}} >{articles.description}</Typography>
                                 </Grid>
                             </Grid>
                         </div>
+                        { }
                     </Grid >
                     <Grid xs={1} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 2, mx: 'auto', width: 200, height: 'auto', borderRadius: '5px' }}>
                         <div className="article__price">
@@ -79,7 +91,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             <Typography variant='h3' color="red">{articles.price}€</Typography>
                             <Typography color="grey">HT</Typography>
 
-                            <Typography variant='h6 indice' style={{fontStyle:"italic", color:"grey"}}>{parseFloat(articles.price*0.8).toFixed(2)}€</Typography>
+                            <Typography variant='h6 indice' style={{ fontStyle: "italic", color: "grey" }}>{parseFloat(articles.price * 0.8).toFixed(2)}€</Typography>
                         </div>
                         <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
                             <Button variant="outlined" sx={{ marginBottom: "10px" }}>Ajouter au panier</Button>
@@ -106,9 +118,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
                     {list.slice(0, 6).map((listed) => (
                         <Grid xs={2}>
                             <img src={listed.image} width={150} />
-                            <Typography>{listed    .name}</Typography>
+                            <Typography>{listed.name}</Typography>
                         </Grid>
-                            ))}
+                    ))}
                 </Grid>
 
                 <hr></hr>
