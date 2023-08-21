@@ -16,7 +16,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import Dropdown from './Dropdown/dropdown'
+import Dropdown from './Dropdown/dropdown';
+import { Button } from '@mui/material';
 import { useState, useEffect } from 'react';
 import "../style/font.css";
 import axios from 'axios';
@@ -64,20 +65,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const [articles, setArticles] = useState([]);
   const [searchQuery, setSearchQuery] = useState([]);
 
   // console.log(searchText);
   useEffect(() => {
   }, [])
-  
-  
-  
+
+
+
   const handleSearch = (search) => {
-    
+
     // let suggestionMenu = document.getElementById("turbozizi");
     let research = search.currentTarget.value
     document.addEventListener("click", (event) => {
-      if(event.target.id !== "turbozizi"){
+      if (event.target.id !== "turbozizi") {
         // research = "";
         setSearchQuery([])
       }
@@ -103,10 +105,10 @@ export default function PrimarySearchAppBar() {
 
   const SearchSuggestions = () => {
     return (
-      <Box id="turbozizi" sx={{ position: "absolute", marginTop: "40px", background: "white", color: "black", width: "20rem", zIndex: "1000", padding: "2rem", border: "1px solid black"}}>
+      <Box id="turbozizi" sx={{ position: "absolute", marginTop: "40px", background: "white", color: "black", width: "20rem", zIndex: "1000", padding: "2rem", border: "1px solid black" }}>
         <div className='search__suggestions' >
           {searchQuery.map(article => (
-            <a className='search__suggestion' href={'/articles/search/'+article.category+"/"+article.sub_category+"/"+article.idefix+"/"} onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
+            <a className='search__suggestion' href={'/articles/search/' + article.category + "/" + article.sub_category + "/" + article.idefix + "/"} onClick={() => window.location.href = `/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
               <img src={article.image} className="search__image" alt="product" />
               <p>{article.name}</p>
               <p align="right">{article.price}</p>
@@ -118,13 +120,16 @@ export default function PrimarySearchAppBar() {
   }
 
 
-
+  const [noItems, setNoItems] = React.useState("");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [anchorElBasket, setAnchorElBasket] = React.useState(null);
 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
+  const isMenuOpenBasket = Boolean(anchorElBasket);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -140,15 +145,52 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
 
+  const handleMenuCloseBasket = () => {
+    setAnchorElBasket(null)
+  }
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleBasketMenuOPen = (event) => {
+  const handleBasketMenuOpen = async (event) => {
+    setAnchorElBasket(event.target);
+    console.log('here');
+    console.log(anchorElBasket);
+    await axios
+      .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
+      .then((response) => {
+        if (response.data.length > 0) {
+          setArticles(response.data);
+          setNoItems("")
+        } else {
+          setNoItems("Aucuns articles")
+        }
+      })
+      .catch((error) => {
+        console.error('Erreur aucun article dans le panier : ', error.response.data);
+      });
+  }
 
+  async function handleDeleteFromBasket(id) {
+    await axios
+      .delete(`http://localhost:8000/api/order_item/${id}`)
+      .then((response) => {
+        console.log(response.data);
+        if (articles.length >1) {
+          setArticles([]);
+        }else{
+          setNoItems("Aucuns articles")
+          setArticles([]);
+        }
+      })
+      .catch((error) => {
+        console.error('Erreur dans la suppression de l\'article : ', error.response.data);
+      });
   }
 
   const menuId = 'primary-search-account-menu';
+  const menuIdBasket = 'primary-basket-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -165,21 +207,42 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
 
     </Menu>
   );
 
-  const renderMenuBasket = (target) => {
+  const renderMenuBasket = (
 
-    
-    return(
-    <Menu>
+    <Menu
+      anchorEl={anchorElBasket}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      id={menuIdBasket}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      open={isMenuOpenBasket}
+      onClose={handleMenuCloseBasket}
+      sx={{ height: '300px' }}
+    >
+      {console.table(articles)}
+      {console.log(articles.length)}
+      {articles.map((article) => {
+        return <MenuItem>{article.name}<span>&nbsp;&nbsp;</span><span style={{ backgroundColor: '#303134', width: '40px', color: 'white', borderRadius: '20px', textAlign: 'center' }}>{article.quantity}</span><Button onClick={() => handleDeleteFromBasket(article.asterix)}>Delete</Button></MenuItem>
+      })}
 
+      <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{noItems}</Typography>
+
+      <Button style={{ margin: 'auto', width: '100%' }}>Voir le panier</Button>
     </Menu>
   )
-}
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -246,15 +309,15 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography onClick={()=> window.location.href="/" }
+          <Typography onClick={() => window.location.href = "/"}
             variant="h6"
             noWrap
             component="div"
-         // style={-_-}
-              //   /|\
-              //   /-\
-              //  /   \
-            sx={{fontSize:"12px", cursor: "pointer",fontFamily:"MGS",width:"9%", display: { xs: 'none', sm: 'block' } }}
+            // style={-_-}
+            //   /|\
+            //   /-\
+            //  /   \
+            sx={{ fontSize: "12px", cursor: "pointer", fontFamily: "MGS", width: "9%", display: { xs: 'none', sm: 'block' } }}
           >HittaetTnamn</Typography>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Search>
@@ -269,34 +332,21 @@ export default function PrimarySearchAppBar() {
 
             </Search>
             {searchQuery.length !== 0 &&
-            <SearchSuggestions />
+              <SearchSuggestions />
             }
           </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit"> */}
-            {/* <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge> */}
-            {/* </IconButton> */}
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="basket of current user"
-                aria-haspopup="true"
-                onClick={handleBasketMenuOPen}
-                color="inherit"
-              >
-                <ShoppingBasketIcon />
-              </IconButton>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
+              edge="end"
+              aria-controls={menuIdBasket}
+              aria-label="basket of current user"
+              aria-haspopup="true"
+              onClick={handleBasketMenuOpen}
               color="inherit"
             >
-              <Badge badgeContent={0} color="error">
-                <NotificationsIcon />
-              </Badge>
+              <ShoppingBasketIcon />
             </IconButton>
             <IconButton
               size="large"
@@ -327,6 +377,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderMenuBasket}
     </Box>
   );
 }

@@ -78,6 +78,7 @@ Route::post('articles', [ArticleController::class, 'createArticle']);
 // READ
 Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'peripheriquenordsortieA3']);
+Route::get('gozizi_test', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
 Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraisonnable']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
@@ -116,6 +117,7 @@ Route::post('order', [OrderController::class, 'create']);
 // READ 
 Route::get('order', [OrderController::class, 'index']);
 Route::get('order/{id}', [OrderController::class, 'show']);
+Route::get('order/by/{id}', [OrderController::class, 'showByUserId']);
 // --------------------------------
 
 // UPDATE 
