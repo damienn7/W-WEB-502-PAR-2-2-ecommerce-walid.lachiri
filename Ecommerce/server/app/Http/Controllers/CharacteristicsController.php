@@ -21,6 +21,7 @@ class CharacteristicsController extends Controller
         return Characteristics::query()
             ->select("characteristic", "value")
             ->join('items', 'characteristics.item_id', '=', 'items.id')
+            ->where("characteristics.item_id", "=", $id)
             ->get()
             ->groupBy("characteristic")
             ->map
