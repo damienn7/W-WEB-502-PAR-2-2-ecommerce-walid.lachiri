@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StripeController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
@@ -195,3 +196,6 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
 Route::get('categories', [CategoriesController::class, 'showCategories']);
+
+//Route for payment (method post)
+Route::post('checkout/{titre}/{description}/{prix}/{stock}/{views}', [StripeController::class, 'checkout']); 

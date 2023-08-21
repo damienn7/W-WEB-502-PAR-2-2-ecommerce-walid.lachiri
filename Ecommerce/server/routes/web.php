@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function(){
     return view('welcome');
 });
+Route::get('/success', [StripeController::class, 'success'])->name('success');
 Route::apiResource('users', 'UserController');
-Route::apiResource('articles', 'ArticleController');
+Route::apiResource('articles', 'ArticleController');    
