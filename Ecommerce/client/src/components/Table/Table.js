@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMedal, faFire } from "@fortawesome/free-solid-svg-icons";
+import { TextField } from '@mui/material';
 import axios from 'axios';
 
 
@@ -25,10 +26,55 @@ import axios from 'axios';
 //   createData('Gingerbread', 356, 16.0, 49, 3.9),
 // ];
 
-export default function BasicTable() {
+export default function BasicTable(id_article) {
   const [articles, setArticles] = useState([])
+  const [quantity, setQuantity] = useState(1)
   let i = 0;
 
+ 
+  const fetchUserData = () => {
+    fetch("http://127.0.0.1:8000/api/gozizi")
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        setArticles(data)
+      })
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+  // const fetchRating = (id_article) => {
+  //   fetch(`http://127.0.0.1:8000/api/ratingavg/${id_article}`)
+  //     .then(response => {
+  //       return response.json()
+  //     })
+  //     .then(data => {
+  //       setRating(data)
+  //     })
+  // }
+
+  // useEffect(() => {
+  //   fetchRating()
+  // }, [])
+
+  function handlePanier(item){
+    var data = new FormData();
+    data.set('item_id',item.id);
+    data.set('user_id',1);
+    data.set('unit_price',item.price);
+    data.set('delivery_address','24 rue Pasteur');
+    axios
+      .post('http://localhost:8000/api/order', data)
+      .then((response) => {
+        console.log('Nouvel utilisateur créé:', response.data);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la création du panier : ', error.response.data);
+      });
+  }
   function isAvailable(quantite = 0) {
     if (quantite > 0) {
       return <div className='greenbox'></div>
@@ -60,6 +106,16 @@ export default function BasicTable() {
         return name;
       }
   }
+
+  const isthistheblood= (rank) =>{
+    if(rank){
+      return rank
+    }
+    else if(!rank){
+      return "?"
+    }
+  }
+
   const fetchUserData = () => {
     fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
@@ -70,24 +126,38 @@ export default function BasicTable() {
       })
   }
 
+  function handleChangeQuantity(e,stock){
+    if (Number(e.target.value) > stock) {
+      setQuantity(stock);
+    }else{
+      setQuantity(e.target.value);
+    }
+    e.target.value = quantity;
+  }
+
   useEffect(() => {
     fetchUserData()
   }, [])
 
-  function handlePanier(item){
+  function handlePanier(e,item,item_id){
+
+    let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+    console.log(quantity);
     var data = new FormData();
-    data.set('item_id',item.id);
+    data.set('item_id',item.idefix);
     data.set('user_id',1);
     data.set('unit_price',item.price);
     data.set('delivery_address','24 rue Pasteur');
+    data.set('quantity',quantity);
     axios
       .post('http://localhost:8000/api/order', data)
       .then((response) => {
-        console.log('Nouvel utilisateur créé:', response.data);
+        console.log('Nouvel article ajouté au panier : ', response.data);
       })
       .catch((error) => {
-        console.error('Erreur lors de la création du panier : ', error.response.data);
+        console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
       });
+      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
   }
 
   return (
@@ -101,25 +171,34 @@ export default function BasicTable() {
             <TableCell align="right">Note</TableCell>
             <TableCell align="right">Disponibilité</TableCell>
             <TableCell align="right">Prix</TableCell>
+            <TableCell align="right">Quantité</TableCell>
             <TableCell align="right">Panier</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {/* Map infini ici pour le back */}
           {articles.map((article) => (
-            <TableRow className='lepainperdu' onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`} 
+            <TableRow className='lepainperdu' 
             key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+
               <TableCell component="th" scope="row">{istop3(article.name)}</TableCell>
               <TableCell align="right">{article.category}</TableCell>
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
-                {random()}/5
+                {isthistheblood(article.avgRating)}/5
               </TableCell>
-              <TableCell align-self="right">{isAvailable(article.stock)}</TableCell>
-              <TableCell align="right">{article.price}€</TableCell>
-              <TableCell align="right"><Button onClick={() => {handlePanier(article)}}>Ajouter au panier</Button></TableCell>
+              <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
+              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.price}€</TableCell>
+              <TableCell align="right">        
+              <TextField
+                id={'outlined-number-'+article.idefix}
+                label="Number"
+                type="number"
+                InputProps={{inputProps:{min: "1", max: article.stock, step:"1"}}}
+                onChange={(e)=>handleChangeQuantity(e,article.stock)}
+                /></TableCell>
+              <TableCell align="right"><Button onClick={(e) => {handlePanier(e,article,article.idefix)}}>Ajouter au panier</Button></TableCell>
             </TableRow>
-
           ))}
         </TableBody>
       </Table>

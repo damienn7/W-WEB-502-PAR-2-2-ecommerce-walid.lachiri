@@ -6,11 +6,11 @@ import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import Box from "@mui/material/Box";
 import Video from "../assets/Julien.mp4";
 import Pub from "../assets/Pub.png";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
+import Carousel from "react-material-ui-carousel";
+import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import { TextField } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -22,12 +22,14 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  alignItems: 'center',
+  alignItems: "center",
   p: 4,
 };
 function Articleunique({ categorie, sous_categorie, id }) {
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [list, setList] = useState([]);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
@@ -42,17 +44,54 @@ function Articleunique({ categorie, sous_categorie, id }) {
         setArticles(data[0]);
       });
   };
+  function handlePanier(e, item, item_id) {
+    let quantity = e.target.parentElement.parentElement.querySelector(
+      "#outlined-number-" + item_id
+    ).value;
+    console.log(quantity);
+    var data = new FormData();
+    data.set("item_id", item.id);
+    data.set("user_id", 1);
+    data.set("unit_price", item.price);
+    data.set("delivery_address", "24 rue Pasteur");
+    data.set("quantity", quantity);
+    axios
+      .post("http://localhost:8000/api/order", data)
+      .then((response) => {
+        console.log("Nouvel article ajouté au panier : ", response.data);
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur l'ajout de l'article au panier : ",
+          error.response.data
+        );
+      });
+    setQuantity(1);
+  }
+
+  function handleChangeQuantity(e, stock) {
+    if (Number(e.target.value) > stock) {
+      setQuantity(stock);
+    } else {
+      setQuantity(e.target.value);
+    }
+    e.target.value = quantity;
+  }
 
   useEffect(() => {
     fetchUserData();
   }, []);
 
   const getUrl = (event) => {
-    event.preventDefault(); 
-    axios.post(`http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`).then(axiosReponse => {
-      window.location = axiosReponse.data.url;
-    })
-  }
+    event.preventDefault();
+    axios
+      .post(
+        `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
+      )
+      .then((axiosReponse) => {
+        window.location = axiosReponse.data.url;
+      });
+  };
 
   return (
     <div className="App">
@@ -120,7 +159,23 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 justifyContent: "space-evenly",
               }}
             >
-              <Button variant="outlined" sx={{ marginBottom: "10px" }}>
+              <TextField
+                id={"outlined-number-" + articles.id}
+                label="Number"
+                type="number"
+                InputProps={{
+                  inputProps: { min: "1", max: articles.stock, step: "1" },
+                }}
+                onChange={(e) => handleChangeQuantity(e, articles.stock)}
+                value={quantity}
+              />
+              <Button
+                variant="outlined"
+                sx={{ marginBottom: "10px" }}
+                onClick={(e) => {
+                  handlePanier(e, articles, articles.id);
+                }}
+              >
                 Ajouter au panier
               </Button>
               <Button variant="contained" onClick={openModal}>
@@ -133,9 +188,40 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                    <Button variant="contained" style={{backgroundColor:"#85ec83", color: 'black', marginRight: '1em', fontSize: '0.9em'}} href={`http://localhost:3000/login?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}>Me connecter</Button>
-                    <Button variant="contained" style={{backgroundColor:"#83d7ec", color: 'black', marginRight: '1em'}}  href={`http://localhost:3000/inscription?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}>S'inscrire</Button>
-                    <Button variant="contained" style={{backgroundColor:"#eaec83", color: 'black', marginRight: '1em'}} onClick={getUrl}>Payer directement</Button>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: "#85ec83",
+                      color: "black",
+                      marginRight: "1em",
+                      fontSize: "0.9em",
+                    }}
+                    href={`http://localhost:3000/login?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}
+                  >
+                    Me connecter
+                  </Button>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: "#83d7ec",
+                      color: "black",
+                      marginRight: "1em",
+                    }}
+                    href={`http://localhost:3000/inscription?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}
+                  >
+                    S'inscrire
+                  </Button>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: "#eaec83",
+                      color: "black",
+                      marginRight: "1em",
+                    }}
+                    onClick={getUrl}
+                  >
+                    Payer directement
+                  </Button>
                 </Box>
               </Modal>
             </Grid>

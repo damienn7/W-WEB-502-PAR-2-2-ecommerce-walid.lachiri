@@ -15,7 +15,6 @@ class CreateOrdersTable extends Migration
             $table->string('status');
             $table->string('delivery_address');
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
