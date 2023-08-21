@@ -24,11 +24,11 @@ class Order_itemController extends Controller
 }
 
 function create(Request $request, $order = [], $quantity = ""){
-    
+
     foreach ($order as $key => $value) {
         $array_key=$key;
     }
-
+    
     if ($order === []) {
         $article = new Order_item;  
         $article->order_id = $request->order_id;   
@@ -39,8 +39,7 @@ function create(Request $request, $order = [], $quantity = ""){
         $article = new Order_item;
         $article->order_id = $order[0]->id;
         $article->item_id = $request->item_id;
-
-        $order_id = $order[0]->id;
+        $order_id = $order->id;
         $item_id = $request->item_id;
     }
 
@@ -69,7 +68,18 @@ function create(Request $request, $order = [], $quantity = ""){
             $article->save();
         }
     } else {
-        $article->quantity = $quantity;
+        if (count($order_item)>=1) {
+            for ($i=0; $i < $quantity; $i++) { 
+                foreach ($order_item as $key => $value) {
+                    DB::table('order_items')->where('id', '=', $value->id)->increment('quantity');
+                }
+            }
+        }else{
+            $article->quantity = $quantity;
+            $article->unit_price = $request->unit_price;
+            $article->save();
+        }
+
     }
     
     

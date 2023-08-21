@@ -9,17 +9,15 @@ import Pub from '../assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from "react"
+import axios from 'axios';
+import { TextField } from '@mui/material';
 
 
 
 function Articleunique({ categorie, sous_categorie, id }) {
     const [articles, setArticles] = useState([])
+    const [quantity, setQuantity] = useState(1)
     const [list, setList] = useState([])
-
-
-    // console.log(categorie);
-    // console.log(sous_categorie);
-    // console.log(id);
 
     const fetchUserData = () => {
         fetch(`http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`)
@@ -29,6 +27,35 @@ function Articleunique({ categorie, sous_categorie, id }) {
             .then(data => {
                 setArticles(data[0])
             })
+    }
+
+    function handlePanier(e,item,item_id){
+        let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+        console.log(quantity);
+        var data = new FormData();
+        data.set('item_id',item.id);
+        data.set('user_id',1);
+        data.set('unit_price',item.price);
+        data.set('delivery_address','24 rue Pasteur');
+        data.set('quantity',quantity);
+        axios
+          .post('http://localhost:8000/api/order', data)
+          .then((response) => {
+            console.log('Nouvel article ajouté au panier : ', response.data);
+          })
+          .catch((error) => {
+            console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
+          });
+          setQuantity(1);
+      }
+
+    function handleChangeQuantity(e,stock){
+       if (Number(e.target.value) > stock) {
+         setQuantity(stock);
+       }else{
+         setQuantity(e.target.value);
+       }
+       e.target.value = quantity;
     }
 
     useEffect(() => {
@@ -56,7 +83,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                     <Grid xs={10}>
                         {/* NOM du produit */}
                         <Typography variant='h4'>{articles.name}</Typography>
-                        {/* charactéristiques courte du produit */}
+                        {/* caractéristiques courte du produit */}
                         <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI </Typography>
                         <Typography>{articles.stock} restant(s)</Typography>
                         <div className='Description'>
@@ -82,7 +109,15 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             <Typography variant='h6 indice' style={{fontStyle:"italic", color:"grey"}}>{parseFloat(articles.price*0.8).toFixed(2)}€</Typography>
                         </div>
                         <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
-                            <Button variant="outlined" sx={{ marginBottom: "10px" }}>Ajouter au panier</Button>
+                            <TextField
+                                id={'outlined-number-'+articles.id}
+                                label="Number"
+                                type="number"
+                                InputProps={{inputProps:{min: "1", max: articles.stock, step:"1"}}}
+                                onChange={(e)=>handleChangeQuantity(e,articles.stock)}
+                                value={quantity}
+                            />
+                            <Button variant="outlined" sx={{ marginBottom: "10px" }} onClick={(e) => {handlePanier(e,articles,articles.id)}}>Ajouter au panier</Button>
                             <Button variant="contained">Acheter l'article</Button>
                         </Grid>
                         <Typography fontSize={10} color='blue'>être informé d'une baisse de prix</Typography>

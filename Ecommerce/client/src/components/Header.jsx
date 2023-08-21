@@ -15,9 +15,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import Dropdown from './Dropdown/dropdown'
 import { useState, useEffect } from 'react';
 import "../style/font.css";
+import axios from 'axios';
 
 const MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS = 3;
 
@@ -142,6 +144,10 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleBasketMenuOPen = (event) => {
+
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -164,6 +170,16 @@ export default function PrimarySearchAppBar() {
 
     </Menu>
   );
+
+  const renderMenuBasket = (target) => {
+
+    
+    return(
+    <Menu>
+
+    </Menu>
+  )
+}
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -263,6 +279,16 @@ export default function PrimarySearchAppBar() {
                 <MailIcon />
               </Badge> */}
             {/* </IconButton> */}
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="basket of current user"
+                aria-haspopup="true"
+                onClick={handleBasketMenuOPen}
+                color="inherit"
+              >
+                <ShoppingBasketIcon />
+              </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
