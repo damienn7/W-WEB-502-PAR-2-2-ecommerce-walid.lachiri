@@ -8,6 +8,7 @@ import Video from '../assets/Julien.mp4'
 import Select from '@mui/material/Select';
 import Pub from '../assets/Pub.png'
 import Carousel from 'react-material-ui-carousel'
+import MenuItem from '@mui/material/MenuItem';
 import { Typography } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -22,12 +23,12 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
     // console.log(categorie);
     // console.log(sous_categorie);
-    
-        useEffect(() => {
-            fetchCharacteristics();
-            fetchUserData();
-            fetchArticles()
-        }, [])
+
+    useEffect(() => {
+        fetchCharacteristics();
+        fetchUserData();
+        fetchArticles()
+    }, [])
     // console.log(id);
 
     const fetchUserData = async () => {
@@ -47,6 +48,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 return response.json()
             })
             .then(data => {
+                console.log(data)
                 setMultipleCharacteristics(data)
             })
     }
@@ -85,8 +87,47 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                     </Grid>
                                 </Grid>
                             </div>
-                        
-                            {/* ALLEZ ICI ON MET LES TRUCSSSSSSS */}
+                            {Object.keys(multipleCharacteristics).map((characteristic) => {
+                                if (multipleCharacteristics[characteristic].length > 1) {
+                                    return (
+
+                                        // <div>
+                                        //     <p>{characteristic}</p>
+                                        //     <ul>
+                                        //     {multipleCharacteristics[characteristic].map((prout) => {
+                                        //         return (<li>{prout}</li>)
+                                        //     })
+                                        // }
+                                        // </ul>
+                                        // </div>
+                                        <FormControl variant="standard" sx={{ m: 3, minWidth: 40 }} defaultValue={'test'}>
+                                            <InputLabel id="demo-simple-select-standard-label">{characteristic}</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-standard-label"
+                                                id="demo-simple-select-standard"
+                                                value={""}
+                                                label={characteristic}
+                                                name={characteristic}
+                                            >
+                                                {multipleCharacteristics[characteristic].map((prout) => {
+                                                    // return (<li>{prout}</li>)
+                                                    return (<MenuItem  align="right" value={prout} >{prout}</MenuItem>)
+
+                                                })}
+
+
+                                            </Select>
+                                        </FormControl>
+
+                                    )
+                                }
+                                return null
+                            })}
+
+                            {/* return Category.map((key) => {
+      return (<MenuItem  align="right" value={key} onClick={(event) => { getSousCategorie(event) }}>{key}</MenuItem>)
+    }) */}
+
                         </Grid >
                         <Grid xs={1} sx={{ display: "flex", flexDirection: "column", justifyContent: 'space-Evenly', border: 2, mx: 'auto', width: 200, height: 'auto', borderRadius: '5px' }}>
                             <div className="article__price">
