@@ -27,14 +27,16 @@ const style = {
   p: 4,
 };
 function Articleunique({ categorie, sous_categorie, id }) {
-  const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   const [list, setList] = useState([]);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
   
   const navigate = useNavigate();
+  const [articles, setArticles] = useState([])
+  const [quantity, setQuantity] = useState(1)
+  const [rating, setRating] = useState([])
+  const user_id = localStorage.getItem('id');
 
   const fetchUserData = () => {
     fetch(
@@ -84,6 +86,26 @@ function Articleunique({ categorie, sous_categorie, id }) {
   useEffect(() => {
     fetchUserData();
   }, []);
+    function handlePanier(e,item,item_id){
+        let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+        // console.log(quantity);
+        console.log('user id '+user_id); 
+        var data = new FormData();
+        data.set('item_id',item.id);
+        data.set('user_id',user_id);
+        data.set('unit_price',item.price);
+        data.set('delivery_address','24 rue Pasteur');
+        data.set('quantity',quantity);
+        axios
+          .post('http://localhost:8000/api/order', data)
+          .then((response) => {
+            console.log('Nouvel article ajouté au panier : ', response.data);
+          })
+          .catch((error) => {
+            console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
+          });
+          setQuantity(1);
+      }
 
   const getUrl = (event) => {
     return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
@@ -96,6 +118,28 @@ function Articleunique({ categorie, sous_categorie, id }) {
     //     // window.location = axiosReponse.data.url;
     //   });
   };
+  const fetchArticles = () => {
+    fetch(`http://localhost:8000/api/ratingavg/${id}`)
+        .then(response => {
+            return response.json()  
+        })
+        .then(data => {
+            if(data[0] !== undefined){
+                setRating(data[0])
+            } 
+        })
+}
+useEffect(() => {
+    fetchUserData()
+    fetchArticles()
+}, [])
+const isthistheblood = () => {
+    if (rating.test === undefined){
+        return (<Typography variant='' sx={{ color: 'primary.main' }}>Soyez le premier à noter cet article</Typography>)
+    } else {
+        return (<Typography sx={{ color: 'error.main' }}>{parseFloat(rating.test)}/5</Typography>)
+    }
+}
 
   return (
     <div className="App">
@@ -103,6 +147,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
       <div className="Unique">
         <Grid className="Unique" container spacing={2}>
           <Grid xs={10}>
+          {isthistheblood()}
             {/* NOM du produit */}
             <Typography variant="h4">{articles.name}</Typography>
             {/* charactéristiques courte du produit */}

@@ -23,6 +23,18 @@ class Order_itemController extends Controller
     return Order_item::findOrFail($id);
 }
 
+    public function countItem($id){
+        $quantity = DB::table('order_items')
+        ->select(DB::raw('sum(quantity) as count'))
+        ->where('order_id','=',$id)
+        ->get(); 
+
+        return response()->json([         
+            "message" => "nombre d'items dans le panier",         
+             "quantity"=> $quantity,       
+        ], 201);  
+    }
+
 function create(Request $request, $order = [], $quantity = ""){
 
     foreach ($order as $key => $value) {
@@ -37,7 +49,7 @@ function create(Request $request, $order = [], $quantity = ""){
         $item_id = $request->item_id;
     } else {
         $article = new Order_item;
-        $article->order_id = $order[0]->id;
+        $article->order_id = $order->id;
         $article->item_id = $request->item_id;
         $order_id = $order->id;
         $item_id = $request->item_id;
@@ -51,7 +63,7 @@ function create(Request $request, $order = [], $quantity = ""){
         ->get();
     } else {
         $order_item = DB::table('order_items')
-        ->where('order_id', '=', $order[0]->id)
+        ->where('order_id', '=', $order->id)
         ->where('item_id',"=",$request->item_id)
         ->get();
     }
@@ -61,7 +73,8 @@ function create(Request $request, $order = [], $quantity = ""){
             foreach ($order_item as $key => $value) {
                 DB::table('order_items')->where('id', '=', $value->id)->increment('quantity');
             }
-            $article->quantity =count($order_item)+1;        
+            $article->quantity =count($order_item)+1;
+            $article->save();     
         } else {
             $article->quantity =1;  
             $article->unit_price = $request->unit_price;
@@ -81,8 +94,6 @@ function create(Request $request, $order = [], $quantity = ""){
         }
 
     }
-    
-    
     
     //mettre à jour le stock de l'article
     $item = DB::table('items')
@@ -114,6 +125,8 @@ function create(Request $request, $order = [], $quantity = ""){
     {
         $article = Order_item::findOrFail($id);
         $article->delete();
+        $maxId = DB::table('order_items')->max('id');
+        DB::statement('ALTER TABLE order_items AUTO_INCREMENT=' . intval($maxId + 1) . ';');
         return response()->json(['message' => 'commande supprimée correctement']);
     }
 }

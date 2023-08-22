@@ -29,7 +29,16 @@ const LoginForm = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.user.admin);
         localStorage.setItem('id', response.data.user.id)
-        
+        console.table(response.data)
+        localStorage.setItem("id", response.data.user.id);
+
+        if(response.data.user.admin === 0){
+          localStorage.setItem('role', 'alliwantisplaybaldursgate3');
+        } else {
+          localStorage.setItem('role', 'rachet&clank');
+        }
+        window.location.href = "/";
+          
         let categorie = params.get("categorie") || "";
         let sous_categorie = params.get("sous_categorie") || "";
         let id = params.get("id") || "";
@@ -56,6 +65,7 @@ const LoginForm = () => {
         console.error("Erreur lors de la connexion:", error);
         setError("Les informations de connexion sont incorrectes.");
       });
+
   };
 
   return (
@@ -83,6 +93,6 @@ const LoginForm = () => {
       </form>
     </div>
   );
-};
 
+  }
 export default LoginForm;
