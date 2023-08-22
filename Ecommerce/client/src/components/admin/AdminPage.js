@@ -39,9 +39,9 @@ const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
 
 function AdminPage() { 
   var isadmin = localStorage.getItem('role');
-  if (isadmin == "alliwantisplaybaldursgate3"){
-    console.log("Vous n'êtes pas admin...");
+  if (isadmin != "rachet&clank"){
     window.location.href = "/";
+    alert("Vous n'êtes pas admin...");
   }
   return (
     <Admin basename="/admin" dataProvider={dataProvider}>
