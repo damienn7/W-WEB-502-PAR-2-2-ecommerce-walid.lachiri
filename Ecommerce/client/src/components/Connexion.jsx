@@ -24,9 +24,10 @@ const LoginForm = () => {
         console.log('Utilisateur connecté:', response.data);
         setFormData({ mail: '', password: '' });
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('role', response.data.user.admin)
+        localStorage.setItem('role', response.data.user.admin);
+        localStorage.setItem('id', response.data.user.id)
 
-        // window.location.href = '/';
+        window.location.href = '/';
       })
       .catch((error) => {
         console.error('Erreur lors de la connexion:', error);

@@ -30,6 +30,8 @@ export default function BasicTable(id_article) {
   const [articles, setArticles] = useState([])
   const [quantity, setQuantity] = useState(1)
   let i = 0;
+  const user_id = localStorage.getItem('id');
+  // console.log(user_id);
 
  
   const fetchUserData = () => {
@@ -116,12 +118,14 @@ export default function BasicTable(id_article) {
     }
   }
 
-  const fetchUserData = () => {
-    fetch("http://127.0.0.1:8000/api/gozizi")
+  const fetchUserData = async () => {
+    await fetch("http://127.0.0.1:8000/api/gozizi_test")
       .then(response => {
-        return response.json()
+        // console.log(response.json());
+        return response.json();
       })
       .then(data => {
+        // console.log(data);
         setArticles(data)
       })
   }
@@ -139,24 +143,42 @@ export default function BasicTable(id_article) {
     fetchUserData()
   }, [])
 
+  function vuePanier(user_id){
+      axios
+        .get(`http://localhost:8000/api/order/by/${user_id}`)
+        .then((response) => {
+          console.log('Articles présents dans le panier : ', response.data);
+        })
+        .catch((error) => {
+          console.error('Erreur aucun article dans le panier : ', error.response.data);
+        });
+      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
+  }
+
   function handlePanier(e,item,item_id){
 
     let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
     console.log(quantity);
     var data = new FormData();
     data.set('item_id',item.idefix);
-    data.set('user_id',1);
-    data.set('unit_price',item.price);
-    data.set('delivery_address','24 rue Pasteur');
-    data.set('quantity',quantity);
-    axios
-      .post('http://localhost:8000/api/order', data)
-      .then((response) => {
-        console.log('Nouvel article ajouté au panier : ', response.data);
-      })
-      .catch((error) => {
-        console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
-      });
+    if (user_id !== null) {   
+      console.log('user id '+user_id);   
+      data.set('user_id',user_id);
+      data.set('unit_price',item.price);
+      data.set('delivery_address','24 rue Pasteur');
+      data.set('quantity',quantity);
+      axios
+        .post('http://localhost:8000/api/order', data)
+        .then((response) => {
+          console.log('Nouvel article ajouté au panier : ', response.data);
+        })
+        .catch((error) => {
+          console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
+        });
+    }else{
+      alert('Vous devez vous connecter pour ajouter un article au panier');
+      // window.location.href = '/';
+    }
       // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
   }
 

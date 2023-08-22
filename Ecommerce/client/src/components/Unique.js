@@ -18,6 +18,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const [articles, setArticles] = useState([])
     const [quantity, setQuantity] = useState(1)
     const [list, setList] = useState([])
+    const user_id = localStorage.getItem('id');
 
     const fetchUserData = () => {
         fetch(`http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`)
@@ -31,10 +32,11 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
     function handlePanier(e,item,item_id){
         let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
-        console.log(quantity);
+        // console.log(quantity);
+        console.log('user id '+user_id); 
         var data = new FormData();
         data.set('item_id',item.id);
-        data.set('user_id',1);
+        data.set('user_id',user_id);
         data.set('unit_price',item.price);
         data.set('delivery_address','24 rue Pasteur');
         data.set('quantity',quantity);
