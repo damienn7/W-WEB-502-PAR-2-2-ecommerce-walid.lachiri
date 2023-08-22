@@ -23,6 +23,18 @@ class Order_itemController extends Controller
     return Order_item::findOrFail($id);
 }
 
+    public function countItem($id){
+        $quantity = DB::table('order_items')
+        ->select(DB::raw('sum(quantity) as count'))
+        ->where('order_id','=',$id)
+        ->get(); 
+
+        return response()->json([         
+            "message" => "nombre d'items dans le panier",         
+             "quantity"=> $quantity,       
+        ], 201);  
+    }
+
 function create(Request $request, $order = [], $quantity = ""){
 
     foreach ($order as $key => $value) {

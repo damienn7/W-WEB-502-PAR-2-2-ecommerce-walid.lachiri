@@ -170,6 +170,9 @@ Route::get('order_item/{id}', [Order_itemController::class, 'show']);
 Route::put('order_item/{id}', [Order_itemController::class, 'update']);
 // --------------------------------
 
+// GET
+Route::get('count_item/{id}',[Order_itemController::class, 'countItem']);
+// count quantity*
 
 // Delete 
 Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
