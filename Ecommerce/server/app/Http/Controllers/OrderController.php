@@ -29,7 +29,7 @@ class OrderController extends Controller
     public function showByUserId($id)
     {
         return DB::table('orders')
-        ->select('*', 'items.id as idefix', 'order_items.id as asterix')     
+        ->select('*', 'items.id as idefix', 'order_items.id as asterix',)     
         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
         ->join('items', 'items.id', '=', 'order_items.item_id')
         ->where('user_id', '=', $id)
