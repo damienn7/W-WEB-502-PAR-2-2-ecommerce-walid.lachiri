@@ -92,7 +92,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
             <div className="Unique">
                 <Grid className="Unique" container spacing={2} >
                     <Grid xs={10}>
-                        {/* NOM du produit */}
+                        {/* NOM du produit */}*
                         {isthistheblood()}
                         <Typography variant='h4'>{articles.name}</Typography>
                         {/* caractéristiques courte du produit */}
