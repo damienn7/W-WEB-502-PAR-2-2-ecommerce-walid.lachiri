@@ -121,6 +121,7 @@ export default function PrimarySearchAppBar() {
 
 
   const [noItems, setNoItems] = React.useState("");
+  const [price, setPrice] = React.useState(0);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -131,6 +132,7 @@ export default function PrimarySearchAppBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMenuOpenBasket = Boolean(anchorElBasket);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [result, setResult] = React.useState(0);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -154,39 +156,90 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleBasketMenuOpen = async (event) => {
+    handleItems();
     setAnchorElBasket(event.target);
-    console.log('here');
-    console.log(anchorElBasket);
-    await axios
-      .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
-      .then((response) => {
-        if (response.data.length > 0) {
-          setArticles(response.data);
-          setNoItems("")
-        } else {
-          setNoItems("Aucuns articles")
-        }
-      })
-      .catch((error) => {
-        console.error('Erreur aucun article dans le panier : ', error.response.data);
-      });
+    // console.log('here');
+    // console.log(anchorElBasket);
+    // await axios
+    //   .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
+    //   .then((response) => {
+    //     if (response.data.length > 0) {
+    //       setArticles(response.data);
+    //       setNoItems("")
+    //       setPrice(0)
+    //       calcPrice();
+    //     } else {
+    //       setPrice("")
+    //       setNoItems("Aucuns articles")
+    //     }
+    //   })
+      // .catch((error) => {
+      //   console.error('Erreur aucun article dans le panier : ', error.response.data);
+      // });
+
   }
 
-  async function handleDeleteFromBasket(id) {
-    await axios
+  function handleItems(){
+    axios
+    .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
+    .then((response) => {
+      if (response.data.length >= 1) {
+        setArticles(response.data);
+        setNoItems("")
+        // setPrice(0)
+        calcPrice();
+      } else {
+        setPrice("")
+        setNoItems("Aucuns articles")
+      }
+      setResult((noItems !== "") ? noItems : price+" EUR");
+    })
+    .catch((error) => {
+      console.error('Erreur aucun article dans le panier : ', error.response.data);
+    });
+  }
+
+  const calcPrice = ()=>{
+    var price_calc = 0;
+    var count = 1;
+    // articles.map(article => {
+    for (let count = 0; count < articles.length; count++) {
+      const element = articles[count];      
+      price_calc += element.quantity * element.unit_price;
+      if (count+1 === articles.length && articles.length > 0) {
+        setPrice(price_calc);
+        count = 1;
+      }
+    }
+
+    return price_calc;
+      // count++;
+    // })
+  }
+
+  function handleDeleteFromBasket(id) {
+    axios
       .delete(`http://localhost:8000/api/order_item/${id}`)
       .then((response) => {
         console.log(response.data);
-        if (articles.length >1) {
+        handleItems();
+        if (articles.length >= 1) {
           setArticles([]);
+          // setPrice(0)
+          
+          setResult(calcPrice());
         }else{
+          setPrice("")
           setNoItems("Aucuns articles")
+          setResult('Aucuns articles')
           setArticles([]);
         }
+        // setResult((noItems !== "") ? noItems : price +" EUR");
       })
       .catch((error) => {
         console.error('Erreur dans la suppression de l\'article : ', error.response.data);
       });
+
   }
 
   const menuId = 'primary-search-account-menu';
@@ -214,6 +267,10 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
+  var price_calc = 0;
+  var count = 1;
+  // var result = (noItems !== "") ? noItems : price+" EUR";
+
   const renderMenuBasket = (
 
     <Menu
@@ -233,12 +290,13 @@ export default function PrimarySearchAppBar() {
       sx={{ height: '300px' }}
     >
       {console.table(articles)}
-      {console.log(articles.length)}
+
       {articles.map((article) => {
         return <MenuItem>{article.name}<span>&nbsp;&nbsp;</span><span style={{ backgroundColor: '#303134', width: '40px', color: 'white', borderRadius: '20px', textAlign: 'center' }}>{article.quantity}</span><Button onClick={() => handleDeleteFromBasket(article.asterix)}>Delete</Button></MenuItem>
       })}
-
-      <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{noItems}</Typography>
+      {/* <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{price}</Typography> */}
+      {/* {console.log("prix "+price)} */}
+      <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{result}</Typography>
 
       <Button style={{ margin: 'auto', width: '100%' }}>Voir le panier</Button>
     </Menu>
