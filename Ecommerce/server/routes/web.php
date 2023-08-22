@@ -21,3 +21,5 @@ Route::get('/', function(){
 Route::get('/success', [StripeController::class, 'success'])->name('success');
 Route::apiResource('users', 'UserController');
 Route::apiResource('articles', 'ArticleController');    
+Route::apiResource('users', 'UserController');
+Route::apiResource('articles', 'ArticleController');

@@ -6,10 +6,7 @@ const LoginForm = () => {
     mail: "",
     password: "",
   });
-  // const [articles, setArticles] = useState([]);
-
-  let params = new URLSearchParams(window.location.search);
-
+  const [data, setData] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (event) => {

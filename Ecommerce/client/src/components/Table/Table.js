@@ -30,6 +30,8 @@ export default function BasicTable(id_article) {
   const [articles, setArticles] = useState([])
   const [quantity, setQuantity] = useState(1)
   let i = 0;
+  const user_id = localStorage.getItem('id');
+  // console.log(user_id);
 
  
   const fetchUserData = () => {
@@ -116,6 +118,8 @@ export default function BasicTable(id_article) {
     }
   }
 
+
+
   function handleChangeQuantity(e,stock){
     if (Number(e.target.value) > stock) {
       setQuantity(stock);
@@ -125,9 +129,18 @@ export default function BasicTable(id_article) {
     e.target.value = quantity;
   }
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
+
+  function vuePanier(user_id){
+      axios
+        .get(`http://localhost:8000/api/order/by/${user_id}`)
+        .then((response) => {
+          console.log('Articles présents dans le panier : ', response.data);
+        })
+        .catch((error) => {
+          console.error('Erreur aucun article dans le panier : ', error.response.data);
+        });
+      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
+  }
 
   function handlePanier(e,item,item_id){
 
@@ -135,18 +148,24 @@ export default function BasicTable(id_article) {
     console.log(quantity);
     var data = new FormData();
     data.set('item_id',item.idefix);
-    data.set('user_id',1);
-    data.set('unit_price',item.price);
-    data.set('delivery_address','24 rue Pasteur');
-    data.set('quantity',quantity);
-    axios
-      .post('http://localhost:8000/api/order', data)
-      .then((response) => {
-        console.log('Nouvel article ajouté au panier : ', response.data);
-      })
-      .catch((error) => {
-        console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
-      });
+    if (user_id !== null) {   
+      console.log('user id '+user_id);   
+      data.set('user_id',user_id);
+      data.set('unit_price',item.price);
+      data.set('delivery_address','24 rue Pasteur');
+      data.set('quantity',quantity);
+      axios
+        .post('http://localhost:8000/api/order', data)
+        .then((response) => {
+          console.log('Nouvel article ajouté au panier : ', response.data);
+        })
+        .catch((error) => {
+          console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
+        });
+    }else{
+      alert('Vous devez vous connecter pour ajouter un article au panier');
+      // window.location.href = '/';
+    }
       // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
   }
 
@@ -175,7 +194,9 @@ export default function BasicTable(id_article) {
               <TableCell align="right">{article.category}</TableCell>
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
+                {/* {random()}/5 */}
                 {isthistheblood(article.avgRating)}/5
+
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
               <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.price}€</TableCell>

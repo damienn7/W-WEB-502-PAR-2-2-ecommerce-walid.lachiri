@@ -26,6 +26,17 @@ class OrderController extends Controller
         return Order::findOrFail($id);
     }
 
+    public function showByUserId($id)
+    {
+        return DB::table('orders')
+        ->select('*', 'items.id as idefix', 'order_items.id as asterix')     
+        ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+        ->join('items', 'items.id', '=', 'order_items.item_id')
+        ->where('user_id', '=', $id)
+        ->where('status','=','panier')
+        ->orderBy('order_items.created_at', 'desc')
+        ->get();
+    }
     public function create(Request $request)
     {
         foreach ($request as $key => $value) {
@@ -46,11 +57,15 @@ class OrderController extends Controller
             $article->delivery_address = $request->delivery_address;
             $article->save();
  
+            $article2 = DB::table('orders')
+            ->where('user_id', '=', $request->user_id)
+            ->where('status','=','panier')
+            ->get();
             $order_item = new Order_itemController;
             if (isset($quantity)) {
-                $order_item->create($request,$article,$quantity);
+                $order_item->create($request,$article2[0],$quantity);
             } else {
-                $order_item->create($request,$article);
+                $order_item->create($request,$article2[0]);
             }
             
 
