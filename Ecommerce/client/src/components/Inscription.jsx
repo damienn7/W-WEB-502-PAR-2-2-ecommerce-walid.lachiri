@@ -20,6 +20,7 @@ const CreateUser = () => {
       .post('http://localhost:8000/api/users', formData)
       .then((response) => {
         console.log('Nouvel utilisateur créé:', response.data);
+        window.location.href = '/login';
       })
       .catch((error) => {
         console.error('Erreur lors de la création de l\'utilisateur:', error.response.data);
