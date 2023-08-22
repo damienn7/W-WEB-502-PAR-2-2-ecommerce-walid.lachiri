@@ -70,6 +70,7 @@ export default function PrimarySearchAppBar() {
 
   // console.log(searchText);
   useEffect(() => {
+    handleItems()
   }, [])
 
 
@@ -171,7 +172,7 @@ export default function PrimarySearchAppBar() {
           setNoItems("")
           // setPrice(0)
           console.table(response.data[0].order_id)
-          calcPrice();
+          console.log("PRIX => ", calcPrice(response.data));
         } else {
           setPrice("")
           setNoItems("Aucuns articles")
@@ -179,26 +180,26 @@ export default function PrimarySearchAppBar() {
         setOrderId(response.data[0].order_id);
         setResult((noItems !== "") ? noItems : price + " EUR");
         // alert('Article ajouté au panier avec succès !');
+        calcQuantity(response.data[0].order_id);
       })
       .catch((error) => {
         console.error('Erreur aucun article dans le panier : ', error.response);
       });
-    calcQuantity(orderId);
     console.log("hello test "+orderId);
   }
 
-  const calcPrice = () => {
+  const calcPrice = (ArticlesToGetPrice) => {
     var price_calc = 0;
     // articles.map(article => {
-    for (let count = 0; count < articles.length; count++) {
-      const element = articles[count];
+    for (let count = 0; count < ArticlesToGetPrice.length; count++) {
+      const element = ArticlesToGetPrice[count];
       price_calc += element.quantity * element.unit_price;
-      if (count + 1 === articles.length && articles.length > 0) {
-        setPrice(price_calc);
-        count = 1;
-      }
+      // if (count + 1 === ArticlesToGetPrice.length && ArticlesToGetPrice.length > 0) {
+      //   count = 1;
+      // }
     }
-
+    setPrice(price_calc);
+    
     return price_calc;
     // count++;
     // })
@@ -212,7 +213,7 @@ export default function PrimarySearchAppBar() {
         setCountItem(response.data['quantity'][0]['count']);
       })
       .catch((error) => {
-        console.error('Erreur veuillez vous connecter pour visualiser votre paqnier : ', error.response.data);
+        console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
       });
 
       console.log("in quantity function "+countItem);
@@ -226,14 +227,16 @@ export default function PrimarySearchAppBar() {
         handleItems();
         if (articles.length >= 1) {
           setArticles([]);
-          // setPrice(0)
-          setResult(calcPrice());
+          setPrice(0)
+          // setResult(calcPrice());
+          setResult(0);
         } else {
           setPrice("")
           setNoItems("Aucuns articles")
           setResult('Aucuns articles')
           setArticles([]);
           calcQuantity(orderId);
+          handleMenuClose();
         }
         // setResult((noItems !== "") ? noItems : price +" EUR");
         // alert('Article supprimé du panier avec succès !');
@@ -298,7 +301,7 @@ export default function PrimarySearchAppBar() {
       {/* {console.table("order id "+articles[0].order_id)} */}
 
       {articles.map((article) => {
-        return <MenuItem>{article.name}<span>&nbsp;&nbsp;</span><span style={{ backgroundColor: '#303134', width: '40px', color: 'white', borderRadius: '20px', textAlign: 'center' }}>{article.quantity}</span><Button onClick={() => handleDeleteFromBasket(article.asterix)}>Delete</Button></MenuItem>
+        return <MenuItem>{article.name}<span>&nbsp;&nbsp;</span><span style={{ backgroundColor: '#303134', width: '40px', color: 'white', borderRadius: '20px', textAlign: 'center' }}>{article.quantity}</span><Button onClick={() => handleDeleteFromBasket(article.asterix)&handleMenuCloseBasket()}>Delete</Button></MenuItem>
       })}
       {/* <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{price}</Typography> */}
       {/* {console.log("prix "+price)} */}
@@ -410,7 +413,6 @@ export default function PrimarySearchAppBar() {
               onClick={handleBasketMenuOpen}
               color="inherit"
             >
-              {/* <Badge badgeContent={2} color="red" variant="dot" overlap="circular"> */}
               <Badge badgeContent={(countItem==0)?0:countItem} color="error">
                 <ShoppingBasketIcon />
               </Badge>

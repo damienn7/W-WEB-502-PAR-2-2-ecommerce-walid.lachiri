@@ -18,6 +18,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const [articles, setArticles] = useState([])
     const [quantity, setQuantity] = useState(1)
     const [list, setList] = useState([])
+    const [rating, setRating] = useState([])
+
     const user_id = localStorage.getItem('id');
 
     const fetchUserData = () => {
@@ -60,23 +62,30 @@ function Articleunique({ categorie, sous_categorie, id }) {
        e.target.value = quantity;
     }
 
-    useEffect(() => {
-        fetchUserData()
-    }, [])
+    
     
     const fetchArticles = () => {
-        fetch("http://127.0.0.1:8000/api/gozizi")
-          .then(response => {
-            return response.json()
-          })
-          .then(data => {
-            setList(data)
-          })
-      }
-    
-      useEffect(() => {
+        fetch(`http://localhost:8000/api/ratingavg/${id}`)
+            .then(response => {
+                return response.json()  
+            })
+            .then(data => {
+                if(data[0] !== undefined){
+                    setRating(data[0])
+                } 
+            })
+    }
+    useEffect(() => {
+        fetchUserData()
         fetchArticles()
-      }, [])
+    }, [])
+    const isthistheblood = () => {
+        if (rating.test === undefined){
+            return (<Typography variant='' sx={{ color: 'primary.main' }}>Soyez le premier à noter cet article</Typography>)
+        } else {
+            return (<Typography sx={{ color: 'error.main' }}>{parseFloat(rating.test)}/5</Typography>)
+        }
+    }
     return (
         <div className="App">
             <Header />
@@ -84,6 +93,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 <Grid className="Unique" container spacing={2} >
                     <Grid xs={10}>
                         {/* NOM du produit */}
+                        {isthistheblood()}
                         <Typography variant='h4'>{articles.name}</Typography>
                         {/* caractéristiques courte du produit */}
                         <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI </Typography>

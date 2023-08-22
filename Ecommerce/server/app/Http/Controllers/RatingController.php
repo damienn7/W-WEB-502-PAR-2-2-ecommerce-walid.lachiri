@@ -53,4 +53,8 @@ class RatingController extends Controller
         $article->delete();
         return response()->json(['message' => 'note supprimé correctement']);
     }
+    
+
+
+    
 }

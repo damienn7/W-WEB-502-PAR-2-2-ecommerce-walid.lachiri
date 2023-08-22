@@ -200,3 +200,4 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
 Route::get('categories', [CategoriesController::class, 'showCategories']);
+Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);

@@ -74,7 +74,7 @@ export default function BasicTable() {
     }
   }
   const fetchUserData = async () => {
-    await fetch("http://127.0.0.1:8000/api/gozizi_test")
+    await fetch("http://127.0.0.1:8000/api/gozizi")
       .then(response => {
         // console.log(response.json());
         return response.json();
@@ -163,7 +163,7 @@ export default function BasicTable() {
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
                 {/* {random()}/5 */}
-                {isthistheblood(article.rating)}/5
+                {isthistheblood(article.avgRating)}/5
 
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
