@@ -25,6 +25,9 @@ const LoginForm = () => {
         console.log("Utilisateur connecté:", response.data);
         setFormData({ mail: "", password: "" });
         localStorage.setItem("token", response.data.token);
+        console.table(response.data)
+        localStorage.setItem("id", response.data.user.id);
+
         if(response.data.user.admin === 0){
           localStorage.setItem('role', 'alliwantisplaybaldursgate3');
         } else {
