@@ -79,6 +79,7 @@ Route::post('articles', [ArticleController::class, 'createArticle']);
 Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'peripheriquenordsortieA3']);
 Route::get('gozizi_test', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
+Route::get('ratingavg', [ArticleController::class, 'averagerating']);
 Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraisonnable']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
