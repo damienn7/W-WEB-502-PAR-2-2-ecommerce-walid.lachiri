@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CharacteristicsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Order_itemController;
@@ -79,6 +80,7 @@ Route::post('articles', [ArticleController::class, 'createArticle']);
 Route::get('articles', [ArticleController::class, 'index']);
 Route::get('gozizi', [ArticleController::class, 'peripheriquenordsortieA3']);
 Route::get('gozizi_test', [ArticleController::class, 'METHODEDEFILSDEPUTE']);
+Route::get('ratingavg', [ArticleController::class, 'averagerating']);
 Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraisonnable']);
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
@@ -201,3 +203,5 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
 Route::get('categories', [CategoriesController::class, 'showCategories']);
 Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);
+Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
+Route::get('characteristic/', [CharacteristicsController::class, 'index']);

@@ -26,13 +26,57 @@ import axios from 'axios';
 //   createData('Gingerbread', 356, 16.0, 49, 3.9),
 // ];
 
-export default function BasicTable() {
+export default function BasicTable(id_article) {
   const [articles, setArticles] = useState([])
   const [quantity, setQuantity] = useState(1)
   let i = 0;
   const user_id = localStorage.getItem('id');
   // console.log(user_id);
 
+ 
+  const fetchUserData = () => {
+    fetch("http://127.0.0.1:8000/api/gozizi")
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        setArticles(data)
+      })
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+  // const fetchRating = (id_article) => {
+  //   fetch(`http://127.0.0.1:8000/api/ratingavg/${id_article}`)
+  //     .then(response => {
+  //       return response.json()
+  //     })
+  //     .then(data => {
+  //       setRating(data)
+  //     })
+  // }
+
+  // useEffect(() => {
+  //   fetchRating()
+  // }, [])
+
+  function handlePanier(item){
+    var data = new FormData();
+    data.set('item_id',item.id);
+    data.set('user_id',1);
+    data.set('unit_price',item.price);
+    data.set('delivery_address','24 rue Pasteur');
+    axios
+      .post('http://localhost:8000/api/order', data)
+      .then((response) => {
+        console.log('Nouvel utilisateur créé:', response.data);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la création du panier : ', error.response.data);
+      });
+  }
   function isAvailable(quantite = 0) {
     if (quantite > 0) {
       return <div className='greenbox'></div>
@@ -73,17 +117,8 @@ export default function BasicTable() {
       return "?"
     }
   }
-  const fetchUserData = async () => {
-    await fetch("http://127.0.0.1:8000/api/gozizi")
-      .then(response => {
-        // console.log(response.json());
-        return response.json();
-      })
-      .then(data => {
-        // console.log(data);
-        setArticles(data)
-      })
-  }
+
+
 
   function handleChangeQuantity(e,stock){
     if (Number(e.target.value) > stock) {
@@ -94,9 +129,6 @@ export default function BasicTable() {
     e.target.value = quantity;
   }
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
 
   function vuePanier(user_id){
       axios
