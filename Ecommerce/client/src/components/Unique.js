@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Video from "../assets/Julien.mp4";
 import Pub from "../assets/Pub.png";
 import Carousel from "react-material-ui-carousel";
-import { Typography } from "@mui/material";
+import { Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";

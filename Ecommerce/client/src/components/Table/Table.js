@@ -116,16 +116,6 @@ export default function BasicTable(id_article) {
     }
   }
 
-  const fetchUserData = () => {
-    fetch("http://127.0.0.1:8000/api/gozizi")
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        setArticles(data)
-      })
-  }
-
   function handleChangeQuantity(e,stock){
     if (Number(e.target.value) > stock) {
       setQuantity(stock);

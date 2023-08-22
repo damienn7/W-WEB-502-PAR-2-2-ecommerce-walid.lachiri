@@ -28,7 +28,8 @@ const LoginForm = () => {
         setFormData({ mail: "", password: "" });
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.user.admin);
-
+        localStorage.setItem('id', response.data.user.id)
+        
         let categorie = params.get("categorie");
         let sous_categorie = params.get("sous_categorie");
         let id = params.get("id");
@@ -45,7 +46,7 @@ const LoginForm = () => {
               `http://localhost:8000/api/checkout/${data[0].name}/${data[0].description}/${data[0].price}/${data[0].stock}/${data[0].views}`
             )
             .then((axiosReponse) => {
-              window.location = axiosReponse.data.url;
+              window.location.href = axiosReponse.data.url;
             });
             });
         })
