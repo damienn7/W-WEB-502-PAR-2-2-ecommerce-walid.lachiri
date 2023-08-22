@@ -30,10 +30,11 @@ const LoginForm = () => {
         localStorage.setItem("role", response.data.user.admin);
         localStorage.setItem('id', response.data.user.id)
         
-        let categorie = params.get("categorie");
-        let sous_categorie = params.get("sous_categorie");
-        let id = params.get("id");
+        let categorie = params.get("categorie") || "";
+        let sous_categorie = params.get("sous_categorie") || "";
+        let id = params.get("id") || "";
 
+        if(categorie !== "" && sous_categorie !== "" && id !== ""){
           fetch(
             `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
           )
@@ -49,6 +50,7 @@ const LoginForm = () => {
               window.location.href = axiosReponse.data.url;
             });
             });
+        }
         })
       .catch((error) => {
         console.error("Erreur lors de la connexion:", error);
