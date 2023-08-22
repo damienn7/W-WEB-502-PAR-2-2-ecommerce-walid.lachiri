@@ -38,6 +38,11 @@ import '../../style/Admin.css'
 const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
 
 function AdminPage() { 
+  var isadmin = localStorage.getItem('role');
+  if (isadmin == "alliwantisplaybaldursgate3"){
+    console.log("Vous n'êtes pas admin...");
+    window.location.href = "/";
+  }
   return (
     <Admin basename="/admin" dataProvider={dataProvider}>
       <Resource   
