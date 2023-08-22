@@ -9,6 +9,7 @@ import CreateUser from "./Inscription";
 import Category from "./categorie";
 import Admin from "./admin/AdminPage";
 import Payment from "./Payment";
+import PaymentForm from "./PaymentForm";
 
 function App() {
   const location = useLocation();
@@ -38,7 +39,8 @@ function App() {
         sous_categorieName: sous_categorieName,
         id: id
         }}/> } />
-      <Route path="/success" element={ < Payment /> } />
+      <Route path="/success/:titre/:description/:prix/:stock/:views/:check_session" element={ < Payment /> } />
+      <Route path="/paymentForm/:categorie/:sub_categorie/:id" element={ < PaymentForm categorie={location.pathname.split('/')[2]} sous_categorie={location.pathname.split('/')[3]} id={location.pathname.split('/')[4]}/>} />
     </Routes>
   );
 }

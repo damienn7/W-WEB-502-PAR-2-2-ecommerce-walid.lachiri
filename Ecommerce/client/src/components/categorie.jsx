@@ -6,7 +6,7 @@ import BreadcrumbsComponent from "./breadcrumbs";
 import Article from "./Article";
 import { useState, useEffect } from "react";
 
-export default function Category(props) {
+export default function   Category(props) {
   const [getData, setData] = useState([]);
 
   const location = useLocation();

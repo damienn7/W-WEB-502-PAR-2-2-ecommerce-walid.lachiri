@@ -1,12 +1,17 @@
 // import axios from "axios";
 // import { useEffect, useState } from "react";
 
+import { useLocation } from "react-router-dom";
+
 // import '../style/payment.css';
 // import { Navigate, redirect, useNavigate } from "react-router-dom";
 // import { Navigation } from "@mui/icons-material";
 
 function Payment(props) {
-//   const navigate = useNavigate();
+  const navigate = useLocation();
+
+  let parameters = navigate.pathname.replace(/%20/g, ' ').split('/').slice(2);
+
 
 //   const [data, setData] = useState({});
 //   const [numberOfCard, setNumberOfCard] = useState('');
@@ -43,69 +48,16 @@ function Payment(props) {
 //     })
 //   }
 return (
-  <div>Payment reuissi</div>
-)
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ backgroundColor: '#7ea3e7', marginTop: '1em', padding: '1em' }}>
+        <h1 style={{ textAlign:'center', fontSize: '2em', fontFamily: 'monospace' }}>Produit acheté :  {parameters[0]}</h1>
+        <h2 style={{ fontSize: '1em', fontFamily: 'monospace'}}>Description du produit : {parameters[1]}</h2>
+        <h3>Prix de l'article : {parameters[2]}</h3>
+        <h3>Stock de l'article : {parameters[3]}</h3>
+        <h3>Nombre de vue de l'article: {parameters[4]}</h3>
+      </div>
+
+    </div>
+  )
 }
-//   return (
-//     <>
-//       <h1 style={{ textAlign: "center", transform: "translateY(100px)" }}>
-//         Paiement pour l'article {data.name}
-//       </h1>
-//       <div
-//         className="container"
-//         style={{
-//           display: "flex",
-//           justifyContent: "center",
-//           alignItems: "center",
-//           minHeight: "89vh",
-//         }}
-//       >
-//         <form className="form_controller" onSubmit={getForm}>
-          
-//           <div className="number_of_card" style={{ marginBottom: '1em'}}>
-//             <div className="card_options_title">
-//               <label htmlFor="carte">Numero de carte</label>
-//             </div>
-//             <input
-//               type="text"
-//               id="carte"
-//               value={numberOfCard}
-//               className="inputForm"
-//               onChange={(event) => setNumberOfCard(event.target.value)}
-//             />
-//           </div>
-
-//           <div className="expir_carte" style={{ marginBottom: '1em'}}>
-//             <div className="card_options_title">
-//               <label htmlFor="exp_carte">Expiration de la carte</label>
-//             </div>
-//             <input
-//               type="text"
-//               id="exp_carte"
-//               value={expireCard}
-//               className="inputForm"
-//               onChange={(event) => setExpireCard(event.target.value)}
-//             />
-//           </div>
-
-//           <div className="password_carte" style={{ marginBottom: '1em'}}>
-//             <div className="card_options_title">
-//               <label htmlFor="password">CVC</label>
-//             </div>
-//             <input
-//               type="text"
-//               id="password"
-//               value={cvc}
-//               className="inputForm"
-//               onChange={(event) => setCvc(event.target.value)}
-//             />
-//           </div>
-
-//           <button type="submit" className="button_connect">Payer</button>
-//         </form>
-//       </div>
-//     </>
-//   );
-// }
-
 export default Payment;

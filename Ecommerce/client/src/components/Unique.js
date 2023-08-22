@@ -11,6 +11,7 @@ import { Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -32,6 +33,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
   const [list, setList] = useState([]);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
+  
+  const navigate = useNavigate();
 
   const fetchUserData = () => {
     fetch(
@@ -83,14 +86,15 @@ function Articleunique({ categorie, sous_categorie, id }) {
   }, []);
 
   const getUrl = (event) => {
-    event.preventDefault();
-    axios
-      .post(
-        `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
-      )
-      .then((axiosReponse) => {
-        window.location = axiosReponse.data.url;
-      });
+    return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
+    // event.preventDefault();
+    // axios
+    //   .post(
+    //     `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
+    //   )
+    //   .then((axiosReponse) => {
+    //     // window.location = axiosReponse.data.url;
+    //   });
   };
 
   return (
@@ -238,7 +242,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
             <Box>
               <video
                 controls
-                autostart
+                start="true"
+                autostart="true"
                 autoPlay
                 src={Video}
                 type="video/mp4"
