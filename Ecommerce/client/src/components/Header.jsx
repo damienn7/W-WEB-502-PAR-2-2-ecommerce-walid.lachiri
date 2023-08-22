@@ -78,9 +78,10 @@ function HandleConnexion() {
   var token = localStorage.getItem("token");
     if (token != null) {
       return (
-        <MenuItem onClick={logout} color="red">
-          Se déconnecter
-        </MenuItem>
+        <>
+        <MenuItem onClick={Profile} color="white">Profile</MenuItem>
+        <MenuItem onClick={logout} color="red">Se déconnecter</MenuItem>
+        </>
       );
     } else {
       return (
@@ -328,8 +329,6 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={Profile}>Profile</MenuItem>
-      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
       <HandleConnexion />
     </Menu>
   );
