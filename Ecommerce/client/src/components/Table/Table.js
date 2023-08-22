@@ -118,17 +118,7 @@ export default function BasicTable(id_article) {
     }
   }
 
-  const fetchUserData = async () => {
-    await fetch("http://127.0.0.1:8000/api/gozizi_test")
-      .then(response => {
-        // console.log(response.json());
-        return response.json();
-      })
-      .then(data => {
-        // console.log(data);
-        setArticles(data)
-      })
-  }
+
 
   function handleChangeQuantity(e,stock){
     if (Number(e.target.value) > stock) {
@@ -139,9 +129,6 @@ export default function BasicTable(id_article) {
     e.target.value = quantity;
   }
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
 
   function vuePanier(user_id){
       axios
@@ -207,7 +194,9 @@ export default function BasicTable(id_article) {
               <TableCell align="right">{article.category}</TableCell>
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
+                {/* {random()}/5 */}
                 {isthistheblood(article.avgRating)}/5
+
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
               <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.price}€</TableCell>

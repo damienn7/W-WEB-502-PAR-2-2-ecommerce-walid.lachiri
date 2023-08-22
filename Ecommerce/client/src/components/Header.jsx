@@ -70,6 +70,7 @@ export default function PrimarySearchAppBar() {
 
   // console.log(searchText);
   useEffect(() => {
+    handleItems()
   }, [])
 
 
@@ -133,6 +134,8 @@ export default function PrimarySearchAppBar() {
   const isMenuOpenBasket = Boolean(anchorElBasket);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [result, setResult] = React.useState(0);
+  const [countItem, setCountItem] = React.useState(0);
+  const [orderId, setOrderId] = React.useState(0);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -158,63 +161,62 @@ export default function PrimarySearchAppBar() {
   const handleBasketMenuOpen = async (event) => {
     handleItems();
     setAnchorElBasket(event.target);
-    // console.log('here');
-    // console.log(anchorElBasket);
-    // await axios
-    //   .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
-    //   .then((response) => {
-    //     if (response.data.length > 0) {
-    //       setArticles(response.data);
-    //       setNoItems("")
-    //       setPrice(0)
-    //       calcPrice();
-    //     } else {
-    //       setPrice("")
-    //       setNoItems("Aucuns articles")
-    //     }
-    //   })
-      // .catch((error) => {
-      //   console.error('Erreur aucun article dans le panier : ', error.response.data);
-      // });
-
   }
 
-  function handleItems(){
+  function handleItems() {
     axios
-    .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
-    .then((response) => {
-      if (response.data.length >= 1) {
-        setArticles(response.data);
-        setNoItems("")
-        // setPrice(0)
-        calcPrice();
-      } else {
-        setPrice("")
-        setNoItems("Aucuns articles")
-      }
-      setResult((noItems !== "") ? noItems : price+" EUR");
-    })
-    .catch((error) => {
-      console.error('Erreur aucun article dans le panier : ', error.response.data);
-    });
+      .get(`http://localhost:8000/api/order/by/${localStorage.getItem('id')}`)
+      .then((response) => {
+        if (response.data.length >= 1) {
+          setArticles(response.data);
+          setNoItems("")
+          // setPrice(0)
+          console.table(response.data[0].order_id)
+          console.log("PRIX => ", calcPrice(response.data));
+        } else {
+          setPrice("")
+          setNoItems("Aucuns articles")
+        }
+        setOrderId(response.data[0].order_id);
+        setResult((noItems !== "") ? noItems : price + " EUR");
+        // alert('Article ajouté au panier avec succès !');
+        calcQuantity(response.data[0].order_id);
+      })
+      .catch((error) => {
+        console.error('Erreur aucun article dans le panier : ', error.response);
+      });
+    console.log("hello test "+orderId);
   }
 
-  const calcPrice = ()=>{
+  const calcPrice = (ArticlesToGetPrice) => {
     var price_calc = 0;
-    var count = 1;
     // articles.map(article => {
-    for (let count = 0; count < articles.length; count++) {
-      const element = articles[count];      
+    for (let count = 0; count < ArticlesToGetPrice.length; count++) {
+      const element = ArticlesToGetPrice[count];
       price_calc += element.quantity * element.unit_price;
-      if (count+1 === articles.length && articles.length > 0) {
-        setPrice(price_calc);
-        count = 1;
-      }
+      // if (count + 1 === ArticlesToGetPrice.length && ArticlesToGetPrice.length > 0) {
+      //   count = 1;
+      // }
     }
-
+    setPrice(price_calc);
+    
     return price_calc;
-      // count++;
+    // count++;
     // })
+  }
+
+  const calcQuantity = (id) => {
+    axios
+      .get(`http://localhost:8000/api/count_item/${id}`)
+      .then((response) => {
+        // console.table(response.data['quantity'][0]['count']);
+        setCountItem(response.data['quantity'][0]['count']);
+      })
+      .catch((error) => {
+        console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
+      });
+
+      console.log("in quantity function "+countItem);
   }
 
   function handleDeleteFromBasket(id) {
@@ -225,20 +227,27 @@ export default function PrimarySearchAppBar() {
         handleItems();
         if (articles.length >= 1) {
           setArticles([]);
-          // setPrice(0)
-          
-          setResult(calcPrice());
-        }else{
+          setPrice(0)
+          // setResult(calcPrice());
+          setResult(0);
+        } else {
           setPrice("")
           setNoItems("Aucuns articles")
           setResult('Aucuns articles')
           setArticles([]);
+          calcQuantity(orderId);
+          handleMenuClose();
         }
         // setResult((noItems !== "") ? noItems : price +" EUR");
+        // alert('Article supprimé du panier avec succès !');
       })
       .catch((error) => {
         console.error('Erreur dans la suppression de l\'article : ', error.response.data);
       });
+
+      console.log("count item : "+countItem);
+
+    // setOrderId();
 
   }
 
@@ -289,14 +298,14 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuCloseBasket}
       sx={{ height: '300px' }}
     >
-      {console.table(articles)}
+      {/* {console.table("order id "+articles[0].order_id)} */}
 
       {articles.map((article) => {
-        return <MenuItem>{article.name}<span>&nbsp;&nbsp;</span><span style={{ backgroundColor: '#303134', width: '40px', color: 'white', borderRadius: '20px', textAlign: 'center' }}>{article.quantity}</span><Button onClick={() => handleDeleteFromBasket(article.asterix)}>Delete</Button></MenuItem>
+        return <MenuItem>{article.name}<span>&nbsp;&nbsp;</span><span style={{ backgroundColor: '#303134', width: '40px', color: 'white', borderRadius: '20px', textAlign: 'center' }}>{article.quantity}</span><Button onClick={() => handleDeleteFromBasket(article.asterix)&handleMenuCloseBasket()}>Delete</Button></MenuItem>
       })}
       {/* <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{price}</Typography> */}
       {/* {console.log("prix "+price)} */}
-      <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{result}</Typography>
+      <Typography style={{ margin: 'auto', width: '100%', textAlign: 'center' }}>{result}</Typography>
 
       <Button style={{ margin: 'auto', width: '100%' }}>Voir le panier</Button>
     </Menu>
@@ -404,7 +413,9 @@ export default function PrimarySearchAppBar() {
               onClick={handleBasketMenuOpen}
               color="inherit"
             >
-              <ShoppingBasketIcon />
+              <Badge badgeContent={(countItem==0)?0:countItem} color="error">
+                <ShoppingBasketIcon />
+              </Badge>
             </IconButton>
             <IconButton
               size="large"

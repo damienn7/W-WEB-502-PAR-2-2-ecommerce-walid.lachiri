@@ -172,6 +172,9 @@ Route::get('order_item/{id}', [Order_itemController::class, 'show']);
 Route::put('order_item/{id}', [Order_itemController::class, 'update']);
 // --------------------------------
 
+// GET
+Route::get('count_item/{id}',[Order_itemController::class, 'countItem']);
+// count quantity*
 
 // Delete 
 Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
@@ -199,5 +202,6 @@ Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController:
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
 Route::get('categories', [CategoriesController::class, 'showCategories']);
+Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);
 Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
 Route::get('characteristic/', [CharacteristicsController::class, 'index']);
