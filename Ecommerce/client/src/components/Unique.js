@@ -73,7 +73,12 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             {/* NOM du produit */}
                             <Typography variant='h4'>{articles.name}</Typography>
                             {/* charactéristiques courte du produit */}
-                            <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI </Typography>
+                            <Typography variant='h8' sx={{ fontStyle: 'oblique', color: 'grey' }}>
+                                {Object.keys(multipleCharacteristics).map((characteristic) => { 
+                                    return <p>{characteristic} : {multipleCharacteristics[characteristic][0]}</p>
+                                })
+                                }
+                            </Typography>
                             <Typography>{articles.stock} restant(s)</Typography>
                             <div className='Description'>
                                 <Grid container spacing={2} disableEqualOverflow>
@@ -90,16 +95,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             {Object.keys(multipleCharacteristics).map((characteristic) => {
                                 if (multipleCharacteristics[characteristic].length > 1) {
                                     return (
-
-                                        // <div>
-                                        //     <p>{characteristic}</p>
-                                        //     <ul>
-                                        //     {multipleCharacteristics[characteristic].map((prout) => {
-                                        //         return (<li>{prout}</li>)
-                                        //     })
-                                        // }
-                                        // </ul>
-                                        // </div>
                                         <FormControl variant="standard" sx={{ m: 3, minWidth: 40 }} defaultValue={'test'}>
                                             <InputLabel id="demo-simple-select-standard-label">{characteristic}</InputLabel>
                                             <Select
@@ -107,15 +102,10 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                                 id="demo-simple-select-standard"
                                                 value={""}
                                                 label={characteristic}
-                                                name={characteristic}
-                                            >
-                                                {multipleCharacteristics[characteristic].map((prout) => {
-                                                    // return (<li>{prout}</li>)
-                                                    return (<MenuItem  align="right" value={prout} >{prout}</MenuItem>)
-
+                                                name={characteristic}>
+                                                {multipleCharacteristics[characteristic].map((characteristicValue) => {
+                                                    return (<MenuItem align="right" value={characteristicValue}>{characteristicValue}</MenuItem>)
                                                 })}
-
-
                                             </Select>
                                         </FormControl>
 
