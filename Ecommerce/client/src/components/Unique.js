@@ -146,7 +146,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
       <div className="Unique">
         <Grid className="Unique" container spacing={2}>
           <Grid xs={10}>
-            {/* NOM du produit */}*{isthistheblood()}
+            {/* NOM du produit */}{isthistheblood()}
             <Typography variant="h4">{articles.name}</Typography>
             {/* caractéristiques courte du produit */}
             <Typography
@@ -305,7 +305,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
           </Grid>
           {list.slice(0, 6).map((listed, index) => (
             <Grid xs={2} key={index}>
-              <img src={listed.image} width={150} />
+              <a href={`/articles/search/${listed.category}/${listed.sub_category}/${listed.idefix}`}><img src={listed.image} width={150} /></a>
               <Typography>{listed.name}</Typography>
             </Grid>
           ))}
