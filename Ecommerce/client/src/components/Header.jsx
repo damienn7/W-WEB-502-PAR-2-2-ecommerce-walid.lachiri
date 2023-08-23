@@ -312,6 +312,8 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
       {articlesPanier.map((article, index) => {
         return (
           <MenuItem key={index}>
+            <img src={article.image} width={"auto"} height={"50"} style={{maxWidth:"60px",}} alt="image de l'article" />
+            <span>&nbsp;&nbsp;</span>
             {article.name}
             <span>&nbsp;&nbsp;</span>
             <span
@@ -343,7 +345,7 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
 
       <Typography style={{ margin: 'auto', width: '100%', textAlign: 'center' }}>{result}</Typography>
 
-      <Button style={{ margin: "auto", width: "100%" }}>Voir le panier</Button>
+      <Button style={{ margin: "auto", width: "100%" }} onClick={()=>{window.location.href="http://localhost:3000/panier"}}>Voir le panier</Button>
     </Menu>
   );
 
