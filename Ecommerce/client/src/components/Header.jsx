@@ -307,14 +307,15 @@ export default function PrimarySearchAppBar({ articles,setArticles,calcQuantity,
       }}
       open={isMenuOpenBasket}
       onClose={handleMenuCloseBasket}
-      sx={{ height: "300px" }}
+      sx={{ height: "300px",
+            top:"30px",}}
+          
+
     >
 
       {articles.map((article, index) => {
         return (
-          <MenuItem key={index}              style={{
-
-          }}>
+          <MenuItem key={index}>
             {article.name}
             <span>&nbsp;&nbsp;</span>
             <span
