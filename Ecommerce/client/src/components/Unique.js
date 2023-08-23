@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+// import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
 
 const style = {
   position: "absolute",
@@ -33,6 +34,37 @@ function Articleunique({ categorie, sous_categorie, id }) {
   const [rating, setRating] = useState([]);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
+  const [result, setResult] = React.useState(0);
+const [noItems, setNoItems] = React.useState("");
+const [price, setPrice] = React.useState(0);
+const [countItem, setCountItem] = React.useState(0);
+const [orderId, setOrderId] = React.useState(0);
+const [articlesPanier, setArticlesPanier] = useState([]);
+
+const calcQuantity = (id) => {
+    axios
+      .get(`http://localhost:8000/api/count_item/${id}`)
+      .then((response) => {
+        // console.table(response.data['quantity'][0]['count']);
+        setCountItem(response.data['quantity'][0]['count']);
+      })
+      .catch((error) => {
+        console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
+      });
+  
+      console.log("in quantity function "+countItem);
+  }
+
+  const calcPrice = (ArticlesToGetPrice) => {
+    var price_calc = 0;
+    for (let count = 0; count < ArticlesToGetPrice.length; count++) {
+      const element = ArticlesToGetPrice[count];
+      price_calc += element.quantity * element.unit_price;
+    }
+    setPrice(price_calc);
+    
+    return price_calc;
+  }
 
   const navigate = useNavigate();
 
@@ -50,31 +82,62 @@ function Articleunique({ categorie, sous_categorie, id }) {
       });
   };
 
-  function handlePanier(e, item, item_id) {
-    let quantity = e.target.parentElement.parentElement.querySelector(
-      "#outlined-number-" + item_id
-    ).value;
-    // console.log(quantity);
-    console.log("user id " + user_id);
+  const handlePanier= (e,item,item_id)=>{
+
+    let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+    console.log(quantity);
+    quantity = (Number(quantity)) ? quantity  : 1;
     var data = new FormData();
-    data.set("item_id", item.id);
-    data.set("user_id", user_id);
-    data.set("unit_price", item.price);
-    data.set("delivery_address", "24 rue Pasteur");
-    data.set("quantity", quantity);
-    axios
-      .post("http://localhost:8000/api/order", data)
-      .then((response) => {
-        console.log("Nouvel article ajouté au panier : ", response.data);
-      })
-      .catch((error) => {
-        console.error(
-          "Erreur l'ajout de l'article au panier : ",
-          error.response.data
-        );
-      });
-    setQuantity(1);
-  }
+    data.set('item_id',item.id);
+    if (localStorage.getItem('id') !== null) {   
+      console.log('user id '+localStorage.getItem('id'));   
+      data.set('user_id',localStorage.getItem('id'));
+      data.set('unit_price',item.price);
+      data.set('delivery_address','24 rue Pasteur');
+      data.set('quantity',quantity);
+      axios
+        .post('http://localhost:8000/api/order', data)
+        .then((response) => {
+          console.log('Nouvel article ajouté au panier : ', response.data);
+          let quantity = (Number(quantity)) ? quantity  : 1;
+          let price = item.price * quantity;
+          setResult(item.price+" EUR");
+        })
+        .catch((error) => {
+          console.error('Erreur l\'ajout de l\'article au panier lol ');
+        });
+    }else{
+      alert('Vous devez vous connecter pour ajouter un article au panier');
+    }
+  
+    calcQuantity(orderId)
+    calcPrice(articlesPanier)
+  } 
+  // function handlePanier(e, item, item_id) {
+  //   let quantity = e.target.parentElement.parentElement.querySelector(
+  //     "#outlined-number-" + item_id
+  //   ).value;
+  //   // console.log(quantity);
+  //   console.log("user id " + user_id);
+  //   var data = new FormData();
+  //   data.set("item_id", item.id);
+  //   data.set("user_id", user_id);
+  //   data.set("unit_price", item.price);
+  //   data.set("delivery_address", "24 rue Pasteur");
+  //   data.set("quantity", quantity);
+  //   axios
+  //     .post("http://localhost:8000/api/order", data)
+  //     .then((response) => {
+  //       console.log("Nouvel article ajouté au panier : ", response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(
+  //         "Erreur l'ajout de l'article au panier : ",
+  //         error.response.data
+  //       );
+  //     });
+  //   setQuantity(1);
+  // }
 
   const getUrl = (event) => {
     return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
@@ -114,12 +177,10 @@ function Articleunique({ categorie, sous_categorie, id }) {
       })
       .then(data => {
         setList(data)
+        console.table(data);
       })
   }
 
-  useEffect(() => {
-    fetchArticlos()
-  }, [])
   useEffect(() => {
     fetchUserData();
     fetchArticles();
@@ -142,7 +203,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
   };
   return (
     <div className="App">
-      <Header />
+      <Header  articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}/>
       <div className="Unique">
         <Grid className="Unique" container spacing={2}>
           <Grid xs={10}>
