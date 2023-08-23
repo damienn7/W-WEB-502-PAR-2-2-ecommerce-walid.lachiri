@@ -10,6 +10,7 @@ import Category from "./categorie";
 import Admin from "./admin/AdminPage";
 import Payment from "./Payment";
 import PaymentForm from "./PaymentForm";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const location = useLocation();
