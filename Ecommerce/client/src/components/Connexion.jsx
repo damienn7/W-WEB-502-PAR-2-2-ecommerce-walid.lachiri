@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    mail: '',
-    password: '',
+    mail: "",
+    password: "",
   });
-
-  const [error, setError] = useState('');
+  const [data, setData] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -16,22 +16,43 @@ const LoginForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setError('');
+    setError("");
 
     axios
-      .post('http://localhost:8000/api/users/login', formData)
+      .post("http://localhost:8000/api/users/login", formData)
       .then((response) => {
-        console.log('Utilisateur connecté:', response.data);
-        setFormData({ mail: '', password: '' });
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('role', response.data.user.admin);
+        console.log("Utilisateur connecté:", response.data);
+        setFormData({ mail: "", password: "" });
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.user.admin);
         localStorage.setItem('id', response.data.user.id)
+        
+        let params = new URLSearchParams(window.location.search);
+        let categorie = params.get("categorie") || "";
+        let sous_categorie = params.get("sous_categorie") || "";
+        let id = params.get("id") || "";
 
-        window.location.href = '/';
-      })
+        if(categorie !== "" && sous_categorie !== "" && id !== ""){
+          fetch(
+            `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
+          )
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              axios
+              .post(
+              `http://localhost:8000/api/checkout/${data[0].name}/${data[0].description}/${data[0].price}/${data[0].stock}/${data[0].views}`
+            )
+            .then((axiosReponse) => {
+              window.location.href = axiosReponse.data.url;
+            });
+            });
+        }
+        })
       .catch((error) => {
-        console.error('Erreur lors de la connexion:', error);
-        setError('Les informations de connexion sont incorrectes.');
+        console.error("Erreur lors de la connexion:", error);
+        setError("Les informations de connexion sont incorrectes.");
       });
   };
 
@@ -41,7 +62,12 @@ const LoginForm = () => {
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <label htmlFor="mail">Mail:</label>
-        <input type="email" name="mail" value={formData.mail} onChange={handleChange} />
+        <input
+          type="email"
+          name="mail"
+          value={formData.mail}
+          onChange={handleChange}
+        />
 
         <label htmlFor="password">Mot de passe:</label>
         <input

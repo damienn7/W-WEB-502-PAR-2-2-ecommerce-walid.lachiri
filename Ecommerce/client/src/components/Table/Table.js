@@ -19,6 +19,36 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
   const [quantity, setQuantity] = useState(1)
   let i = 0;
 
+ 
+  const fetchUserData = () => {
+    fetch("http://127.0.0.1:8000/api/gozizi")
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        setArticles(data)
+      })
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+  // const fetchRating = (id_article) => {
+  //   fetch(`http://127.0.0.1:8000/api/ratingavg/${id_article}`)
+  //     .then(response => {
+  //       return response.json()
+  //     })
+  //     .then(data => {
+  //       setRating(data)
+  //     })
+  // }
+
+  // useEffect(() => {
+  //   fetchRating()
+  // }, [])
+
+
   function isAvailable(quantite = 0) {
     if (quantite > 0) {
       return <div className='greenbox'></div>
@@ -59,17 +89,8 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
       return "?"
     }
   }
-  const fetchUserData = async () => {
-    await fetch("http://127.0.0.1:8000/api/gozizi_test")
-      .then(response => {
-        // console.log(response.json());
-        return response.json();
-      })
-      .then(data => {
-        // console.log(data);
-        setArticles(data)
-      })
-  }
+
+
 
   function handleChangeQuantity(e,stock){
     if (Number(e.target.value) > stock) {
@@ -142,7 +163,7 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
               <TableCell align="right">{article.sub_category}</TableCell>
               <TableCell align="right">
                 {/* {random()}/5 */}
-                {isthistheblood(article.rating)}/5
+                {isthistheblood(article.avgRating)}/5
 
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>

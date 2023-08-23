@@ -109,10 +109,25 @@ public function peripheriquenordsortieA3(Request $request){
             ->select('*', 'items.id as idefix')     
             ->join('categories', 'categories.id', '=', 'items.id_category')
             ->leftJoin('ratings', 'items.id', '=', 'id_article')
-            ->avg('ratings')
-            ->orderBy('views', 'desc')
-            ->get();
-}
+
+            // ->avg('ratings')
+           // ->orderBy('views', 'desc')
+           // ->get();
+
+            ->get()
+            ->groupBy("idefix")
+            ->map(function ($result) {
+                $avg = 0;
+                    foreach($result as $article) {
+                        $avg += $article->rating;
+                    }
+                    $avg = $avg / count($result);
+                $returnedArticle = $result[0];
+                $returnedArticle->avgRating=$avg;
+                return $returnedArticle;    
+            })->values();
+    }
+
     public function methodetotalementraisonnable($id)
     {
         return DB::table('items')
@@ -164,4 +179,11 @@ public function peripheriquenordsortieA3(Request $request){
             return DB::select('SELECT * FROM categories c INNER JOIN items i ON c.id = i.id_category WHERE category = ? AND sub_category = ?', [$category, $sous_category]);
         }
     }
+    public function averagerating(Request $request, $articlos){
+        return DB::table('ratings')
+        ->where('id_article', '=', $articlos)
+        ->groupBy('id_article')
+        ->select(DB::raw('AVG(rating) as test'))
+        ->get();
+}
 }

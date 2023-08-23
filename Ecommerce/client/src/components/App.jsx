@@ -1,19 +1,19 @@
 import { Breadcrumbs } from "@mui/material";
-import { Route, Routes, useParams, useRoutes } from "react-router-dom";
+import { Outlet, Route, Routes, useParams, useRoutes } from "react-router-dom";
 import Accueil from "./Accueil";
 import ArticleUnique from "./Unique";
 import { useLocation } from "react-router-dom";
 import LoginForm from "./Connexion";
-import { Children } from "react";
+import { version } from "react";
 import CreateUser from "./Inscription";
 import Category from "./categorie";
 import Admin from "./admin/AdminPage";
-
-
+import Payment from "./Payment";
+import PaymentForm from "./PaymentForm";
 
 function App() {
   const location = useLocation();
-
+  
   let categorieName = location.pathname.split('/')[3];
   let sous_categorieName = location.pathname.split('/')[4];
   let id = location.pathname.split('/')[5];
@@ -34,6 +34,13 @@ function App() {
         path="/articles/search/:categorie/:sub_categorie/:id"
         element={<ArticleUnique categorie={categorieName} sous_categorie={sous_categorieName} id={id}/>}
       />
+      <Route path="/articles/search/:categorie/:sub_categorie/:id/payment" element={< Payment options={{
+        categorieName: categorieName, 
+        sous_categorieName: sous_categorieName,
+        id: id
+        }}/> } />
+      <Route path="/success/:titre/:description/:prix/:stock/:views/:check_session" element={ < Payment /> } />
+      <Route path="/paymentForm/:categorie/:sub_categorie/:id" element={ < PaymentForm categorie={location.pathname.split('/')[2]} sous_categorie={location.pathname.split('/')[3]} id={location.pathname.split('/')[4]}/>} />
     </Routes>
   );
 }

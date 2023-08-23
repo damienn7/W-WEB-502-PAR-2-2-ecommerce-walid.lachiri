@@ -52,6 +52,22 @@ function Accueil() {
       return price_calc;
     }
 
+  const decryptData = async (encryptedData, key) => {
+    const decryptedData = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(12) }, key, encryptedData);
+  
+    const textDecoder = new TextDecoder();
+    return textDecoder.decode(decryptedData);
+  };
+  // const storedEncryptedData = localStorage.getItem('encryptedAdmin');
+  //        if (storedEncryptedData) {
+  //         const key = localStorage.getItem('encryptedAdmin');
+  //          decryptData(new Uint8Array(storedEncryptedData.split(',')), key)
+  //            .then(decrypted => {
+  //             //  setData(decrypted);
+  //             console.log(decrypted);
+  //            })
+  //            .catch(error => console.error('Erreur de déchiffrement :', error));
+  //           }
   return (
     <div>
       <Header articles={articles} setArticles={setArticles}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}/>

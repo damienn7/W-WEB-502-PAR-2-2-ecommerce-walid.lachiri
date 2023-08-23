@@ -1,0 +1,43 @@
+.card_options_title {
+    text-align: center;
+    margin: .5em 0;
+}
+.button_connect {
+    background-color: rgb(93, 233, 93);
+    text-align: center;
+    padding: 0.3em;
+    border: none;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    color: mintcream;
+    font-size: .9em;
+}
+.button_connect:hover {
+    background-color: rgb(167, 243, 167);
+}
+.form_controller {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(207, 207, 207, 0.2);
+    width: 400px;
+    padding: 0.9em;
+    border: 1px solid black;
+}
+.inputForm {
+    background-color: transparent;
+    border: 1px solid black;
+    padding: .4em;
+    outline: none;
+}
+/* .number_of_card {
+    padding: .1em;
+}
+.expir_carte {
+    padding: .1em;
+}
+.password_carte {
+    padding: .1em;
+} */
