@@ -21,7 +21,6 @@ import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import "../style/font.css";
 import axios from 'axios';
-import { Panier } from "./Panier.js";
 
 const MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS = 3;
 
@@ -94,7 +93,7 @@ function HandleConnexion() {
     }
   }
 
-export default function PrimarySearchAppBar({ articles,setArticles,calcQuantity,orderId,setOrderId,calcPrice,countItem,setCountItem,price,setPrice,noItems,setNoItems,result,setResult}) {
+export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,calcQuantity,orderId,setOrderId,calcPrice,countItem,setCountItem,price,setPrice,noItems,setNoItems,result,setResult}) {
 
   const [searchQuery, setSearchQuery] = useState([]);
 
@@ -214,14 +213,14 @@ export default function PrimarySearchAppBar({ articles,setArticles,calcQuantity,
         handleItems();
         calcQuantity(orderId);
         if (countItem >= 1) {
-          setArticles([]);
+          setArticlesPanier([]);
           setResult(calcPrice()+" EUR");
         } else {
           // setPrice("")
           // console.log(articles.length);
           // setNoItems("Aucuns articles")
           setResult('Aucuns articles')
-          setArticles([]);
+          setArticlesPanier([]);
         }
         // setResult((noItems !== "") ? noItems : price +" EUR");
 
@@ -239,7 +238,7 @@ export default function PrimarySearchAppBar({ articles,setArticles,calcQuantity,
       .get(`http://localhost:8000/api/order/by/${localStorage.getItem("id")}`)
       .then((response) => {
         if (response.data.length >= 1) {
-          setArticles(response.data);
+          setArticlesPanier(response.data);
           setNoItems("")
           console.log(response);
           console.table(response.data[0].order_id)
@@ -307,13 +306,10 @@ export default function PrimarySearchAppBar({ articles,setArticles,calcQuantity,
       }}
       open={isMenuOpenBasket}
       onClose={handleMenuCloseBasket}
-      sx={{ height: "300px",
-            top:"30px",}}
-          
-
+      sx={{ height: "300px", top:"30px"}}
     >
 
-      {articles.map((article, index) => {
+      {articlesPanier.map((article, index) => {
         return (
           <MenuItem key={index}>
             {article.name}

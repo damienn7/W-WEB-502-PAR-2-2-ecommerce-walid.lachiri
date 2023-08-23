@@ -15,42 +15,43 @@ import { useLocation } from "react-router-dom";
 import BreadcrumbsComponent from "./breadcrumbs";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
+// import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
 
 
 function Accueil() {
   const location = useLocation();
 
-  const [result, setResult] = React.useState(0);
-  const [noItems, setNoItems] = React.useState("");
-  const [price, setPrice] = React.useState(0);
-  const [countItem, setCountItem] = React.useState(0);
-  const [orderId, setOrderId] = React.useState(0);
-  const [articles, setArticles] = useState([]);
+const [result, setResult] = React.useState(0);
+const [noItems, setNoItems] = React.useState("");
+const [price, setPrice] = React.useState(0);
+const [countItem, setCountItem] = React.useState(0);
+const [orderId, setOrderId] = React.useState(0);
+const [articlesPanier, setArticlesPanier] = useState([]);
 
-  const calcQuantity = (id) => {
-      axios
-        .get(`http://localhost:8000/api/count_item/${id}`)
-        .then((response) => {
-          // console.table(response.data['quantity'][0]['count']);
-          setCountItem(response.data['quantity'][0]['count']);
-        })
-        .catch((error) => {
-          console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
-        });
-    
-        console.log("in quantity function "+countItem);
-    }
+const calcQuantity = (id) => {
+    axios
+      .get(`http://localhost:8000/api/count_item/${id}`)
+      .then((response) => {
+        // console.table(response.data['quantity'][0]['count']);
+        setCountItem(response.data['quantity'][0]['count']);
+      })
+      .catch((error) => {
+        console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
+      });
   
-    const calcPrice = (ArticlesToGetPrice) => {
-      var price_calc = 0;
-      for (let count = 0; count < ArticlesToGetPrice.length; count++) {
-        const element = ArticlesToGetPrice[count];
-        price_calc += element.quantity * element.unit_price;
-      }
-      setPrice(price_calc);
-      
-      return price_calc;
+      console.log("in quantity function "+countItem);
+  }
+
+  const calcPrice = (ArticlesToGetPrice) => {
+    var price_calc = 0;
+    for (let count = 0; count < ArticlesToGetPrice.length; count++) {
+      const element = ArticlesToGetPrice[count];
+      price_calc += element.quantity * element.unit_price;
     }
+    setPrice(price_calc);
+    
+    return price_calc;
+  }
 
   const decryptData = async (encryptedData, key) => {
     const decryptedData = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(12) }, key, encryptedData);
@@ -70,13 +71,13 @@ function Accueil() {
   //           }
   return (
     <div>
-      <Header articles={articles} setArticles={setArticles}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}/>
+      <Header articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}/>
       <BreadcrumbsComponent navigation={location} />
       <div className="carrousel">
         <MCarousel />
       </div>
       <Box padding={10}>
-        <Table articlesPanier={articles} setArticlesPanier={setArticles}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}></Table>
+        <Table articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}></Table>
       </Box>
       <Footer />
     </div>
