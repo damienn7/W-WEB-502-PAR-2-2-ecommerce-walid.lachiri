@@ -17,6 +17,22 @@ import BreadcrumbsComponent from "./breadcrumbs";
 
 function Accueil() {
   const location = useLocation();
+  const decryptData = async (encryptedData, key) => {
+    const decryptedData = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: new Uint8Array(12) }, key, encryptedData);
+  
+    const textDecoder = new TextDecoder();
+    return textDecoder.decode(decryptedData);
+  };
+  // const storedEncryptedData = localStorage.getItem('encryptedAdmin');
+  //        if (storedEncryptedData) {
+  //         const key = localStorage.getItem('encryptedAdmin');
+  //          decryptData(new Uint8Array(storedEncryptedData.split(',')), key)
+  //            .then(decrypted => {
+  //             //  setData(decrypted);
+  //             console.log(decrypted);
+  //            })
+  //            .catch(error => console.error('Erreur de déchiffrement :', error));
+  //           }
   return (
     <div>
       <Header />
