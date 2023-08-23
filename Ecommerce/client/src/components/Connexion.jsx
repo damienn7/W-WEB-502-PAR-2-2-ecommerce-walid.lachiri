@@ -26,7 +26,16 @@ const LoginForm = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.user.admin);
         localStorage.setItem('id', response.data.user.id)
-        
+                console.log("Utilisateur connecté:", response.data);
+        setFormData({ mail: "", password: "" });
+        localStorage.setItem("token", response.data.token);
+        if(response.data.user.admin === 0){
+          localStorage.setItem('role', 'alliwantisplaybaldursgate3');
+        } else {
+          localStorage.setItem('role', 'rachet&clank');
+        }
+        window.location.href = "/";
+
         let params = new URLSearchParams(window.location.search);
         let categorie = params.get("categorie") || "";
         let sous_categorie = params.get("sous_categorie") || "";
