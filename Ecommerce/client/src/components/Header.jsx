@@ -20,12 +20,14 @@ import Dropdown from "./Dropdown/dropdown";
 import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import "../style/font.css";
-import axios from "axios";
+import axios from 'axios';
+import { Panier } from "./Panier.js";
 
 const MIN_NUMBER_OF_CHARCTERS_TO_TRIGGER_RESULTS = 3;
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
@@ -49,6 +51,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
 }));
+
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -91,14 +94,14 @@ function HandleConnexion() {
     }
   }
 
-export default function PrimarySearchAppBar() {
-  const [articles, setArticles] = useState([]);
+export default function PrimarySearchAppBar({ articles,setArticles,calcQuantity,orderId,setOrderId,calcPrice,countItem,setCountItem,price,setPrice,noItems,setNoItems,result,setResult}) {
+
   const [searchQuery, setSearchQuery] = useState([]);
 
   // console.log(searchText);
   useEffect(() => {
-    handleItems();
-  }, []);
+    handleItems()
+  }, [])
 
   const handleSearch = (search) => {
     // let suggestionMenu = document.getElementById("turbozizi");
@@ -169,11 +172,8 @@ export default function PrimarySearchAppBar() {
           ))}
         </div>
       </Box>
-    );
-  };
-
-  const [noItems, setNoItems] = React.useState("");
-  const [price, setPrice] = React.useState(0);
+    )
+  }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -184,9 +184,6 @@ export default function PrimarySearchAppBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMenuOpenBasket = Boolean(anchorElBasket);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const [result, setResult] = React.useState(0);
-  const [countItem, setCountItem] = React.useState(0);
-  const [orderId, setOrderId] = React.useState(0);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -209,10 +206,33 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleBasketMenuOpen = async (event) => {
-    handleItems();
-    setAnchorElBasket(event.target);
-  };
+  const handleDeleteFromBasket = (id) => {
+    axios
+      .delete(`http://localhost:8000/api/order_item/${id}`)
+      .then((response) => {
+        // console.log(response.data);
+        handleItems();
+        calcQuantity(orderId);
+        if (countItem >= 1) {
+          setArticles([]);
+          setResult(calcPrice()+" EUR");
+        } else {
+          // setPrice("")
+          // console.log(articles.length);
+          // setNoItems("Aucuns articles")
+          setResult('Aucuns articles')
+          setArticles([]);
+        }
+        // setResult((noItems !== "") ? noItems : price +" EUR");
+
+        alert(noItems);
+      })
+      .catch((error) => {
+        console.error('Erreur dans la suppression de l\'article');
+      });
+  
+      console.log("count item : "+countItem);
+  }
 
   function handleItems() {
     axios
@@ -220,92 +240,30 @@ export default function PrimarySearchAppBar() {
       .then((response) => {
         if (response.data.length >= 1) {
           setArticles(response.data);
-          setNoItems("");
-          // setPrice(0)
-          console.table(response.data[0].order_id);
+          setNoItems("")
+          console.log(response);
+          console.table(response.data[0].order_id)
           console.log("PRIX => ", calcPrice(response.data));
+          calcPrice(response.data);
+          setResult(calcPrice(response.data)+" EUR");
         } else {
-          setPrice("");
-          setNoItems("Aucuns articles");
+          setPrice("")
+          setNoItems("Aucuns articles")
+          setResult("Aucuns articles")
         }
         setOrderId(response.data[0].order_id);
-        setResult(noItems !== "" ? noItems : price + " EUR");
-        // alert('Article ajouté au panier avec succès !');
         calcQuantity(response.data[0].order_id);
+        return response.data[0].order_id;
       })
       .catch((error) => {
-        console.error("Erreur aucun article dans le panier : ", error.response);
+        console.error('Erreur aucun article dans le panier : ');
       });
-    console.log("hello test " + orderId);
+    console.log("hello test "+orderId);
   }
 
-  const calcPrice = (ArticlesToGetPrice) => {
-    var price_calc = 0;
-    // articles.map(article => {
-    for (let count = 0; count < ArticlesToGetPrice.length; count++) {
-      const element = ArticlesToGetPrice[count];
-      price_calc += element.quantity * element.unit_price;
-      // if (count + 1 === ArticlesToGetPrice.length && ArticlesToGetPrice.length > 0) {
-      //   count = 1;
-      // }
-    }
-    setPrice(price_calc);
-
-    return price_calc;
-    // count++;
-    // })
-  };
-
-  const calcQuantity = (id) => {
-    axios
-      .get(`http://localhost:8000/api/count_item/${id}`)
-      .then((response) => {
-        // console.table(response.data['quantity'][0]['count']);
-        setCountItem(response.data["quantity"][0]["count"]);
-      })
-      .catch((error) => {
-        console.error(
-          "Erreur veuillez vous connecter pour visualiser votre panier : ",
-          error.response.data
-        );
-      });
-
-    console.log("in quantity function " + countItem);
-  };
-  
-
-  function handleDeleteFromBasket(id) {
-    axios
-      .delete(`http://localhost:8000/api/order_item/${id}`)
-      .then((response) => {
-        console.log(response.data);
-        handleItems();
-        if (articles.length >= 1) {
-          setArticles([]);
-          setPrice(0);
-          // setResult(calcPrice());
-          setResult(0);
-        } else {
-          setPrice("");
-          setNoItems("Aucuns articles");
-          setResult("Aucuns articles");
-          setArticles([]);
-          calcQuantity(orderId);
-          handleMenuClose();
-        }
-        // setResult((noItems !== "") ? noItems : price +" EUR");
-        // alert('Article supprimé du panier avec succès !');
-      })
-      .catch((error) => {
-        console.error(
-          "Erreur dans la suppression de l'article : ",
-          error.response.data
-        );
-      });
-
-    console.log("count item : " + countItem);
-
-    // setOrderId();
+  const handleBasketMenuOpen = async (event) => {
+    handleItems();
+    setAnchorElBasket(event.target);
   }
   
 
@@ -334,10 +292,6 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
-  var price_calc = 0;
-  var count = 1;
-  // var result = (noItems !== "") ? noItems : price+" EUR";
-
   const renderMenuBasket = (
     <Menu
       anchorEl={anchorElBasket}
@@ -353,9 +307,11 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMenuOpenBasket}
       onClose={handleMenuCloseBasket}
-      sx={{ height: "300px" }}
+      sx={{ height: "300px",
+            top:"30px",}}
+          
+
     >
-      {/* {console.table("order id "+articles[0].order_id)} */}
 
       {articles.map((article, index) => {
         return (
@@ -365,32 +321,31 @@ export default function PrimarySearchAppBar() {
             <span
               style={{
                 backgroundColor: "#303134",
-                width: "40px",
+                width: "150px",
                 color: "white",
                 borderRadius: "20px",
                 textAlign: "center",
               }}
             >
-              {article.quantity}
+              {article.quantity+" "}
+               x
+              {" "+article.price}€
+              {"("+article.price*article.quantity+"€)"}    
+
+
             </span>
+            <hr></hr>
             <Button
               onClick={() =>
-                handleDeleteFromBasket(article.asterix) &
-                handleMenuCloseBasket()
-              }
+                handleDeleteFromBasket(article.asterix)               }
             >
               Delete
             </Button>
           </MenuItem>
         );
       })}
-      {/* <Typography style={{ margin: 'auto', width: '100%', textAlign:'center' }}>{price}</Typography> */}
-      {/* {console.log("prix "+price)} */}
-      <Typography
-        style={{ margin: "auto", width: "100%", textAlign: "center" }}
-      >
-        {result}
-      </Typography>
+
+      <Typography style={{ margin: 'auto', width: '100%', textAlign: 'center' }}>{result}</Typography>
 
       <Button style={{ margin: "auto", width: "100%" }}>Voir le panier</Button>
     </Menu>
@@ -504,10 +459,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleBasketMenuOpen}
               color="inherit"
             >
-              <Badge
-                badgeContent={countItem == 0 ? 0 : countItem}
-                color="error"
-              >
+              <Badge badgeContent={(countItem==0)?0:countItem} color="error">
                 <ShoppingBasketIcon />
               </Badge>
             </IconButton>
@@ -544,3 +496,4 @@ export default function PrimarySearchAppBar() {
     </Box>
   );
 }
+
