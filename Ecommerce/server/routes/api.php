@@ -201,4 +201,4 @@ Route::get('categories', [CategoriesController::class, 'showCategories']);
 //Route for payment (method post)
 Route::post('checkout/{titre}/{description}/{prix}/{stock}/{views}', [StripeController::class, 'checkout']); 
 
-Route::post("success?titre={titre}&description={description}&prix={prix}&stock={stock}&views={view}s&session_id={CHECKOUT_SESSION_ID}", [StripeController::class, 'success']);
+Route::post("success?titre={titre}&description={description}&prix={prix}&stock={stock}&views={view}&session_id={CHECKOUT_SESSION_ID}", [StripeController::class, 'success']);

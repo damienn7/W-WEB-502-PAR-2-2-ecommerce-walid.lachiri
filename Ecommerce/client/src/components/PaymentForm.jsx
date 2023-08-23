@@ -44,6 +44,7 @@ export default function PaymentForm({ categorie, sous_categorie, id }) {
         <input
           type="text"
           name="numberOfCard"
+          maxLength={16}
           onChange={(event) => setNumberOfCard(event)}
         />
       </div>
@@ -53,13 +54,14 @@ export default function PaymentForm({ categorie, sous_categorie, id }) {
         <input
           type="text"
           name="expireCard"
+          maxLength={5}
           onChange={(event) => setExpireCard(event)}
         />
       </div>
 
       <div>
         <label htmlFor="cvc">CVC</label>
-        <input type="text" name="cvc" onChange={(event) => setCvc(event)} />
+        <input type="text" name="cvc" onChange={(event) => setCvc(event)} maxLength={3}/>
       </div>
 
       <button type="submit">Payer</button>

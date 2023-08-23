@@ -12,42 +12,7 @@ function Payment(props) {
 
   let parameters = navigate.pathname.replace(/%20/g, ' ').split('/').slice(2);
 
-
-//   const [data, setData] = useState({});
-//   const [numberOfCard, setNumberOfCard] = useState('');
-//   const [expireCard, setExpireCard] = useState('');
-//   const [cvc, setCvc] = useState('');
-
-//   const getInfoOfArticle = () => {
-//     axios
-//       .get(
-//         `http://localhost:8000/api/articles/search/${props.options.categorieName}/${props.options.sous_categorieName}/${props.options.id}`
-//       )
-//       .then((reponse) => {
-//         return reponse.data;
-//       })
-//       .then((data) => {
-//         setData(data[0]);
-//       });
-//   };
-
-//   useEffect(() => {
-//       getInfoOfArticle();
-//   }, []);
-
-//   const getForm = (event) => {
-//     event.preventDefault();
-
-
-//     // console.log(numberOfCard);
-//     // console.log(expireCard);
-//     // console.log(cvc);
-
-//     axios.post('http://localhost:8000/api/checkout').then(axiosReponse => {
-//       window.location = axiosReponse.data.url;
-//     })
-//   }
-return (
+  return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ backgroundColor: '#7ea3e7', marginTop: '1em', padding: '1em' }}>
         <h1 style={{ textAlign:'center', fontSize: '2em', fontFamily: 'monospace' }}>Produit acheté :  {parameters[0]}</h1>
