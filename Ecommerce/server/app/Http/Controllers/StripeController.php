@@ -51,13 +51,23 @@ class StripeController extends Controller
   }
   public function success(Request $request)
   {
-    return response()->json([
-      'titre' => $request->get('titre'),
-      'description' => $request->get('description'),
-      'prix' => $request->get('prix'),
-      'stock' => $request->get('stock'),
-      'views' => $request->get('views'),
-      'session_id' => $request->get('session_id'),
-    ]);
+
+    $titre = $request->get('titre');
+    $description = $request->get('description');
+    $prix = $request->get('prix');
+    $stock = $request->get('stock');
+    $views = $request->get('views');
+    $session_id = $request->get('session_id');
+
+    // return response()->json([
+    //   'titre' => $request->get('titre'),
+    //   'description' => $request->get('description'),
+    //   'prix' => $request->get('prix'),
+    //   'stock' => $request->get('stock'),
+    //   'views' => $request->get('views'),
+    //   'session_id' => $request->get('session_id'),
+    // ]);
+
+    return redirect("http://localhost:3000/success/$titre/$description/$prix/$stock/$views/$session_id");
   }
 }

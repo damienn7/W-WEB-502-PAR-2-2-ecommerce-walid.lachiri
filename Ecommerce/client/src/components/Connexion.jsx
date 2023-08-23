@@ -27,6 +27,7 @@ const LoginForm = () => {
         localStorage.setItem("role", response.data.user.admin);
         localStorage.setItem('id', response.data.user.id)
         
+        let params = new URLSearchParams(window.location.search);
         let categorie = params.get("categorie") || "";
         let sous_categorie = params.get("sous_categorie") || "";
         let id = params.get("id") || "";
