@@ -357,9 +357,9 @@ export default function PrimarySearchAppBar() {
     >
       {/* {console.table("order id "+articles[0].order_id)} */}
 
-      {articles.map((article) => {
+      {articles.map((article, index) => {
         return (
-          <MenuItem>
+          <MenuItem key={index}>
             {article.name}
             <span>&nbsp;&nbsp;</span>
             <span
