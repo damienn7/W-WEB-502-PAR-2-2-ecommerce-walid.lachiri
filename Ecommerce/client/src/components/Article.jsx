@@ -3,11 +3,12 @@ import { Container, Card, TableCell, TableRow } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Article({ article }) {
-  return article.map((article, index) => (
+  return article.map(article => (
     <Link
       to={`http://localhost:3000/articles/search/${article.category}/${article.sub_category}/${article.id}`}
+      key={article.id}
     >
-      <div key={index} style={{ margin: "0 auto" }}>
+      <div style={{ margin: "0 auto" }}>
         <div
           style={{
             backgroundColor: "bluecyan",

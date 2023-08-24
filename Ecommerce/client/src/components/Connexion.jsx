@@ -1,6 +1,5 @@
-// import React, { useState } from 'react';
+import React, { useState } from "react";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -25,20 +24,45 @@ const LoginForm = () => {
         console.log("Utilisateur connecté:", response.data);
         setFormData({ mail: "", password: "" });
         localStorage.setItem("token", response.data.token);
-        console.table(response.data)
-        localStorage.setItem("id", response.data.user.id);
-
+        localStorage.setItem("role", response.data.user.admin);
+        localStorage.setItem('id', response.data.user.id)
+                console.log("Utilisateur connecté:", response.data);
+        setFormData({ mail: "", password: "" });
+        localStorage.setItem("token", response.data.token);
         if(response.data.user.admin === 0){
           localStorage.setItem('role', 'alliwantisplaybaldursgate3');
         } else {
           localStorage.setItem('role', 'rachet&clank');
         }
         window.location.href = "/";
-          })
-          .catch((error) => {
-            console.error("Erreur lors de la connexion:", error);
-            setError("Les informations de connexion sont incorrectes.");
-          });
+
+        let params = new URLSearchParams(window.location.search);
+        let categorie = params.get("categorie") || "";
+        let sous_categorie = params.get("sous_categorie") || "";
+        let id = params.get("id") || "";
+
+        if(categorie !== "" && sous_categorie !== "" && id !== ""){
+          fetch(
+            `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
+          )
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              axios
+              .post(
+              `http://localhost:8000/api/checkout/${data[0].name}/${data[0].description}/${data[0].price}/${data[0].stock}/${data[0].views}`
+            )
+            .then((axiosReponse) => {
+              window.location.href = axiosReponse.data.url;
+            });
+            });
+        }
+        })
+      .catch((error) => {
+        console.error("Erreur lors de la connexion:", error);
+        setError("Les informations de connexion sont incorrectes.");
+      });
   };
 
   return (

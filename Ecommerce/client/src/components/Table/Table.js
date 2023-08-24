@@ -14,24 +14,10 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
 
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//   createData('Eclair', 262, 16.0, 24, 6.0),
-//   createData('Cupcake', 305, 3.7, 67, 4.3),
-//   createData('Gingerbread', 356, 16.0, 49, 3.9),
-// ];
-
-export default function BasicTable(id_article) {
+export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuantity,orderId,setOrderId,calcPrice,countItem,setCountItem,price,setPrice,noItems,setNoItems,result,setResult}) {
   const [articles, setArticles] = useState([])
   const [quantity, setQuantity] = useState(1)
   let i = 0;
-  const user_id = localStorage.getItem('id');
-  // console.log(user_id);
 
  
   const fetchUserData = () => {
@@ -62,21 +48,7 @@ export default function BasicTable(id_article) {
   //   fetchRating()
   // }, [])
 
-  function handlePanier(item){
-    var data = new FormData();
-    data.set('item_id',item.id);
-    data.set('user_id',1);
-    data.set('unit_price',item.price);
-    data.set('delivery_address','24 rue Pasteur');
-    axios
-      .post('http://localhost:8000/api/order', data)
-      .then((response) => {
-        console.log('Nouvel utilisateur créé:', response.data);
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la création du panier : ', error.response.data);
-      });
-  }
+
   function isAvailable(quantite = 0) {
     if (quantite > 0) {
       return <div className='greenbox'></div>
@@ -129,28 +101,16 @@ export default function BasicTable(id_article) {
     e.target.value = quantity;
   }
 
-
-  function vuePanier(user_id){
-      axios
-        .get(`http://localhost:8000/api/order/by/${user_id}`)
-        .then((response) => {
-          console.log('Articles présents dans le panier : ', response.data);
-        })
-        .catch((error) => {
-          console.error('Erreur aucun article dans le panier : ', error.response.data);
-        });
-      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
-  }
-
-  function handlePanier(e,item,item_id){
+  const handlePanier= (e,item,item_id)=>{
 
     let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
     console.log(quantity);
+    quantity = (Number(quantity)) ? quantity  : 1;
     var data = new FormData();
     data.set('item_id',item.idefix);
-    if (user_id !== null) {   
-      console.log('user id '+user_id);   
-      data.set('user_id',user_id);
+    if (localStorage.getItem('id') !== null) {   
+      console.log('user id '+localStorage.getItem('id'));   
+      data.set('user_id',localStorage.getItem('id'));
       data.set('unit_price',item.price);
       data.set('delivery_address','24 rue Pasteur');
       data.set('quantity',quantity);
@@ -158,16 +118,24 @@ export default function BasicTable(id_article) {
         .post('http://localhost:8000/api/order', data)
         .then((response) => {
           console.log('Nouvel article ajouté au panier : ', response.data);
+          let quantity = (Number(quantity)) ? quantity  : 1;
+          let price = item.price * quantity;
+          setResult(item.price+" EUR");
         })
         .catch((error) => {
-          console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
+          console.error('Erreur l\'ajout de l\'article au panier : ');
         });
     }else{
       alert('Vous devez vous connecter pour ajouter un article au panier');
-      // window.location.href = '/';
     }
-      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
-  }
+  
+    calcQuantity(orderId)
+    calcPrice(articlesPanier)
+  } 
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
 
   return (
     <TableContainer component={Paper}>
