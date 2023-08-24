@@ -10,6 +10,8 @@ use App\Http\Controllers\CharacteristicsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Order_itemController;
+use App\Http\Controllers\ShippingFeeController;
+
 
 
 /*
@@ -86,23 +88,16 @@ Route::get('nomserieux/{id}', [ArticleController::class, 'methodetotalementraiso
 Route::get('articles/{id}', [ArticleController::class, 'show']);
 // --------------------------------
 
-// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
-// READ | WHERE | ORDER BY
 
 // Route::get('articles/search?q={search}&c={category}&sc={sub_category}', [ArticleController::class, 'search']);
-
-// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
 
 // UPDATE
 Route::put('articles/{id}', [ArticleController::class, 'update']);
 // --------------------------------
 
-
 // Delete
 Route::delete('articles/{id}/', [ArticleController::class, 'destroy']);
 // --------------------------------
-// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
-// READ | WHERE | ORDER BY
 
 //CRUD Utilisateur
 Route::post('users/', [UserController::class, 'create']);
@@ -183,26 +178,10 @@ Route::delete('order_item/{id}/', [Order_itemController::class, 'destroy']);
 Route::get('articles/search/{category}/{sub_category}', [ArticleController::class, 'searchNavigation']);
 Route::get('articles/search/{category}/{sub_category}/{id}', [ArticleController::class, 'searchNavigation']);
 
-// G̸̝̼͔̓͆͝a̴͓̟̠̚͝͝m̴̻̘͋͠͠e̴̡͓͙̓̈́̒
-
-
-// //CRUD Utilisateur
-// Route::post('users/', [UserController::class, 'createUser']);
-// Route::get('users/', [UserController::class, 'indexUsers']);
-// Route::get('users/{id}', [UserController::class, 'indexUser']);
-// Route::put('users/{id}/', [UserController::class, 'updateUser']);
-// Route::delete('users/{id}/', [UserController::class, 'deleteUser']);
-
-// //CRUD Categories pour ADMIN ONLY ATTENTION
-// Route::post("categories/", [CategoriesController::class, "createCategory"]);
-// Route::get("categories/", [CategoriesController::class, "showCategories"]);
-// Route::get("categories/{id}", [CategoriesController::class, "showCategory"]);
-// Route::put("categories/{id}", [CategoriesController::class, "updateCategory"]);
-// Route::delete("categories/{id}", [CategoriesController::class, "deleteCategory"]);
 
 //Route suggestion dans la recherche
 Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'searchSuggestion']);
-Route::get('categories', [CategoriesController::class, 'showCategories']); 
+Route::get('categoriess', [CategoriesController::class, 'showCategories']); 
 
 //Route for payment (method post)
 Route::post('checkout/{titre}/{description}/{prix}/{stock}/{views}', [StripeController::class, 'checkout']); 
@@ -211,3 +190,12 @@ Route::post("success?titre={titre}&description={description}&prix={prix}&stock={
 Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);
 Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
 Route::get('characteristic/', [CharacteristicsController::class, 'index']);
+
+
+
+//CRUD Categories pour ADMIN ONLY ATTENTION
+Route::post("shippingfee/", [ShippingFeeController::class, "create"]);
+Route::get("shippingfee/", [ShippingFeeController::class, "index"]);
+Route::get("shippingfee/{id}", [ShippingFeeController::class, "show"]);
+Route::put("shippingfee/{id}", [ShippingFeeController::class, "update"]);
+Route::delete("shippingfee/{id}", [ShippingFeeController::class, "delete"]);

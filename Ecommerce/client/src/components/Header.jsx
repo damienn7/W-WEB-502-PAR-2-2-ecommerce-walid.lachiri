@@ -72,23 +72,32 @@ function logout() {
   function Profile() {
     window.location.href="/myprofile";
   }
-  function login() {
-    window.location.href = "/login";
+  function signin() {
+    window.location.href = "/signin";
+  }
+  function signup() {
+    window.location.href = "/signup";
   }
 
 function HandleConnexion() {
   var token = localStorage.getItem("token");
     if (token != null) {
       return (
-        <MenuItem onClick={logout} color="red">
-          Se déconnecter
-        </MenuItem>
+        <>
+        <MenuItem onClick={Profile} color="white">Profile</MenuItem>
+        <MenuItem onClick={logout} color="red">Se déconnecter</MenuItem>
+        </>
       );
     } else {
       return (
-        <MenuItem onClick={login} color="blue">
+        <>
+        <MenuItem onClick={signin} color="blue">
           Se connecter
         </MenuItem>
+        <MenuItem onClick={signup} color="green">
+        S'inscrire
+      </MenuItem>
+      </>
       );
     }
   }
@@ -166,7 +175,7 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
                 alt="product"
               />
               <p>{article.name}</p>
-              <p align="right">{article.price}</p>
+              <p align="right">{" "+article.price}€</p>
             </a>
           ))}
         </div>
@@ -285,8 +294,6 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={Profile}>Profile</MenuItem>
-      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
       <HandleConnexion />
     </Menu>
   );
