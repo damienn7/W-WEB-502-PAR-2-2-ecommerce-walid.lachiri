@@ -10,7 +10,7 @@ class CreateShippingfeeTable extends Migration
     {
         Schema::create('shipping_fee', function (Blueprint $table) {
             $table->id();
-            $table->string('Country');
+            $table->string('country');
             $table->integer('price');
             $table->timestamps();
         });

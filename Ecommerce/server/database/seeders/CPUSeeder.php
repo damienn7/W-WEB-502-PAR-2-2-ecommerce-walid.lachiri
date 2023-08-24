@@ -59,7 +59,7 @@ class CPUSeeder extends Seeder
                 "id_category" => 1,
                 "image" => $cpuImg[rand(0, 5)],
                 'description' => "Ce processeur procède moult choses",
-                'views' => rand(0, 300),
+                'views' => rand(100, 10000),
                 'price' => rand(300, 900),
                 'stock' => rand(10, 1500)
             ]);
