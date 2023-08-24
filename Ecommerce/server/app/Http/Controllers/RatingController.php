@@ -27,8 +27,6 @@ class RatingController extends Controller
         $article->id_user = $request->id_user;
         $article->id_article = $request->id_article;
         $article->rating = $request->rating;
-        $article->rating = $request->rating;
-
 
 
         $article->save();
@@ -37,7 +35,6 @@ class RatingController extends Controller
             "articles" => $article,
         ], 201);
     }
-
 
 
     function update(Request $request, $id)

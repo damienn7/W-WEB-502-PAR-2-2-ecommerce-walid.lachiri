@@ -77,6 +77,7 @@ Route::post('users/login', [UserController::class, 'login']);
 
 // CREATE
 Route::post('articles', [ArticleController::class, 'createArticle']);
+Route::post('notedefou', [RatingController::class, 'create']);
 // --------------------------------
 
 // READ
