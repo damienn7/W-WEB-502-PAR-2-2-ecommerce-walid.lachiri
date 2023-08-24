@@ -3,10 +3,9 @@ import axios from 'axios';
 
 const UpdateUser = ({ user }) => {
   const [formData, setFormData] = useState({
-    pseudo: user.pseudo,
-    email: user.email,
+    name: user.name,
+    mail: user.mail,
     password: '',
-    admin: user.admin === 1,
   });
 
   const handleChange = (event) => {
@@ -32,11 +31,11 @@ const UpdateUser = ({ user }) => {
     <div>
       <h2>Modifier un utilisateur</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="pseudo">Pseudo:</label>
-        <input type="text" name="pseudo" value={formData.pseudo} onChange={handleChange} />
+        <label htmlFor="name">Pseudo:</label>
+        <input type="text" name="name" value={formData.name} onChange={handleChange} />
 
         <label htmlFor="email">Email:</label>
-        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+        <input type="email" name="email" value={formData.mail} onChange={handleChange} />
 
         <label htmlFor="password">Nouveau mot de passe:</label>
         <input
@@ -45,17 +44,6 @@ const UpdateUser = ({ user }) => {
           value={formData.password}
           onChange={handleChange}
         />
-
-        <label htmlFor="admin">Admin:</label>
-        <input
-          type="checkbox"
-          name="admin"
-          checked={formData.admin}
-          onChange={() =>
-            setFormData((prevFormData) => ({ ...prevFormData, admin: !prevFormData.admin }))
-          }
-        />
-
         <button type="submit">Mettre à jour</button>
       </form>
     </div>

@@ -8,8 +8,11 @@ import { version } from "react";
 import CreateUser from "./Inscription";
 import Category from "./categorie";
 import Admin from "./admin/AdminPage";
+import UpdateUser from "./user/UpdateUser";
+
 import Payment from "./Payment";
 import PaymentForm from "./PaymentForm";
+import React, { useEffect, useState } from "react";
 
 function App() {
   const location = useLocation();
@@ -34,6 +37,7 @@ function App() {
         path="/articles/search/:categorie/:sub_categorie/:id"
         element={<ArticleUnique categorie={categorieName} sous_categorie={sous_categorieName} id={id}/>}
       />
+      <Route path="/myprofile" element={<UpdateUser/>}/>
       <Route path="/articles/search/:categorie/:sub_categorie/:id/payment" element={< Payment options={{
         categorieName: categorieName, 
         sous_categorieName: sous_categorieName,
