@@ -10,6 +10,8 @@ use App\Http\Controllers\CharacteristicsController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Order_itemController;
+use App\Http\Controllers\ShippingFeeController;
+
 
 
 /*
@@ -188,3 +190,12 @@ Route::post("success?titre={titre}&description={description}&prix={prix}&stock={
 Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);
 Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
 Route::get('characteristic/', [CharacteristicsController::class, 'index']);
+
+
+
+//CRUD Categories pour ADMIN ONLY ATTENTION
+Route::post("shippingfee/", [ShippingFeeController::class, "create"]);
+Route::get("shippingfee/", [ShippingFeeController::class, "index"]);
+Route::get("shippingfee/{id}", [ShippingFeeController::class, "show"]);
+Route::put("shippingfee/{id}", [ShippingFeeController::class, "update"]);
+Route::delete("shippingfee/{id}", [ShippingFeeController::class, "delete"]);
