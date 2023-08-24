@@ -51,6 +51,15 @@ export default function Panier({ }) {
         return price_calc;
     }
 
+    const increaseQuantity = (e) => {
+        // console.log(e.target.parentElement.parentElement.querySelector('#label>span').innerText);
+        e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) + 1;
+    }
+
+    const decreaseQuantity = (e) => {
+        e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) - 1;
+    }
+
     const handleDeleteFromBasket = (id) => {
         axios
             .delete(`http://localhost:8000/api/order_item/${id}`)
@@ -157,13 +166,13 @@ export default function Panier({ }) {
                                         <span>{article.name}</span>
                                     </div>
                                     <div className="quantity">
-                                        <button>
+                                        <button onClick={(e)=>decreaseQuantity(e)}>
                                             <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M20 12L4 12"></path>
                                             </svg>
                                         </button>
-                                        <label>{article.quantity}</label>
-                                        <button>
+                                        <label id='label'><span>{article.quantity}</span></label>
+                                        <button onClick={(e)=>increaseQuantity(e)}>
                                             <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M12 4V20M20 12H4"></path>
                                             </svg>
