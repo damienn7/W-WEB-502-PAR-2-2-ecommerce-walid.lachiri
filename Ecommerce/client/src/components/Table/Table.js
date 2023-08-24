@@ -174,7 +174,6 @@ else if (stock === 0){
         <TableHead>
           <TableRow>
             <TableCell>Nom</TableCell>
-            <TableCell align="right">Type</TableCell>
             <TableCell align="right">Catégorie</TableCell>
             <TableCell align="right">Note</TableCell>
             <TableCell align="right">Disponibilité</TableCell>
@@ -190,7 +189,6 @@ else if (stock === 0){
             key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 
               <TableCell component="th" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`} scope="row">{istop3(article.name)}</TableCell>
-              <TableCell align="right"onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.category}</TableCell>
               <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.sub_category}</TableCell>
               <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
                 {/* {random()}/5 */}

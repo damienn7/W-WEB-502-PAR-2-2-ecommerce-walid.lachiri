@@ -84,17 +84,17 @@ function HandleConnexion() {
     if (token != null) {
       return (
         <>
-        <MenuItem onClick={Profile} color="white">Profile</MenuItem>
-        <MenuItem onClick={logout} color="red">Se déconnecter</MenuItem>
+        <MenuItem onClick={Profile} color="white">Profil</MenuItem>
+        <MenuItem onClick={logout} sx={{color:'red'}}>Se déconnecter</MenuItem>
         </>
       );
     } else {
       return (
         <>
-        <MenuItem onClick={signin} color="blue">
+        <MenuItem onClick={signin} sx={{color:"blue"}}>
           Se connecter
         </MenuItem>
-        <MenuItem onClick={signup} color="green">
+        <MenuItem onClick={signup} sx={{color:"green"}}>
         S'inscrire
       </MenuItem>
       </>
