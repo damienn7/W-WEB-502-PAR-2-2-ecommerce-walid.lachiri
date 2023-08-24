@@ -66,14 +66,6 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
       // return false
     }
   }
-  function isAvailable3(quantite = 0) {
-    if (quantite > 0) {
-      return "enabled"
-    }
-    else if (quantite === 0) {
-      return "disabled"
-    }
-  }
 
   const random = () => {
     return Math.floor(Math.random() * 6);
@@ -150,9 +142,9 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
           if (quantite === 0) {
          alert("Y'a pas d'article on t'a dit") 
           }
-          else{
+          else if (quantite > 0){
             console.log('Nouvel article ajouté au panier : ', response.data);
-                 let quantity = (Number(quantity)) ? quantity  : 1;
+            let quantity = (Number(quantity)) ? quantity  : 1;
           let price = item.price * quantity;
           setResult(item.price+" EUR");
           }
@@ -168,7 +160,13 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     calcPrice(articlesPanier)
   } 
 
-
+ function mangetesmorts(article, idefix, stock){
+  if (stock > 0)
+return <Button onClick={(e) => {handlePanier(e,article,idefix, stock)}}>{isAvailable2(stock)}</Button>;
+else if (stock === 0){
+  return <p id="outofstock">INDISPONIBLE</p>
+}
+}
   return (
 
     <TableContainer component={Paper}>
@@ -210,7 +208,7 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
                 InputProps={{inputProps:{min: "1", max: article.stock, step:"1"}}}
                 onChange={(e)=>handleChangeQuantity(e,article.stock)}
                 /></TableCell>
-              <TableCell align="right"><Button onClick={(e) => {handlePanier(e,article,article.idefix, article.stock)}}>{isAvailable2(article.stock)}</Button></TableCell>
+              <TableCell align="right">{mangetesmorts(article, article.idefix,article.stock)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
