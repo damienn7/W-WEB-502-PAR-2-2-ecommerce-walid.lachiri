@@ -11,7 +11,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 // import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
+
+
 
 const style = {
     position: "absolute",
@@ -43,37 +49,80 @@ const style2 = {
     p: 4,
 };
 function Articleunique({ categorie, sous_categorie, id }) {
-    const [articles, setArticles] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [quantity, setQuantity] = useState(1);
-    const [list, setList] = useState([]);
-    const [rating, setRating] = useState([]);
-    const openModal = () => setOpen(true);
-    const closeModal = () => setOpen(false);
-    const [result, setResult] = React.useState(0);
-    const [noItems, setNoItems] = React.useState("");
-    const [price, setPrice] = React.useState(0);
-    const [countItem, setCountItem] = React.useState(0);
-    const [orderId, setOrderId] = React.useState(0);
-    const [articlesPanier, setArticlesPanier] = useState([]);
+  const [multipleCharacteristics, setMultipleCharacteristics] = useState(undefined);
+  const [articles, setArticles] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [list, setList] = useState([]);
+  const [rating, setRating] = useState([]);
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
+  const [result, setResult] = React.useState(0);
+  const [noItems, setNoItems] = React.useState("");
+  const [price, setPrice] = React.useState(0);
+  const [countItem, setCountItem] = React.useState(0);
+  const [orderId, setOrderId] = React.useState(0);
+  const [articlesPanier, setArticlesPanier] = useState([]);
     const handleOpen = () => setFopen(true);
     const [fopen, setFopen] = useState(false);
     const handleClose = () => setFopen(false);
+  const Characteristics = () => {
+    if (multipleCharacteristics !== undefined) {
+
+      return Object.keys(multipleCharacteristics).map((characteristic) => {
+        if (multipleCharacteristics[characteristic].length > 1) {
+          return (
+            <FormControl variant="standard" sx={{ m: 3, minWidth: 40 }} defaultValue={'test'}>
+              <InputLabel id="demo-simple-select-standard-label">{characteristic}</InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={""}
+                label={characteristic}
+                name={characteristic}
+              >
+                {multipleCharacteristics[characteristic].map((characteristicValue) => {
+                  return (<MenuItem align="right" value={characteristicValue} >{characteristicValue}</MenuItem>)
+                })}
 
 
-    const calcQuantity = (id) => {
-        axios
-            .get(`http://localhost:8000/api/count_item/${id}`)
-            .then((response) => {
-                // console.table(response.data['quantity'][0]['count']);
-                setCountItem(response.data['quantity'][0]['count']);
-            })
-            .catch((error) => {
-                console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
-            });
+              </Select>
+            </FormControl>
 
-        console.log("in quantity function " + countItem);
+          )
+        }
+        return null
+      })
     }
+    else {
+      return "Loading..."
+    }
+  }
+
+  const InlineCharacteristics = () => {
+    if (multipleCharacteristics !== undefined) {
+      return Object.keys(multipleCharacteristics).map((characteristic) => {
+          return characteristic + " : " +  multipleCharacteristics[characteristic][0] + " - ";
+      })
+    }
+    else {
+      return "Loading..."
+    }
+  }
+
+  const calcQuantity = (id) => {
+    axios
+      .get(`http://localhost:8000/api/count_item/${id}`)
+      .then((response) => {
+        // console.table(response.data['quantity'][0]['count']);
+        setCountItem(response.data['quantity'][0]['count']);
+      })
+      .catch((error) => {
+        console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
+      });
+
+    console.log("in quantity function " + countItem);
+  }
 
     const calcPrice = (ArticlesToGetPrice) => {
         var price_calc = 0;
@@ -88,76 +137,86 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
     const navigate = useNavigate();
 
-    const user_id = localStorage.getItem("id");
+  const fetchCharacteristics = async () => {
+    await fetch("http://127.0.0.1:8000/api/characteristic/" + id)
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        // console.log(data)
+        setMultipleCharacteristics(data)
+      })
+  }
 
-    const fetchUserData = () => {
-        fetch(
-            `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
-        )
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                setArticles(data[0]);
-            });
-    };
 
-    const handlePanier = (e, item, item_id) => {
+  const fetchUserData = () => {
+    fetch(
+      `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setArticles(data[0]);
+      });
+  };
 
-        let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-" + item_id).value;
-        console.log(quantity);
-        quantity = (Number(quantity)) ? quantity : 1;
-        var data = new FormData();
-        data.set('item_id', item.id);
-        if (localStorage.getItem('id') !== null) {
-            console.log('user id ' + localStorage.getItem('id'));
-            data.set('user_id', localStorage.getItem('id'));
-            data.set('unit_price', item.price);
-            data.set('delivery_address', '24 rue Pasteur');
-            data.set('quantity', quantity);
-            axios
-                .post('http://localhost:8000/api/order', data)
-                .then((response) => {
-                    console.log('Nouvel article ajouté au panier : ', response.data);
-                    let quantity = (Number(quantity)) ? quantity : 1;
-                    let price = item.price * quantity;
-                    setResult(item.price + " EUR");
-                })
-                .catch((error) => {
-                    console.error('Erreur l\'ajout de l\'article au panier lol ');
-                });
-        } else {
-            alert('Vous devez vous connecter pour ajouter un article au panier');
-        }
+  const handlePanier = (e, item, item_id) => {
 
-        calcQuantity(orderId)
-        calcPrice(articlesPanier)
+    let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-" + item_id).value;
+    console.log(quantity);
+    quantity = (Number(quantity)) ? quantity : 1;
+    var data = new FormData();
+    data.set('item_id', item.id);
+    if (localStorage.getItem('id') !== null) {
+      console.log('user id ' + localStorage.getItem('id'));
+      data.set('user_id', localStorage.getItem('id'));
+      data.set('unit_price', item.price);
+      data.set('delivery_address', '24 rue Pasteur');
+      data.set('quantity', quantity);
+      axios
+        .post('http://localhost:8000/api/order', data)
+        .then((response) => {
+          console.log('Nouvel article ajouté au panier : ', response.data);
+          let quantity = (Number(quantity)) ? quantity : 1;
+          let price = item.price * quantity;
+          setResult(item.price + " EUR");
+        })
+        .catch((error) => {
+          console.error('Erreur l\'ajout de l\'article au panier lol ');
+        });
+    } else {
+      alert('Vous devez vous connecter pour ajouter un article au panier');
     }
-    // function handlePanier(e, item, item_id) {
-    //   let quantity = e.target.parentElement.parentElement.querySelector(
-    //     "#outlined-number-" + item_id
-    //   ).value;
-    //   // console.log(quantity);
-    //   console.log("user id " + user_id);
-    //   var data = new FormData();
-    //   data.set("item_id", item.id);
-    //   data.set("user_id", user_id);
-    //   data.set("unit_price", item.price);
-    //   data.set("delivery_address", "24 rue Pasteur");
-    //   data.set("quantity", quantity);
-    //   axios
-    //     .post("http://localhost:8000/api/order", data)
-    //     .then((response) => {
-    //       console.log("Nouvel article ajouté au panier : ", response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.error(
-    //         "Erreur l'ajout de l'article au panier : ",
-    //         error.response.data
-    //       );
-    //     });
-    //   setQuantity(1);
-    // }
+
+    calcQuantity(orderId)
+    calcPrice(articlesPanier)
+  }
+  // function handlePanier(e, item, item_id) {
+  //   let quantity = e.target.parentElement.parentElement.querySelector(
+  //     "#outlined-number-" + item_id
+  //   ).value;
+  //   // console.log(quantity);
+  //   console.log("user id " + user_id);
+  //   var data = new FormData();
+  //   data.set("item_id", item.id);
+  //   data.set("user_id", user_id);
+  //   data.set("unit_price", item.price);
+  //   data.set("delivery_address", "24 rue Pasteur");
+  //   data.set("quantity", quantity);
+  //   axios
+  //     .post("http://localhost:8000/api/order", data)
+  //     .then((response) => {
+  //       console.log("Nouvel article ajouté au panier : ", response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(
+  //         "Erreur l'ajout de l'article au panier : ",
+  //         error.response.data
+  //       );
+  //     });
+  //   setQuantity(1);
+  // }
 
     const getUrl = (event) => {
         return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
@@ -205,6 +264,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
         fetchUserData();
         fetchArticles();
         fetchArticlos();
+          fetchCharacteristics();
+
     }, []);
     const isthistheblood = () => {
         if (rating.test === undefined) {
@@ -273,7 +334,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             variant="h8"
                             sx={{ fontStyle: "oblique", color: "grey" }}
                         >
-                            24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI{" "}
+              <InlineCharacteristics />
                         </Typography>
                         <Typography>{articles.stock} restant(s)</Typography>
                         <div className="Description">
