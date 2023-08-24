@@ -58,8 +58,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const [articlesPanier, setArticlesPanier] = useState([]);
     const handleOpen = () => setFopen(true);
     const [fopen, setFopen] = useState(false);
-
-    const handleClose = () => setOpen(false);
+    const handleClose = () => setFopen(false);
 
 
     const calcQuantity = (id) => {
@@ -224,6 +223,10 @@ function Articleunique({ categorie, sous_categorie, id }) {
     };
 
     function getnotedkid(note){
+        // setInterval(() => {
+        alert("Votre note a bien été ajoutée")
+    // }, 500);
+    handleClose()            
         console.log(note)
     }
     return (
@@ -254,7 +257,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 <Button value="5" onClick={(e) => getnotedkid(e.currentTarget.value)} >5</Button>
                                 {} 
                                 </Typography>
-                                <Button>Valider</Button>
+                                <Button onClick={handleClose}>Fermer</Button>
                             </Box>
                         </Modal>
                         <Typography variant="h4">{articles.name}</Typography>
