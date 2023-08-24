@@ -11,7 +11,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 // import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
+
+
 
 const style = {
   position: "absolute",
@@ -27,6 +33,7 @@ const style = {
   p: 4,
 };
 function Articleunique({ categorie, sous_categorie, id }) {
+  const [multipleCharacteristics, setMultipleCharacteristics] = useState(undefined);
   const [articles, setArticles] = useState([]);
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -35,13 +42,46 @@ function Articleunique({ categorie, sous_categorie, id }) {
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
   const [result, setResult] = React.useState(0);
-const [noItems, setNoItems] = React.useState("");
-const [price, setPrice] = React.useState(0);
-const [countItem, setCountItem] = React.useState(0);
-const [orderId, setOrderId] = React.useState(0);
-const [articlesPanier, setArticlesPanier] = useState([]);
+  const [noItems, setNoItems] = React.useState("");
+  const [price, setPrice] = React.useState(0);
+  const [countItem, setCountItem] = React.useState(0);
+  const [orderId, setOrderId] = React.useState(0);
+  const [articlesPanier, setArticlesPanier] = useState([]);
 
-const calcQuantity = (id) => {
+  const Characteristics = () => {
+    if (multipleCharacteristics !== undefined) {
+
+      return Object.keys(multipleCharacteristics).map((characteristic) => {
+        if (multipleCharacteristics[characteristic].length > 1) {
+          return (
+            <FormControl variant="standard" sx={{ m: 3, minWidth: 40 }} defaultValue={'test'}>
+              <InputLabel id="demo-simple-select-standard-label">{characteristic}</InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={""}
+                label={characteristic}
+                name={characteristic}
+              >
+                {multipleCharacteristics[characteristic].map((characteristicValue) => {
+                  return (<MenuItem align="right" value={characteristicValue} >{characteristicValue}</MenuItem>)
+                })}
+
+
+              </Select>
+            </FormControl>
+
+          )
+        }
+        return null
+      })
+    }
+    else {
+      return "Loading..."
+    }
+  }
+
+  const calcQuantity = (id) => {
     axios
       .get(`http://localhost:8000/api/count_item/${id}`)
       .then((response) => {
@@ -51,8 +91,8 @@ const calcQuantity = (id) => {
       .catch((error) => {
         console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
       });
-  
-      console.log("in quantity function "+countItem);
+
+    console.log("in quantity function " + countItem);
   }
 
   const calcPrice = (ArticlesToGetPrice) => {
@@ -62,13 +102,25 @@ const calcQuantity = (id) => {
       price_calc += element.quantity * element.unit_price;
     }
     setPrice(price_calc);
-    
+
     return price_calc;
   }
 
   const navigate = useNavigate();
 
   const user_id = localStorage.getItem("id");
+
+  const fetchCharacteristics = async () => {
+    await fetch("http://127.0.0.1:8000/api/characteristic/" + id)
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        // console.log(data)
+        setMultipleCharacteristics(data)
+      })
+  }
+
 
   const fetchUserData = () => {
     fetch(
@@ -82,37 +134,37 @@ const calcQuantity = (id) => {
       });
   };
 
-  const handlePanier= (e,item,item_id)=>{
+  const handlePanier = (e, item, item_id) => {
 
-    let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+    let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-" + item_id).value;
     console.log(quantity);
-    quantity = (Number(quantity)) ? quantity  : 1;
+    quantity = (Number(quantity)) ? quantity : 1;
     var data = new FormData();
-    data.set('item_id',item.id);
-    if (localStorage.getItem('id') !== null) {   
-      console.log('user id '+localStorage.getItem('id'));   
-      data.set('user_id',localStorage.getItem('id'));
-      data.set('unit_price',item.price);
-      data.set('delivery_address','24 rue Pasteur');
-      data.set('quantity',quantity);
+    data.set('item_id', item.id);
+    if (localStorage.getItem('id') !== null) {
+      console.log('user id ' + localStorage.getItem('id'));
+      data.set('user_id', localStorage.getItem('id'));
+      data.set('unit_price', item.price);
+      data.set('delivery_address', '24 rue Pasteur');
+      data.set('quantity', quantity);
       axios
         .post('http://localhost:8000/api/order', data)
         .then((response) => {
           console.log('Nouvel article ajouté au panier : ', response.data);
-          let quantity = (Number(quantity)) ? quantity  : 1;
+          let quantity = (Number(quantity)) ? quantity : 1;
           let price = item.price * quantity;
-          setResult(item.price+" EUR");
+          setResult(item.price + " EUR");
         })
         .catch((error) => {
           console.error('Erreur l\'ajout de l\'article au panier lol ');
         });
-    }else{
+    } else {
       alert('Vous devez vous connecter pour ajouter un article au panier');
     }
-  
+
     calcQuantity(orderId)
     calcPrice(articlesPanier)
-  } 
+  }
   // function handlePanier(e, item, item_id) {
   //   let quantity = e.target.parentElement.parentElement.querySelector(
   //     "#outlined-number-" + item_id
@@ -185,7 +237,10 @@ const calcQuantity = (id) => {
     fetchUserData();
     fetchArticles();
     fetchArticlos();
+    fetchCharacteristics();
   }, []);
+
+
   const isthistheblood = () => {
     if (rating.test === undefined) {
       return (
@@ -203,7 +258,7 @@ const calcQuantity = (id) => {
   };
   return (
     <div className="App">
-      <Header  articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier}  calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult}/>
+      <Header articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier} calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult} />
       <div className="Unique">
         <Grid className="Unique" container spacing={2}>
           <Grid xs={10}>
@@ -287,6 +342,7 @@ const calcQuantity = (id) => {
               <Button variant="contained" onClick={openModal}>
                 Acheter l'article
               </Button>
+              <Characteristics />
               <Modal
                 open={open}
                 onClose={closeModal}
@@ -375,7 +431,7 @@ const calcQuantity = (id) => {
         <hr></hr>
         <br></br>
       </div>
-      
+
       <Footer />
       <hr></hr>
       <br></br>
