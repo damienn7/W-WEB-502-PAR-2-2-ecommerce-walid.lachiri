@@ -160,7 +160,7 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     calcPrice(articlesPanier)
   } 
 
- function mangetesmorts(article, idefix, stock){
+ function isbuyable(article, idefix, stock){
   if (stock > 0)
 return <Button onClick={(e) => {handlePanier(e,article,idefix, stock)}}>{isAvailable2(stock)}</Button>;
 else if (stock === 0){
@@ -189,10 +189,10 @@ else if (stock === 0){
             <TableRow className='lepainperdu' 
             key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 
-              <TableCell component="th" scope="row">{istop3(article.name)}</TableCell>
-              <TableCell align="right">{article.category}</TableCell>
-              <TableCell align="right">{article.sub_category}</TableCell>
-              <TableCell align="right">
+              <TableCell component="th" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`} scope="row">{istop3(article.name)}</TableCell>
+              <TableCell align="right"onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.category}</TableCell>
+              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.sub_category}</TableCell>
+              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
                 {/* {random()}/5 */}
                 {isthistheblood(article.avgRating)}/5
 
@@ -208,7 +208,7 @@ else if (stock === 0){
                 InputProps={{inputProps:{min: "1", max: article.stock, step:"1"}}}
                 onChange={(e)=>handleChangeQuantity(e,article.stock)}
                 /></TableCell>
-              <TableCell align="right">{mangetesmorts(article, article.idefix,article.stock)}</TableCell>
+              <TableCell align="right">{isbuyable(article, article.idefix,article.stock)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
