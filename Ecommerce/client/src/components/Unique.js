@@ -216,19 +216,26 @@ function Articleunique({ categorie, sous_categorie, id }) {
         } else {
             return (
                 <Typography sx={{ color: "error.main" }}>
-                    {parseFloat(rating.test)}/5
+                    {parseFloat(rating.test).toFixed(2)}/5
                 </Typography>
             );
         }
     };
 
-    function getnotedkid(note){
-        // setInterval(() => {
-        alert("Votre note a bien été ajoutée")
-    // }, 500);
-    handleClose()            
-        console.log(note)
+    let bite = localStorage.getItem("id")
+
+    function getnotedkid(note, id) {
+        alert("Votre note a bien été ajoutée")  
+        handleClose()
+        axios.post('http://localhost:8000/api/notedefou', {"id_user":bite, "id_article": id, "rating": note})
+            .then((response) => {
+                console.log("flex");
+            })
+            .catch((response) => {
+                console.log("err")
+            })
     }
+
     return (
         <div className="App">
             <Header articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier} calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult} />
@@ -250,12 +257,12 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                     Notez {articles.name}
                                 </Typography>
                                 <Typography>
-                                <Button value="1" onClick={(e) => getnotedkid(e.currentTarget.value)}>1</Button>
-                                <Button value="2" onClick={(e) => getnotedkid(e.currentTarget.value)} >2</Button>
-                                <Button value="3" onClick={(e) => getnotedkid(e.currentTarget.value)} >3</Button>
-                                <Button value="4" onClick={(e) => getnotedkid(e.currentTarget.value)} >4</Button>
-                                <Button value="5" onClick={(e) => getnotedkid(e.currentTarget.value)} >5</Button>
-                                {} 
+                                    <Button value="1" onClick={(e) => getnotedkid(e.currentTarget.value, articles.id)}>1</Button>
+                                    <Button value="2" onClick={(e) => getnotedkid(e.currentTarget.value, articles.id)} >2</Button>
+                                    <Button value="3" onClick={(e) => getnotedkid(e.currentTarget.value, articles.id)} >3</Button>
+                                    <Button value="4" onClick={(e) => getnotedkid(e.currentTarget.value, articles.id)} >4</Button>
+                                    <Button value="5" onClick={(e) => getnotedkid(e.currentTarget.value, articles.id)} >5</Button>
+                                    { }
                                 </Typography>
                                 <Button onClick={handleClose}>Fermer</Button>
                             </Box>
