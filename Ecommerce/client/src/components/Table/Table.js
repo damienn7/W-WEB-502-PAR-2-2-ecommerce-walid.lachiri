@@ -48,7 +48,6 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
   //   fetchRating()
   // }, [])
 
-
   function isAvailable(quantite = 0) {
     if (quantite > 0) {
       return <div className='greenbox'></div>
@@ -57,6 +56,17 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
       return <div className='redbox'></div>
     }
   }
+  function isAvailable2(quantite = 0) {
+    if (quantite > 0) {
+      return "Ajouter au panier"
+      // return true
+    }
+    else if (quantite === 0) {
+      return <p id="outofstock">Indisponible</p>
+      // return false
+    }
+  }
+
   const random = () => {
     return Math.floor(Math.random() * 6);
   }
@@ -101,7 +111,19 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     e.target.value = quantity;
   }
 
-  const handlePanier= (e,item,item_id)=>{
+  function vuePanier(user_id){
+      axios
+        .get(`http://localhost:8000/api/order/by/${user_id}`)
+        .then((response) => {
+          console.log('Articles présents dans le panier : ', response.data);
+        })
+        .catch((error) => {
+          console.error('Erreur aucun article dans le panier : ', error.response.data);
+        });
+      // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
+  }
+
+  function handlePanier(e,item,item_id, quantite){
 
     let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
     console.log(quantity);
@@ -117,10 +139,15 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
       axios
         .post('http://localhost:8000/api/order', data)
         .then((response) => {
-          console.log('Nouvel article ajouté au panier : ', response.data);
-          let quantity = (Number(quantity)) ? quantity  : 1;
+          if (quantite === 0) {
+         alert("Y'a pas d'article on t'a dit") 
+          }
+          else if (quantite > 0){
+            console.log('Nouvel article ajouté au panier : ', response.data);
+            let quantity = (Number(quantity)) ? quantity  : 1;
           let price = item.price * quantity;
           setResult(item.price+" EUR");
+          }
         })
         .catch((error) => {
           console.error('Erreur l\'ajout de l\'article au panier : ');
@@ -133,11 +160,15 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     calcPrice(articlesPanier)
   } 
 
-  useEffect(() => {
-    fetchUserData()
-  }, [])
-
+ function isbuyable(article, idefix, stock){
+  if (stock > 0)
+return <Button onClick={(e) => {handlePanier(e,article,idefix, stock)}}>{isAvailable2(stock)}</Button>;
+else if (stock === 0){
+  return <p id="outofstock">INDISPONIBLE</p>
+}
+}
   return (
+
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -158,10 +189,10 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
             <TableRow className='lepainperdu' 
             key={article.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 
-              <TableCell component="th" scope="row">{istop3(article.name)}</TableCell>
-              <TableCell align="right">{article.category}</TableCell>
-              <TableCell align="right">{article.sub_category}</TableCell>
-              <TableCell align="right">
+              <TableCell component="th" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`} scope="row">{istop3(article.name)}</TableCell>
+              <TableCell align="right"onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.category}</TableCell>
+              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.sub_category}</TableCell>
+              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
                 {/* {random()}/5 */}
                 {isthistheblood(article.avgRating)}/5
 
@@ -172,11 +203,12 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
               <TextField
                 id={'outlined-number-'+article.idefix}
                 label="Number"
-                type="number"
+                Placeholder="1"
+                sx={{width:"75px", justifyContent:"center"}}
                 InputProps={{inputProps:{min: "1", max: article.stock, step:"1"}}}
                 onChange={(e)=>handleChangeQuantity(e,article.stock)}
                 /></TableCell>
-              <TableCell align="right"><Button onClick={(e) => {handlePanier(e,article,article.idefix)}}>Ajouter au panier</Button></TableCell>
+              <TableCell align="right">{isbuyable(article, article.idefix,article.stock)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

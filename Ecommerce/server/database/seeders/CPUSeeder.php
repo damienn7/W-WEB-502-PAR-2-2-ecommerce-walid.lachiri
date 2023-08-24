@@ -45,7 +45,8 @@ class CPUSeeder extends Seeder
         ['sub_category' => 'Imprimante','category' => 'Périphériques']
         ]);
         
-        $cpuBrand = ["Intel Core i7", "AMD Ryzen 5", "Intel Core i5", "AMD Ryzen 7"];
+        $intelLetters = ["K", "Q", "F", "M", "T"];
+        $cpuBrand = ["Intel Core i7 " . rand(7, 13) . rand(4, 9) . "0" . 0 . $intelLetters[rand(0, 4)], "AMD Ryzen 5 " . rand(6, 9) . rand(3, 9) . rand(1, 5) . 0  . "U", "Intel Core i5 " . rand(7, 13) . rand(4, 9) . "0" . 0 . $intelLetters[rand(0, 4)], "Intel Core i9 " . rand(7, 13) . rand(4, 9) . "0" . 0 . $intelLetters[rand(0, 4)], "AMD Ryzen 7 " . rand(6, 9) . rand(3, 9) . rand(1, 5) . 5  . "U"];
         $cpuImg = ["https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/2/c/8/2c87c6244d_50183446_processeur-singkham-adobe-stock.jpg",
         "https://www.trustedreviews.com/wp-content/uploads/sites/54/2021/03/Intel-Rocker-Lake-2-e1615908186584.jpg",
         "https://media.istockphoto.com/id/1204740322/fr/photo/cpu.jpg?s=612x612&w=0&k=20&c=cF154ASgimXysleBPyYsFMI9_GKkkTpDQ0kZTJnm_K0=",
@@ -55,7 +56,7 @@ class CPUSeeder extends Seeder
 
         for ($i = -1; $i < 30; $i++) {
             DB::table('items')->insert([
-                'name' => $cpuBrand[rand(0, 2)] . " " . rand(5, 13) . rand(2, 9) . "00",
+                'name' => $cpuBrand[rand(0, 4)],
                 "id_category" => 1,
                 "image" => $cpuImg[rand(0, 5)],
                 'description' => "Ce processeur procède moult choses",
@@ -65,8 +66,8 @@ class CPUSeeder extends Seeder
             ]);
         }
 
-        $char = ["color", "cores", "ram"];
-        $chars = [["red", "blue", "yellow"], [4, 6, 8], ["hacked", "downloaded"]];
+        $char = ["Couleur", "Nombre de coeurs", "Fréquence", "Socket"];
+        $chars = [["Rouge", "Bleu", "Jaune"], [4, 6, 8, 16, 32], ["3.6Ghz", "4.2Ghz", "5.2Ghz"], ["AM4", "AM5"]];
 
         for ($o = 2; $o < 31; $o++) {
             for ($z = 0; $z < 3; $z++) {
