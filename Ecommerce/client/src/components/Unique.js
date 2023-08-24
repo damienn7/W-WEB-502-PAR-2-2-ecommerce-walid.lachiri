@@ -116,10 +116,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
         setList(data)
       })
   }
-
-  useEffect(() => {
-    fetchArticlos()
-  }, [])
   useEffect(() => {
     fetchUserData();
     fetchArticles();

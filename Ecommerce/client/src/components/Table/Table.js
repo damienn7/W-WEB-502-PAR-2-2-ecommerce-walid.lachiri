@@ -62,21 +62,6 @@ export default function BasicTable(id_article) {
   //   fetchRating()
   // }, [])
 
-  function handlePanier(item){
-    var data = new FormData();
-    data.set('item_id',item.id);
-    data.set('user_id',1);
-    data.set('unit_price',item.price);
-    data.set('delivery_address','24 rue Pasteur');
-    axios
-      .post('http://localhost:8000/api/order', data)
-      .then((response) => {
-        console.log('Nouvel utilisateur créé:', response.data);
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la création du panier : ', error.response.data);
-      });
-  }
   function isAvailable(quantite = 0) {
     if (quantite > 0) {
       return <div className='greenbox'></div>
@@ -85,6 +70,25 @@ export default function BasicTable(id_article) {
       return <div className='redbox'></div>
     }
   }
+  function isAvailable2(quantite = 0) {
+    if (quantite > 0) {
+      return "Ajouter au panier"
+      // return true
+    }
+    else if (quantite === 0) {
+      return <p id="outofstock">Indisponible</p>
+      // return false
+    }
+  }
+  function isAvailable3(quantite = 0) {
+    if (quantite > 0) {
+      return "enabled"
+    }
+    else if (quantite === 0) {
+      return "disabled"
+    }
+  }
+
   const random = () => {
     return Math.floor(Math.random() * 6);
   }
@@ -142,8 +146,7 @@ export default function BasicTable(id_article) {
       // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
   }
 
-  function handlePanier(e,item,item_id){
-
+  function handlePanier(e,item,item_id, quantite){
     let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
     console.log(quantity);
     var data = new FormData();
@@ -157,7 +160,12 @@ export default function BasicTable(id_article) {
       axios
         .post('http://localhost:8000/api/order', data)
         .then((response) => {
-          console.log('Nouvel article ajouté au panier : ', response.data);
+          if (quantite === 0) {
+         alert("Y'a pas d'article on t'a dit") 
+          }
+          else{
+            console.log('Nouvel article ajouté au panier : ', response.data);
+          }
         })
         .catch((error) => {
           console.error('Erreur l\'ajout de l\'article au panier : ', error.response.data);
@@ -166,10 +174,12 @@ export default function BasicTable(id_article) {
       alert('Vous devez vous connecter pour ajouter un article au panier');
       // window.location.href = '/';
     }
+    
       // e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value = 1;
   }
 
   return (
+
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -204,11 +214,12 @@ export default function BasicTable(id_article) {
               <TextField
                 id={'outlined-number-'+article.idefix}
                 label="Number"
-                type="number"
+                Placeholder="1"
+                sx={{width:"75px", justifyContent:"center"}}
                 InputProps={{inputProps:{min: "1", max: article.stock, step:"1"}}}
                 onChange={(e)=>handleChangeQuantity(e,article.stock)}
                 /></TableCell>
-              <TableCell align="right"><Button onClick={(e) => {handlePanier(e,article,article.idefix)}}>Ajouter au panier</Button></TableCell>
+              <TableCell align="right"><Button onClick={(e) => {handlePanier(e,article,article.idefix, article.stock)}}>{isAvailable2(article.stock)}</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>
