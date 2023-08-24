@@ -166,7 +166,7 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
                 alt="product"
               />
               <p>{article.name}</p>
-              <p align="right">{article.price}</p>
+              <p align="right">{" "+article.price}€</p>
             </a>
           ))}
         </div>
