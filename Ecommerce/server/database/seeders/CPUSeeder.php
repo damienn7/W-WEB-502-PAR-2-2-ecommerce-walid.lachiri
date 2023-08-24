@@ -62,12 +62,13 @@ class CPUSeeder extends Seeder
                 'description' => "Ce processeur procède moult choses",
                 'views' => rand(0, 300),
                 'price' => rand(30, 79) . 0,
-                'stock' => rand(10, 1500)
+                'stock' => rand(10, 1500),
+                // "weight" => rand(0.5, 7)
             ]);
         }
 
-        $char = ["color", "cores", "ram"];
-        $chars = [["red", "blue", "yellow"], [4, 6, 8], ["hacked", "downloaded"]];
+        $char = ["Couleur", "Nombre de coeurs", "Fréquence", "Socket"];
+        $chars = [["Rouge", "Bleu", "Jaune"], [4, 6, 8, 16, 32], ["3.6Ghz", "4.2Ghz", "5.2Ghz"], ["AM4", "AM5"]];
 
         for ($o = 2; $o < 31; $o++) {
             for ($z = 0; $z < 3; $z++) {
