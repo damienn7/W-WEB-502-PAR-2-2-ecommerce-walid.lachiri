@@ -81,6 +81,17 @@ function Articleunique({ categorie, sous_categorie, id }) {
     }
   }
 
+  const InlineCharacteristics = () => {
+    if (multipleCharacteristics !== undefined) {
+      return Object.keys(multipleCharacteristics).map((characteristic) => {
+          return characteristic + " : " +  multipleCharacteristics[characteristic][0] + " - ";
+      })
+    }
+    else {
+      return "Loading..."
+    }
+  }
+
   const calcQuantity = (id) => {
     axios
       .get(`http://localhost:8000/api/count_item/${id}`)
@@ -269,7 +280,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
               variant="h8"
               sx={{ fontStyle: "oblique", color: "grey" }}
             >
-              24 Go GDDR6 - Dual HDMI/Dual DisplayPort - PCI{" "}
+              <InlineCharacteristics />
             </Typography>
             <Typography>{articles.stock} restant(s)</Typography>
             <div className="Description">
@@ -394,7 +405,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
         </Grid>
         <Grid container spacing={2}>
           <Grid xs={10}>
-            <img src={Pub} width="40%" />
+            <img src={Pub} width="40%" alt=""/>
           </Grid>
           <Grid xs={2} marginTop={1}>
             <Box>
