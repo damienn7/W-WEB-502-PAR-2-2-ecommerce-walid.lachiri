@@ -8,7 +8,7 @@ import { Children } from "react";
 import CreateUser from "./Inscription";
 import Category from "./categorie";
 import Admin from "./admin/AdminPage";
-
+import UpdateUser from "./user/UpdateUser";
 
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
         path="/articles/search/:categorie/:sub_categorie/:id"
         element={<ArticleUnique categorie={categorieName} sous_categorie={sous_categorieName} id={id}/>}
       />
+      <Route path="/myprofile" element={<UpdateUser/>}/>
     </Routes>
   );
 }
