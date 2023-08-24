@@ -72,8 +72,11 @@ function logout() {
   function Profile() {
     window.location.href="/myprofile";
   }
-  function login() {
-    window.location.href = "/login";
+  function signin() {
+    window.location.href = "/signin";
+  }
+  function signup() {
+    window.location.href = "/signup";
   }
 
 function HandleConnexion() {
@@ -87,9 +90,14 @@ function HandleConnexion() {
       );
     } else {
       return (
-        <MenuItem onClick={login} color="blue">
+        <>
+        <MenuItem onClick={signin} color="blue">
           Se connecter
         </MenuItem>
+        <MenuItem onClick={signup} color="green">
+        S'inscrire
+      </MenuItem>
+      </>
       );
     }
   }
