@@ -51,13 +51,39 @@ export default function Panier({ }) {
         return price_calc;
     }
 
-    const increaseQuantity = (e) => {
-        // console.log(e.target.parentElement.parentElement.querySelector('#label>span').innerText);
-        e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) + 1;
+    const increaseQuantity = (e,article,index) => {
+        try {            
+            if (e.target.id === 'svg1'+index || e.target.id === 'svg2'+index) {
+                e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) + 1;   
+                console.log(e.target.parentElement.parentElement.querySelector('#label>span').innerText);
+            } else {
+                e.target.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) + 1;
+                console.log(e.target.parentElement.querySelector('#label>span').innerText);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        // e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) + 1;
     }
 
-    const decreaseQuantity = (e) => {
-        e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) - 1;
+    const decreaseQuantity = (e,article,index) => {
+        try {            
+            if (e.target.id === 'svg1-'+index || e.target.id === 'svg2'+index) {
+                if (Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) === 1) {
+                    e.target.parentElement.parentElement.querySelector('#label>span').innerText = "1";
+                } else {
+                    e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) - 1;
+                }
+            } else {
+                if (Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) === 1) {
+                    e.target.parentElement.querySelector('#label>span').innerText = "1";
+                } else {
+                    e.target.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.querySelector('#label>span').innerText) - 1;
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleDeleteFromBasket = (id) => {
@@ -166,14 +192,14 @@ export default function Panier({ }) {
                                         <span>{article.name}</span>
                                     </div>
                                     <div className="quantity">
-                                        <button onClick={(e)=>decreaseQuantity(e)}>
-                                            <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                                        <button id={'btn1-'+index} style={{cursor:'pointer'}} onClick={(e)=>decreaseQuantity(e,article,index)}>
+                                            <svg fill="none" id={'svg1-'+index} viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M20 12L4 12"></path>
                                             </svg>
                                         </button>
                                         <label id='label'><span>{article.quantity}</span></label>
-                                        <button onClick={(e)=>increaseQuantity(e)}>
-                                            <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                                        <button id={'btn2-'+index} style={{cursor:'pointer'}} onClick={(e)=>increaseQuantity(e,article,index)}>
+                                            <svg fill="none" id={'svg2-'+index} viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M12 4V20M20 12H4"></path>
                                             </svg>
                                         </button>
