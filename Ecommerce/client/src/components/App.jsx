@@ -39,7 +39,13 @@ function App() {
         sous_categorieName: sous_categorieName,
         id: id
         }}/> } />
-      <Route path="/success/:titre/:description/:prix/:stock/:views/:check_session" element={ < Payment /> } />
+      <Route path="/success/:token" 
+      element={ 
+        < Payment 
+          token={location.pathname.split('/')[2]} 
+        /> 
+      } 
+      />
       <Route path="/paymentForm/:categorie/:sub_categorie/:id" element={ < PaymentForm categorie={location.pathname.split('/')[2]} sous_categorie={location.pathname.split('/')[3]} id={location.pathname.split('/')[4]}/>} />
     </Routes>
   );

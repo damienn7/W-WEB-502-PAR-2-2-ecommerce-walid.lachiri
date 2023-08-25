@@ -205,9 +205,11 @@ Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'se
 Route::get('categories', [CategoriesController::class, 'showCategories']); 
 
 //Route for payment (method post)
-Route::post('checkout/{titre}/{description}/{prix}/{stock}/{views}', [StripeController::class, 'checkout']); 
 
-Route::post("success?titre={titre}&description={description}&prix={prix}&stock={stock}&views={view}&session_id={CHECKOUT_SESSION_ID}", [StripeController::class, 'success']);
+// Route::post("checkout/{titre}/{description}/{prix}/{stock}/{views}/{image}", [StripeController::class, 'checkout']); 
+
+Route::post('checkout/{token}', [StripeController::class, 'checkout']);
+Route::post("success/{token}", [StripeController::class, 'success']);
 Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);
 Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
 Route::get('characteristic/', [CharacteristicsController::class, 'index']);

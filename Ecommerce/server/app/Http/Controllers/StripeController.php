@@ -6,40 +6,42 @@ use Illuminate\Http\Request;
 
 class StripeController extends Controller
 {
-  public function checkout(
-    $titre,
-    $description,
-    $prix,
-    $stock,
-    $views
-  ) {
+  public function checkout($token) {
+
+    $options = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
+
     \Stripe\Stripe::setApiKey(config('stripe.sk'));
 
-    $session = \Stripe\Checkout\Session::create([
+    $titre = urlencode($options->name);
+    $description = urlencode($options->description);
+    $prix = $options->price;
+    $stock = $options->stock;
+    $views = $options->views;
+    $image = $options->image;
+
+    try {
+        $session = \Stripe\Checkout\Session::create([
       'line_items' => [
         [
           'price_data' => [
-            'currency' => 'usd',
+            'currency' => 'eur',
             'product_data' => [
-              'name' => $titre,
+              'name' => urldecode($titre),
             ],
             'unit_amount' => $prix,
           ],
           'quantity' => $stock,
         ]
       ],
-      'mode' => 'payment',
-      'success_url' => "http://localhost:8000/success?titre=$titre&description=$description&prix=$prix&stock=$stock&views=$views&session_id={CHECKOUT_SESSION_ID}",
+      'mode' => 'payment',  
+      'success_url' => "http://localhost:8000/success?token=$token",
       'cancel_url' => 'http://localhost:8000/cancel',
     ]);
+
+    // // //a partir de  8
     return response()->json([
-      "options" => [
-        'nom' => $titre,
-        'description' => $description,
-        'prix' => $prix,
-        'stock' => $stock,
-        'views' => $views
-      ],
+      'token' => $token,
+      'options' => $options,
       'url' => $session->url,
       // "paymentOptions" => [
       //   $request->numberOfCard,
@@ -47,27 +49,17 @@ class StripeController extends Controller
       //   $request->cvc,
       // ]
     ], 201);
-    // // return redirect()->away($session->url);
+
+    } catch (\Stripe\Exception\InvalidRequestException $ex) {
+      echo $ex->getError()->message;
+    }
+    // // // return redirect()->away($session->url);
   }
   public function success(Request $request)
   {
-
-    $titre = $request->get('titre');
-    $description = $request->get('description');
-    $prix = $request->get('prix');
-    $stock = $request->get('stock');
-    $views = $request->get('views');
-    $session_id = $request->get('session_id');
-
-    // return response()->json([
-    //   'titre' => $request->get('titre'),
-    //   'description' => $request->get('description'),
-    //   'prix' => $request->get('prix'),
-    //   'stock' => $request->get('stock'),
-    //   'views' => $request->get('views'),
-    //   'session_id' => $request->get('session_id'),
-    // ]);
-
-    return redirect("http://localhost:3000/success/$titre/$description/$prix/$stock/$views/$session_id");
+    // $options = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $request->get('token'))[1]))));
+    $token = $request->get('token');
+    
+    return redirect("http://localhost:3000/success/$token");
   }
 }
