@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { ConnectingAirportsOutlined } from '@mui/icons-material';
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +28,8 @@ const CreateUser = () => {
         let sous_categorie = params.get("sous_categorie");
         let id = params.get("id");
 
+
+        if(categorie !== null && sous_categorie !== null && id !== null){
           fetch(
             `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
           )
@@ -42,6 +45,9 @@ const CreateUser = () => {
               window.location = axiosReponse.data.url;
             });
             });
+          } else {
+            window.location.href = '/login'  
+          }
       })
       .catch((error) => {
         console.error('Erreur lors de la création de l\'utilisateur:', error.response.data);

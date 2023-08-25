@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+const sign = require("jwt-encode");
 
 export default function PaymentForm({ categorie, sous_categorie, id }) {
   const [articles, setArticles] = useState([]);
@@ -16,19 +17,20 @@ export default function PaymentForm({ categorie, sous_categorie, id }) {
       })
       .then((data) => {
         setArticles(data[0]);
-       
       });
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(numberOfCard.target.value);
-    // console.log(expireCard.target.value);
-    // console.log(cvc.target.value);
+
+    const secret = "secret";
+
+    const jwt = sign(articles, secret);
+    
     axios
     .post(
-      `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
-    )
+      `http://localhost:8000/api/checkout/${jwt}`,
+      )
     .then((axiosReponse) => {
       window.location = axiosReponse.data.url;
     });
@@ -61,7 +63,12 @@ export default function PaymentForm({ categorie, sous_categorie, id }) {
 
       <div>
         <label htmlFor="cvc">CVC</label>
-        <input type="text" name="cvc" onChange={(event) => setCvc(event)} maxLength={3}/>
+        <input
+          type="text"
+          name="cvc"
+          onChange={(event) => setCvc(event)}
+          maxLength={3}
+        />
       </div>
 
       <button type="submit">Payer</button>
