@@ -24,7 +24,7 @@ class UserController extends Controller
         $user->mail = $request->mail;
         $user->password = $request->password;
         $user->name = $request->name;
-        $user->admin = 1;
+        $user->admin = 0;
         $user->save();
         return response()->json([
             "message" => "creation de l'User reussi",
