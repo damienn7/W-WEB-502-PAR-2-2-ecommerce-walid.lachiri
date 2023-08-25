@@ -90,7 +90,7 @@ class StripeController extends Controller
           ], $donnée_paniers),
         ],
         'mode' => 'payment',  
-        'success_url' => "http://localhost:8000/api/successCheckout/$id",
+        'success_url' => "http://localhost:8000/api/successPanier/$id",
         'cancel_url' => 'http://localhost:8000/cancel',
       ]);
     } catch (\Stripe\Exception\InvalidRequestException $ex) {

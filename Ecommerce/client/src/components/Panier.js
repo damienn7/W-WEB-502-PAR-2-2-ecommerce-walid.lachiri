@@ -216,7 +216,7 @@ export default function Panier({}) {
   };
 
   // console.log("count item : " + countItem);
-}
+
 
 function handleItems() {
   axios
@@ -244,12 +244,6 @@ function handleItems() {
     });
   console.log("hello test " + orderId);
 }
-
-// console.table(articlesPanier)
-
-// console.log(articlesPanier);
-calcQuantity(orderId);
-calcPrice(articlesPanier);
 
 const buyPanier = () => {
   // const secret = "secret";
@@ -366,3 +360,4 @@ return (
     <Footer />
   </div>
 );
+}

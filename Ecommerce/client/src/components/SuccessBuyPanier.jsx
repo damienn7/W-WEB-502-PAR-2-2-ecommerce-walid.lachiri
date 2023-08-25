@@ -44,8 +44,8 @@ export default function SuccessBuyPanier(props) {
           <img
             src={article.image}
             alt="image"
-            height={200}
-            width={200}
+            height={300}
+            width={300}
             style={{ objectFit: "cover" }}
           />
         </div>
