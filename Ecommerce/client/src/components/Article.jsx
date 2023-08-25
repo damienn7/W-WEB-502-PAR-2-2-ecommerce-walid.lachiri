@@ -2,7 +2,7 @@ import { faDisplay } from "@fortawesome/free-solid-svg-icons";
 import { Container, Card, TableCell, TableRow } from "@mui/material";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
+import "../style/article.css"
 
 export default function Article({ article }) {
   return article.map(article => (
@@ -11,11 +11,11 @@ export default function Article({ article }) {
       key={article.id} style={{ textDecoration: "none" }}
     >
       <div style={{ margin: "0 auto", color: "black" }}>
-        <div
+        <div id="hoverarticle"
           style={{
             backgroundColor: "bluecyan",
             border: "1px solid black",
-            padding: "1em",
+            padding: "1em 2em",
           }}
         >
           <h1 style={{ fontSize: "1.4em" }}>{article.name}</h1>
