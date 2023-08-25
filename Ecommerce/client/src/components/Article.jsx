@@ -20,7 +20,7 @@ export default function Article({ article }) {
         >
           <h1 style={{ fontSize: "1.4em" }}>{article.name}</h1>
           <div style={{ display: "flex" }}>
-            <img src={article.image} width={200} style={{borderRadius:"5px", border:"solid 1px black", boxShadow:"5px 5px 5px black"}} />
+            <img src={article.image} width={200} style={{borderRadius:"5px", boxShadow:"5px 5px 5px black"}} />
             <div style={{ marginLeft: "30px" }}>
               <h2 style={{ fontSize: "1em" }}>{article.description}</h2>
               <div style={{ position: "absolute", right: "10px" }}>
