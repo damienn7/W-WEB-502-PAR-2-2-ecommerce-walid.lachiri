@@ -20,6 +20,16 @@ class OrderController extends Controller
         return response()
             ->json($articles, 200, ['X-Total-Count' => Order::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
+    public function order_user($userId)
+    {
+        $order = Order::where('user_id', $userId)
+                ->where('user_id', $userId)
+                ->first();
+    
+        if ($order) {
+            return response()->json(['orderId' => $order->id, 'status' => $order->status, ]);
+        }
+    }
 
     public function show($id)
     {

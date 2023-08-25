@@ -115,6 +115,7 @@ Route::post('order', [OrderController::class, 'create']);
 
 // READ 
 Route::get('order', [OrderController::class, 'index']);
+Route::get('order/user/{id}', [OrderController::class, 'order_user']);
 Route::get('order/{id}', [OrderController::class, 'show']);
 Route::get('order/by/{id}', [OrderController::class, 'showByUserId']);
 // --------------------------------
