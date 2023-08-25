@@ -15,10 +15,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
-
-
-
 const style = {
     position: "absolute",
     top: "50%",
@@ -68,7 +64,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const handleClose = () => setFopen(false);
   const Characteristics = () => {
     if (multipleCharacteristics !== undefined) {
-
       return Object.keys(multipleCharacteristics).map((characteristic) => {
         if (multipleCharacteristics[characteristic].length > 1) {
           return (
@@ -84,11 +79,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 {multipleCharacteristics[characteristic].map((characteristicValue) => {
                   return (<MenuItem align="right" value={characteristicValue} >{characteristicValue}</MenuItem>)
                 })}
-
-
               </Select>
             </FormControl>
-
           )
         }
         return null
@@ -98,7 +90,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
       return "Loading..."
     }
   }
-
   const InlineCharacteristics = () => {
     if (multipleCharacteristics !== undefined) {
       return Object.keys(multipleCharacteristics).map((characteristic) => {
@@ -114,7 +105,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
     axios
       .get(`http://localhost:8000/api/count_item/${id}`)
       .then((response) => {
-        // console.table(response.data['quantity'][0]['count']);
         setCountItem(response.data['quantity'][0]['count']);
       })
       .catch((error) => {
@@ -143,12 +133,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
         return response.json()
       })
       .then(data => {
-        // console.log(data)
         setMultipleCharacteristics(data)
       })
   }
-
-
   const fetchUserData = () => {
     fetch(
       `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
@@ -192,42 +179,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
     calcQuantity(orderId)
     calcPrice(articlesPanier)
   }
-  // function handlePanier(e, item, item_id) {
-  //   let quantity = e.target.parentElement.parentElement.querySelector(
-  //     "#outlined-number-" + item_id
-  //   ).value;
-  //   // console.log(quantity);
-  //   console.log("user id " + user_id);
-  //   var data = new FormData();
-  //   data.set("item_id", item.id);
-  //   data.set("user_id", user_id);
-  //   data.set("unit_price", item.price);
-  //   data.set("delivery_address", "24 rue Pasteur");
-  //   data.set("quantity", quantity);
-  //   axios
-  //     .post("http://localhost:8000/api/order", data)
-  //     .then((response) => {
-  //       console.log("Nouvel article ajouté au panier : ", response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(
-  //         "Erreur l'ajout de l'article au panier : ",
-  //         error.response.data
-  //       );
-  //     });
-  //   setQuantity(1);
-  // }
 
     const getUrl = (event) => {
         return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
-        // event.preventDefault();
-        // axios
-        //   .post(
-        //     `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
-        //   )
-        //   .then((axiosReponse) => {
-        //     // window.location = axiosReponse.data.url;
-        //   });
     };
     function handleChangeQuantity(e, stock) {
         if (Number(e.target.value) > stock) {
@@ -283,19 +237,35 @@ function Articleunique({ categorie, sous_categorie, id }) {
         }
     };
 
-    let bite = localStorage.getItem("id")
+    let userId = localStorage.getItem("id")
 
-    function getnotedkid(note, id) {
-        alert("Votre note a bien été ajoutée")  
-        handleClose()
-        axios.post('http://localhost:8000/api/notedefou', {"id_user":bite, "id_article": id, "rating": note})
-            .then((response) => {
-                console.log("flex");
-            })
-            .catch((response) => {
-                console.log("err")
-            })
+    function getnotedkid(note,articleId) {
+        axios.get(`http://localhost:8000/api/rating/${userId}/${articleId}`)
+        .then(response => {
+            console.table(response.data);
+            if(response.data.hasNoted) {
+                return axios.put(`http://localhost:8000/api/rating/${response.data.ratingId}`, {
+                    "id_user": userId,
+                    "id_article": articleId,
+                    "rating": note
+                });
+            } else {
+                return axios.post('http://localhost:8000/api/notedefou', {
+                    "id_user": userId,
+                    "id_article": articleId,
+                    "rating": note
+                });
+            }
+        })
+        .then(response => {
+            alert("Votre note a bien été traitée");
+            handleClose();
+        })
+        .catch(error => {
+            console.log("Error processing note:", error);
+        });
     }
+    
 
     return (
         <div className="App">
@@ -501,10 +471,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
             <br></br>
 
             <hr className="Marginextop"></hr>
-
         </div>
-
     );
 }
-
 export default Articleunique;

@@ -50,8 +50,21 @@ class RatingController extends Controller
         $article->delete();
         return response()->json(['message' => 'note supprimé correctement']);
     }
+    public function checkNote($userId, $articleId)
+    {
+        $rating = Rating::where('id_user', $userId)
+                ->where('id_article', $articleId)
+                ->first();
     
+        if ($rating) {
+            return response()->json(['hasNoted' => true, 'ratingId' => $rating->id]);
+        } else {
+            return response()->json(['hasNoted' => false, 'ratingId' => null]);
+        }
+    }
+    
+    }
 
 
     
-}
+
