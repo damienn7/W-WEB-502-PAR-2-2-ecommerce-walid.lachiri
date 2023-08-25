@@ -14,6 +14,7 @@ import Profile from "./user/Profile";
 import Payment from "./Payment";
 import PaymentForm from "./PaymentForm";
 import React, { useEffect, useState } from "react";
+import SuccessBuyPanier from "./SuccessBuyPanier";
 
 function App() {
   const location = useLocation();
@@ -29,8 +30,8 @@ function App() {
       <Route path="/" element={<Accueil />} />
       <Route path="/articles" element={<Accueil />} />
 
-      //<Route path="/login" element={<LoginForm />} />
-      //<Route path="/inscription" element={< CreateUser/>} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/inscription" element={< CreateUser/>} />
       <Route path="/panier" element={<Panier/>}/>
 
       <Route path="/signin" element={<LoginForm />} />
@@ -57,6 +58,7 @@ function App() {
         /> 
       } 
       />
+      <Route path="/successBuyPanier/:id" element={ < SuccessBuyPanier id={location.pathname.split('/')[2]} />}/>
       <Route path="/paymentForm/:categorie/:sub_categorie/:id" element={ < PaymentForm categorie={location.pathname.split('/')[2]} sous_categorie={location.pathname.split('/')[3]} id={location.pathname.split('/')[4]}/>} />
     </Routes>
   );
