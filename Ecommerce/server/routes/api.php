@@ -142,6 +142,8 @@ Route::post('rating', [RatingController::class, 'create']);
 // READ 
 Route::get('rating', [RatingController::class, 'index']);
 Route::get('rating/{id}', [RatingController::class, 'show']);
+Route::get('rating/{userId}/{articleId}',[RatingController::class, 'checkNote']);
+
 // --------------------------------
 
 // UPDATE 
