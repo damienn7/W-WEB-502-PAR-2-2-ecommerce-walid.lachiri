@@ -25,7 +25,7 @@ function App() {
   
   function PageNotFound() {
     return (
-      <div style={{width:"100%", height:"100vh", overflowY:"hidden"}}>
+      <div style={{width:"100%", height:"100vh", overflowY:"hidden"}} onClick={() => window.location = "/"}>
       <img src={AFKVID} height="100%" width="100%"></img>
    {/* <p>404 Page not found</p> */}
       </div>
