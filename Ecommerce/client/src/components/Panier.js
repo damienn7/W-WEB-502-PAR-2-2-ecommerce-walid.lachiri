@@ -51,13 +51,47 @@ export default function Panier({ }) {
         return price_calc;
     }
 
-    const increaseQuantity = (e) => {
-        // console.log(e.target.parentElement.parentElement.querySelector('#label>span').innerText);
-        e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) + 1;
-    }
+    function updateQuantity (article,quantity,order_item_id,operation) {
+    //     var form = new FormData();
+    //    form.set('order_id', article.order_id);
+       if (operation === "inc") {
+           quantity = quantity+1;
+        //    form.set('quantity',quantity);
+        } else {
+            if (quantity >= 1) {
+                quantity = quantity - 1;
+                // form.set('quantity',quantity);
+            }else{
+                return;
+            }
+        }
+        // form.set('unit_price',article.unit_price);
+        // form.set('item_id',article.item_id);
+        // console.table(form);
+        // console.log(quantity);
+        axios
+            .put(`http://localhost:8000/api/order_item/${order_item_id}`,
+            {
+                unit_price:article.unit_price,
+                quantity:quantity,
+                item_id:article.item_id,
+                order_id:article.order_id
+            })
+            .then((response) => {
+                // console.table(response.data['quantity'][0]['count']);
+                // setCountItem(response.data['quantity'][0]['count']);
+                // alert('bravow : '+response.data)
+                console.table(response.data);
+            })
+            .catch((error) => {
+                console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
+            });
 
-    const decreaseQuantity = (e) => {
-        e.target.parentElement.parentElement.querySelector('#label>span').innerText = Number(e.target.parentElement.parentElement.querySelector('#label>span').innerText) - 1;
+            calcQuantity(orderId)
+            calcPrice(articlesPanier)
+            handleItems();
+            // console.table();
+        // console.log("in quantity function " + countItem);
     }
 
     const handleDeleteFromBasket = (id) => {
@@ -166,13 +200,13 @@ export default function Panier({ }) {
                                         <span>{article.name}</span>
                                     </div>
                                     <div className="quantity">
-                                        <button onClick={(e)=>decreaseQuantity(e)}>
+                                        <button onClick={(e)=>updateQuantity(article,article.quantity,article.asterix,"dec")}>
                                             <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M20 12L4 12"></path>
                                             </svg>
                                         </button>
                                         <label id='label'><span>{article.quantity}</span></label>
-                                        <button onClick={(e)=>increaseQuantity(e)}>
+                                        <button onClick={(e)=>updateQuantity(article,article.quantity,article.asterix,"inc")}>
                                             <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M12 4V20M20 12H4"></path>
                                             </svg>
