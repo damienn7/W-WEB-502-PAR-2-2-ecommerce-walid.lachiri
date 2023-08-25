@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ConnectingAirportsOutlined } from '@mui/icons-material';
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const CreateUser = () => {
             });
             });
           } else {
-            window.location.href = '/login'  
+            window.location.href = '/signin'  
           }
       })
       .catch((error) => {
@@ -55,28 +55,59 @@ const CreateUser = () => {
     // console.log('Nouvel utilisateur :', formData);
   };
   
-
+  
   return (
-    <div>
-      <h2>Inscription</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <input type="text" name="name" value={formData.pseudo} onChange={handleChange} />
-
-        <label htmlFor="mail">mail:</label>
-        <input type="email" name="mail" value={formData.mail} onChange={handleChange} />
-
-        <label htmlFor="password">Mot de passe:</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Inscription</button>
-      </form>
-    </div>
-  );
+    <Container maxWidth="xs">
+        <Box mt={8} textAlign="center">
+            <Typography variant="h4" gutterBottom>
+                Inscription
+            </Typography>
+            <form onSubmit={handleSubmit} autoComplete="off"> {/* You can also add it to the form level */}
+                <TextField 
+                    fullWidth 
+                    margin="normal" 
+                    label="Name" 
+                    name="name" 
+                    value={formData.name} 
+                    variant="outlined" 
+                    onChange={handleChange}
+                    inputProps={{ autoComplete: "off" }} // Add this
+                />
+                <TextField 
+                    fullWidth 
+                    margin="normal" 
+                    label="Email" 
+                    type="email" 
+                    name="mail" 
+                    value={formData.mail}
+                    variant="outlined" 
+                    onChange={handleChange} 
+                    inputProps={{ autoComplete: "off" }} // And this
+                />
+                <TextField 
+                    fullWidth 
+                    margin="normal" 
+                    label="Mot de passe" 
+                    type="password" 
+                    name="password" 
+                    value={formData.password}
+                    variant="outlined" 
+                    onChange={handleChange} 
+                    inputProps={{ autoComplete: "new-password" }} // For password fields, use "new-password"
+                />
+                <Button 
+                    fullWidth 
+                    type="submit" 
+                    variant="contained" 
+                    color="primary" 
+                    mt={3}
+                >
+                    Inscription
+                </Button>
+            </form>
+        </Box>
+    </Container>
+);
 };
 
 export default CreateUser;
