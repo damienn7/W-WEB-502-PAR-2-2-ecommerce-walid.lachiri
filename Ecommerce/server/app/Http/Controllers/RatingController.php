@@ -27,8 +27,6 @@ class RatingController extends Controller
         $article->id_user = $request->id_user;
         $article->id_article = $request->id_article;
         $article->rating = $request->rating;
-        $article->rating = $request->rating;
-
 
 
         $article->save();
@@ -37,7 +35,6 @@ class RatingController extends Controller
             "articles" => $article,
         ], 201);
     }
-
 
 
     function update(Request $request, $id)
@@ -53,8 +50,21 @@ class RatingController extends Controller
         $article->delete();
         return response()->json(['message' => 'note supprimé correctement']);
     }
+    public function checkNote($userId, $articleId)
+    {
+        $rating = Rating::where('id_user', $userId)
+                ->where('id_article', $articleId)
+                ->first();
     
+        if ($rating) {
+            return response()->json(['hasNoted' => true, 'ratingId' => $rating->id]);
+        } else {
+            return response()->json(['hasNoted' => false, 'ratingId' => null]);
+        }
+    }
+    
+    }
 
 
     
-}
+

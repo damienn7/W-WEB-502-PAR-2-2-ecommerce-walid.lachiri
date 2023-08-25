@@ -33,6 +33,11 @@ import {
   Order_itemEdit,
   Order_itemCreate
 } from './order_item';
+import {
+  Shippinglist,
+  ShippingEdit,
+  ShippingCreate
+} from './Shipping';
 import '../../style/Admin.css'
 
 const dataProvider = jsonServerProvider('http://127.0.0.1:8000/api');
@@ -79,6 +84,12 @@ function AdminPage() {
         list={Order_itemlist}
         edit={Order_itemEdit}
         create={Order_itemCreate}
+      />
+            <Resource
+        name={"shippingfee"}
+        list={Shippinglist}
+        edit={ShippingEdit}
+        create={ShippingCreate}
       />
     </Admin>
   );
