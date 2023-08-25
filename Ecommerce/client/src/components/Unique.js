@@ -249,6 +249,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                     "id_article": articleId,
                     "rating": note
                 });
+                
             } else {
                 return axios.post('http://localhost:8000/api/notedefou', {
                     "id_user": userId,
@@ -260,6 +261,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
         .then(response => {
             alert("Votre note a bien été traitée");
             handleClose();
+            window.location.reload(true);
         })
         .catch(error => {
             console.log("Error processing note:", error);
@@ -421,7 +423,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 </Box>
                             </Modal>
                         </Grid>
-                        <Typography fontSize={10} color="blue">
+                        <Typography fontSize={10} color="blue" onClick={()=>alert("mdr pranked")} style={{cursor:"pointer"}}>
                             être informé d'une baisse de prix
                         </Typography>
                     </Grid>
