@@ -1,42 +1,93 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
 
 const Profile = () => {
   const id = localStorage.getItem("id");
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
+  
   const [formData, setFormData] = useState({
     name: '',
     mail: '',
     new: '',
   });
+
+  useEffect(() => {
+    // Fetch user details from the backend
+    axios.get(`http://localhost:8000/api/users/${id}`)
+      .then((response) => {
+        const { name, mail } = response.data; // Assuming the response contains these fields
+        setFormData(prev => ({ ...prev, name, mail }));
+      })
+      .catch(error => {
+        console.error('Error fetching user details:', error);
+      });
+  }, [id]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.put(`http://localhost:8000/api/users/${id}`,formData)
-    .then((response) => {
-      console.log('Utilisateur mis à jour:', response.data);
-      window.location.href = "/";
-    })
-    .catch((error) => {
-      console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
-    });
+    axios.put(`http://localhost:8000/api/users/${id}`, formData)
+      .then((response) => {
+        console.log('Utilisateur mis à jour:', response.data);
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la mise à jour de l\'utilisateur:', error);
+      });
   };
+
   return (
-  <div>
-    <h2>Modifier mes informations</h2>
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name:</label>
-      <input type="text" name="name" onChange={handleChange} />
-      <label htmlFor="mail">mail:</label>
-      <input type="email" name="mail" onChange={handleChange}/>
-      <label htmlFor="new">Nouveau mot de passe:</label>
-      <input type="password" name="new"/>
-      <button type="submit">Inscription</button>
-    </form>
-  </div>
-);
+    <Container maxWidth="xs">
+      <Box mt={8} textAlign="center">
+        <Typography variant="h4" gutterBottom>
+          Modifier mes informations
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Name" 
+            name="name" 
+            value={formData.name} 
+            variant="outlined" 
+            onChange={handleChange} 
+          />
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Email" 
+            type="email" 
+            name="mail" 
+            value={formData.mail}
+            variant="outlined" 
+            onChange={handleChange} 
+          />
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Nouveau mot de passe" 
+            type="password" 
+            name="new" 
+            variant="outlined" 
+            onChange={handleChange} 
+          />
+          <Button 
+            fullWidth 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            mt={3}
+          >
+            Mettre à jour
+          </Button>
+        </form>
+      </Box>
+    </Container>
+  );
 };
 
 export default Profile;
