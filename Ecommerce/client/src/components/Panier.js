@@ -2,19 +2,20 @@ import axios from 'axios';
 import Button from "@mui/material/Button";
 import Header from "./Header";
 import Footer from "./Footer";
-import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import Box from "@mui/material/Box";
-import Video from "../assets/Julien.mp4";
-import Pub from "../assets/Pub.png";
-import Carousel from "react-material-ui-carousel";
-import { Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import '../style/Panier.css';
+import Grid from "@mui/material/Unstable_Grid2";
+import Video from "../assets/Julien.mp4";
+import Box from "@mui/material/Box";
+import Pub from "../assets/Pub.png";
+import { Modal, Typography } from "@mui/material";
+import { time } from 'uniqid';
 
 export default function Panier({ }) {
 
+    const [list, setList] = useState([]);
     const [result, setResult] = React.useState(0);
     const [noItems, setNoItems] = React.useState("");
     const [price, setPrice] = React.useState(0);
@@ -24,7 +25,19 @@ export default function Panier({ }) {
 
     useEffect(() => {
         handleItems()
+        fetchArticlos()
     }, [])
+
+    const fetchArticlos = () => {
+        fetch("http://127.0.0.1:8000/api/gozizi")
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                setList(data)
+                console.table(data);
+            })
+    }
 
     const calcQuantity = (id) => {
         axios
@@ -51,24 +64,31 @@ export default function Panier({ }) {
         return price_calc;
     }
 
-    function updateQuantity (article,quantity,order_item_id,operation) {
-       if (operation === "inc") {
-           quantity = quantity+1;
+    function updateQuantity(article, quantity, order_item_id, operation) {
+        console.log(".join-btn-quan"+article.idefix);
+
+        let timeout = setTimeout(()=>{
+            document.getElementById("join-btn-quan"+article.idefix+"left").style.pointerEvents = "none";
+            document.getElementById("join-btn-quan"+article.idefix+"right").style.pointerEvents = "none";
+        },4000);
+
+        if (operation === "inc") {
+            quantity = quantity + 1;
         } else {
             if (quantity >= 1) {
                 quantity = quantity - 1;
-            }else{
+            } else {
                 return;
             }
         }
         axios
             .put(`http://localhost:8000/api/order_item/${order_item_id}`,
-            {
-                unit_price:article.unit_price,
-                quantity:quantity,
-                item_id:article.item_id,
-                order_id:article.order_id
-            })
+                {
+                    unit_price: article.unit_price,
+                    quantity: quantity,
+                    item_id: article.item_id,
+                    order_id: article.order_id
+                })
             .then((response) => {
                 console.table(response.data);
             })
@@ -76,9 +96,12 @@ export default function Panier({ }) {
                 console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
             });
 
-            calcQuantity(orderId)
-            calcPrice(articlesPanier)
-            handleItems();
+        clearTimeout(timeout);
+        calcQuantity(orderId)
+        calcPrice(articlesPanier)
+        handleItems();
+        document.getElementById("join-btn-quan"+article.idefix+"left").style.pointerEvents = "";
+        document.getElementById("join-btn-quan"+article.idefix+"right").style.pointerEvents = "";
     }
 
     const handleDeleteFromBasket = (id) => {
@@ -155,9 +178,9 @@ export default function Panier({ }) {
                 .post('http://localhost:8000/api/order', data)
                 .then((response) => {
                     console.log('Nouvel article ajouté au panier : ', response.data);
-                    let quantity = (Number(quantity)) ? quantity : 1;
-                    let price = item.price * quantity;
-                    setResult(item.price + " EUR");
+                    // let quantity = (Number(quantity)) ? quantity : 1;
+                    // let price = item.price * quantity;
+                    // setResult(item.price + " EUR");
                 })
                 .catch((error) => {
                     console.error('Erreur l\'ajout de l\'article au panier lol ');
@@ -182,24 +205,30 @@ export default function Panier({ }) {
                         <div class="products">
                             {articlesPanier.map((article, index) => {
                                 return (<div className="product" key={index}>
-                                    <img src={article.image} width={"auto"} height={"50"} style={{ maxWidth: "60px", borderRadius:"10px", }} alt="image de l'article" />
+                                    <img src={article.image} width={"auto"} height={"50"} style={{ maxWidth: "60px", borderRadius: "10px", }} alt="image de l'article" />
                                     <div>
                                         <span>{article.name}</span>
                                     </div>
                                     <div className="quantity">
-                                        <button onClick={(e)=>updateQuantity(article,article.quantity,article.asterix,"dec")}>
-                                            <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                                        <button id={"join-btn-quan"+article.idefix+"left"} style={{ cursor: "pointer", pointerEvents:"auto" }} onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "dec")}>
+                                            <svg onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "dec")} fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M20 12L4 12"></path>
                                             </svg>
                                         </button>
                                         <label id='label'><span>{article.quantity}</span></label>
-                                        <button onClick={(e)=>updateQuantity(article,article.quantity,article.asterix,"inc")}>
-                                            <svg fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
+                                        <button id={"join-btn-quan"+article.idefix+"right"} style={{ cursor: "pointer", pointerEvents:"auto" }} onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "inc")}>
+                                            <svg onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "inc")} fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M12 4V20M20 12H4"></path>
                                             </svg>
                                         </button>
                                     </div>
                                     <label className="price small">€{article.price}</label>
+                                    <Button
+                                        onClick={() =>
+                                            handleDeleteFromBasket(article.asterix)}
+                                    >
+                                        Delete
+                                    </Button>
                                 </div>)
                             })}
                         </div>
@@ -214,11 +243,46 @@ export default function Panier({ }) {
                         </div>
                         <div class="checkout--footer">
                             <label class="price"><sup>€</sup>{String(result).replace("EUR", "")}</label>
-                            <button class="checkout-btn">Paiement</button>
+                            <button style={{ cursor: "pointer", }} class="checkout-btn">Paiement</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <Grid container spacing={2}>
+                <Grid xs={10}>
+                    <img src={Pub} width="40%" />
+                </Grid>
+                <Grid xs={2} marginTop={1}>
+                    <Box>
+                        <video
+                            controls
+                            autostart="true"
+                            autoPlay
+                            src={Video}
+                            type="video/mp4"
+                            width="90%"
+                        />
+                    </Box>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                spacing={2}
+                sx={{ display: "flex", justifyContent: "space-Evenly" }}
+            >
+                <Grid xs={12}>
+                    <Typography align="center" fontSize={18} color="red">
+                        Nos articles les plus populaires
+                    </Typography>
+                </Grid>
+                {list.slice(0, 6).map((listed, index) => (
+                    <Grid xs={2} key={index}>
+                        <a href={`/articles/search/${listed.category}/${listed.sub_category}/${listed.idefix}`}><img src={listed.image} width={150} /></a>
+                        <Typography>{listed.name}</Typography>
+                    </Grid>
+                ))}
+            </Grid>
+
             <Footer />
         </div>
     );
