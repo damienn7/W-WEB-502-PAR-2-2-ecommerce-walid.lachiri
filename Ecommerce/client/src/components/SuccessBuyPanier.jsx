@@ -6,12 +6,10 @@ export default function SuccessBuyPanier(props) {
 
   const renderPanier = () => {
     axios
-      .get(`http://localhost:8000/api/order/by/${props.id}`)
-      .then((axiosReponse) => {
-        return axiosReponse.data;
-      })
-      .then((reponse) => {
-        setArticleInPanier(reponse);
+      .get(`http://localhost:8000/api/order_item/by/${props.id}`)
+      .then((response) => {
+        console.table(response.data)
+        setArticleInPanier(response.data);
       });
   };
 

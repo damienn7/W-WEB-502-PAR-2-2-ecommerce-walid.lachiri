@@ -10,7 +10,6 @@ import Video from "../assets/Julien.mp4";
 import Box from "@mui/material/Box";
 import Pub from "../assets/Pub.png";
 import { Modal, Typography } from "@mui/material";
-import { time } from 'uniqid';
 import sign from "jwt-encode";
 // import { TextField } from "@mui/material";
 import { json, useNavigate } from "react-router-dom";

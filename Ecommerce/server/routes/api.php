@@ -164,6 +164,7 @@ Route::post('order_item', [Order_itemController::class, 'create']);
 // --------------------------------
 
 // READ 
+Route::get('order_item/by/{id}', [Order_itemController::class, 'showByOrderId']);
 Route::get('order_item', [Order_itemController::class, 'index']);
 Route::get('order_item/{id}', [Order_itemController::class, 'show']);
 // --------------------------------

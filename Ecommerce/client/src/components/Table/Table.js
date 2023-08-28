@@ -119,7 +119,6 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     var data = new FormData();
     data.set('item_id',item.idefix);
     if (localStorage.getItem('id') !== null) {   
-      console.log('user id '+localStorage.getItem('id'));   
       data.set('user_id',localStorage.getItem('id'));
       data.set('unit_price',item.price);
       data.set('delivery_address','24 rue Pasteur');

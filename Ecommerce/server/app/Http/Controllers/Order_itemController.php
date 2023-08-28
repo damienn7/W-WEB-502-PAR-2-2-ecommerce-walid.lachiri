@@ -23,6 +23,17 @@ class Order_itemController extends Controller
     return Order_item::findOrFail($id);
 }
 
+public function showByOrderId($id)
+{
+    return DB::table('order_items')
+    ->select('*', 'items.id as idefix', 'order_items.id as asterix',)     
+    ->join('orders', 'orders.id', '=', 'order_items.order_id')
+    ->join('items', 'items.id', '=', 'order_items.item_id')
+    ->where('order_id', '=', $id)
+    ->orderBy('order_items.created_at', 'desc')
+    ->get();
+}
+
     public function countItem($id){
         $quantity = DB::table('order_items')
         ->select(DB::raw('sum(quantity) as count'))

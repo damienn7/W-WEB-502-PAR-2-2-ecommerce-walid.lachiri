@@ -143,7 +143,6 @@ class StripeController extends Controller
         ];
         $delivery_price = $delivery_prices[$delivery_method->delivery_method];
         $this->sendInvoiceEmail($userEmail, $user->name, [$options], $total,$shipping_fee,$delivery_price,$country,$delivery_method);
-
         return redirect("http://localhost:3000/success/$token");
     }
 
@@ -156,6 +155,7 @@ class StripeController extends Controller
             ->where('user_id', '=', $id)
             ->where('status','=','panier')
             ->orderBy('order_items.created_at', 'desc')
+            ->limit(1)
             ->get();
     
         $total = $panierUser->sum(function($item) {
@@ -166,8 +166,9 @@ class StripeController extends Controller
         $userEmail = $user->mail;
         
         // Get the order details using the user's id
-        $orderDetails = DB::table('orders')->where('user_id', $id)->first();
+        $orderDetails = DB::table('orders')->where('user_id', $id)->orderBy('created_at','desc')->first();
         $country = $orderDetails->country;
+        $order_id=$orderDetails->id;
         $delivery_method = $orderDetails->delivery_method;
     
         // Get the shipping fee for the given country
@@ -182,8 +183,12 @@ class StripeController extends Controller
         $delivery_price = isset($delivery_prices[$delivery_method]) ? $delivery_prices[$delivery_method] : 0;
     
         $this->sendInvoiceEmail($userEmail, $user->name, $panierUser, $total, $shipping_fee, $delivery_price, $country, $delivery_method);
-    
-        return redirect("http://localhost:3000/successBuyPanier/$id");
+        DB::table('orders')
+        ->where('id','=', $order_id)
+        ->where('status', '=','panier')
+        ->update(['status' => 'payé']);
+        return redirect("http://localhost:3000/successBuyPanier/$order_id");
+        
     }
     
 }
