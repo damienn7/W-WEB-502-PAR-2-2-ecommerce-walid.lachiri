@@ -62,6 +62,61 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const handleOpen = () => setFopen(true);
     const [fopen, setFopen] = useState(false);
     const handleClose = () => setFopen(false);
+
+    function isAvailable2(quantite = 0) {
+        if (quantite > 0) {
+          return "Ajouter au panier"
+          // return true
+        }
+        else if (quantite === 0) {
+          return <p id="outofstock">Indisponible</p>
+          // return false
+        }
+      }
+
+      function calcCharacters(description) {
+       try {
+           console.log(description.length*16);
+           console.log(Number(window.screen.width/3));
+           if ((Number(window.screen.width)/2)<(description.length*16)){
+               return description.substring(0, Number(window.screen.width)/2/16)+"...";
+           }else{
+               return description;
+           }
+       } catch (error) {
+          console.log(error);
+       }
+      }
+
+      function isbuyable(article, idefix, stock){
+        if (stock > 0)
+      return (<>      <TextField
+        id={"outlined-number-" + articles.id}
+        label="Number"
+        type="number"
+        InputProps={{
+            inputProps: { min: "1", max: articles.stock, step: "1" },
+        }}
+        onChange={(e) => handleChangeQuantity(e, articles.stock)}
+        value={quantity}
+    />
+    <Button
+        variant="outlined"
+        sx={{ marginBottom: "10px" }}
+        onClick={(e) => {
+            handlePanier(e, articles, articles.id);
+        }}
+    >
+        Ajouter au panier
+    </Button>
+    <Button variant="contained" onClick={openModal}>
+        Acheter l'article
+    </Button></>)
+      else if (stock === 0){
+        return <p id="outofstock">INDISPONIBLE</p>
+      }
+      }
+
   const Characteristics = () => {
     if (multipleCharacteristics !== undefined) {
       return Object.keys(multipleCharacteristics).map((characteristic) => {
@@ -273,7 +328,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
         <div className="App">
             <Header articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier} calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult} />
             <div className="Unique">
-                <Grid className="Unique" container spacing={2}>
+                <Grid className="Unique" sx={{overflow:"none"}} container spacing={2}>
                     <Grid xs={10}>
                         {/* NOM du produit */}
                         <Button onClick={handleOpen}>{isthistheblood()}
@@ -309,15 +364,15 @@ function Articleunique({ categorie, sous_categorie, id }) {
               <InlineCharacteristics />
                         </Typography>
                         <Typography>{articles.stock} restant(s)</Typography>
-                        <div className="Description">
+                        <div className="Description" style={{maxWidth:"70%"}}>
                             <Grid container spacing={2} disableEqualOverflow>
                                 <Grid xs={3}>
                                     {/* Image du produit */}
                                     <img src={articles.image} width="100%"></img>
                                 </Grid>
-                                <Grid xs={9} sx={{ display: "flex" }}>
+                                <Grid xs={9} sx={{ display: "flex", zIndex:"-1", textOverflow:"clip" }}>
                                     {/* Description du produit */}
-                                    <Typography sx={{}}>{articles.description}</Typography>
+                                    <Typography sx={{textOverflow:"ellipsis",overflow:"none", maxWidth:"400px", zIndex:"-1"}}>{calcCharacters(articles.description)}</Typography>
                                 </Grid>
                             </Grid>
                         </div>
@@ -357,28 +412,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 justifyContent: "space-evenly",
                             }}
                         >
-                            <TextField
-                                id={"outlined-number-" + articles.id}
-                                label="Number"
-                                type="number"
-                                InputProps={{
-                                    inputProps: { min: "1", max: articles.stock, step: "1" },
-                                }}
-                                onChange={(e) => handleChangeQuantity(e, articles.stock)}
-                                value={quantity}
-                            />
-                            <Button
-                                variant="outlined"
-                                sx={{ marginBottom: "10px" }}
-                                onClick={(e) => {
-                                    handlePanier(e, articles, articles.id);
-                                }}
-                            >
-                                Ajouter au panier
-                            </Button>
-                            <Button variant="contained" onClick={openModal}>
-                                Acheter l'article
-                            </Button>
+                            {isbuyable(articles, articles.id,articles.stock)}
                             <Modal
                                 open={open}
                                 onClose={closeModal}

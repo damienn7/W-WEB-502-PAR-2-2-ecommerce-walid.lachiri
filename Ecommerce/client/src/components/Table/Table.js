@@ -113,6 +113,9 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
   }
 
   function handlePanier(e,item,item_id, quantite){
+    // let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+    console.log(quantite);
+    quantite = (Number(quantite)) ? quantite  : 1;
     var data = new FormData();
     data.set('item_id',item.idefix);
     if (localStorage.getItem('id') !== null) {   
@@ -145,13 +148,15 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     calcPrice(articlesPanier)
   } 
 
+
+
  function isbuyable(article, idefix, stock){
   if (stock > 0)
 return <Button onClick={(e) => {handlePanier(e,article,idefix, stock)}}>{isAvailable2(stock)}</Button>;
 else if (stock === 0){
   return <p id="outofstock">INDISPONIBLE</p>
 }
-}
+ }
   return (
 
     <TableContainer component={Paper}>
