@@ -52,23 +52,15 @@ export default function Panier({ }) {
     }
 
     function updateQuantity (article,quantity,order_item_id,operation) {
-    //     var form = new FormData();
-    //    form.set('order_id', article.order_id);
        if (operation === "inc") {
            quantity = quantity+1;
-        //    form.set('quantity',quantity);
         } else {
             if (quantity >= 1) {
                 quantity = quantity - 1;
-                // form.set('quantity',quantity);
             }else{
                 return;
             }
         }
-        // form.set('unit_price',article.unit_price);
-        // form.set('item_id',article.item_id);
-        // console.table(form);
-        // console.log(quantity);
         axios
             .put(`http://localhost:8000/api/order_item/${order_item_id}`,
             {
@@ -78,9 +70,6 @@ export default function Panier({ }) {
                 order_id:article.order_id
             })
             .then((response) => {
-                // console.table(response.data['quantity'][0]['count']);
-                // setCountItem(response.data['quantity'][0]['count']);
-                // alert('bravow : '+response.data)
                 console.table(response.data);
             })
             .catch((error) => {
@@ -90,8 +79,6 @@ export default function Panier({ }) {
             calcQuantity(orderId)
             calcPrice(articlesPanier)
             handleItems();
-            // console.table();
-        // console.log("in quantity function " + countItem);
     }
 
     const handleDeleteFromBasket = (id) => {
