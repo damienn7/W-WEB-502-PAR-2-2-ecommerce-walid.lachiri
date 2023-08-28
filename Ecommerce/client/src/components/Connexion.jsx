@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { TextField, Button, Container, Typography, Box, Alert } from "@mui/material";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     mail: "",
     password: "",
   });
-  const [data, setData] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (event) => {
@@ -66,29 +66,47 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
-      <h2>Connexion</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="mail">Mail:</label>
-        <input
-          type="email"
-          name="mail"
-          value={formData.mail}
-          onChange={handleChange}
-        />
+    <Container maxWidth="xs">
+      <Box mt={8} textAlign="center">
+        <Typography variant="h4" gutterBottom>
+          Connexion
+        </Typography>
 
-        <label htmlFor="password">Mot de passe:</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-        <button type="submit">Se connecter</button>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit}>
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Mail" 
+            type="email" 
+            name="mail" 
+            value={formData.mail}
+            variant="outlined" 
+            onChange={handleChange} 
+          />
+          <TextField 
+            fullWidth 
+            margin="normal" 
+            label="Mot de passe" 
+            type="password" 
+            name="password" 
+            value={formData.password}
+            variant="outlined" 
+            onChange={handleChange} 
+          />
+          <Button 
+            fullWidth 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            mt={3}
+          >
+            Se connecter
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 };
 

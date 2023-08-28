@@ -15,10 +15,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
-
-
-
 const style = {
     position: "absolute",
     top: "50%",
@@ -123,7 +119,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
   const Characteristics = () => {
     if (multipleCharacteristics !== undefined) {
-
       return Object.keys(multipleCharacteristics).map((characteristic) => {
         if (multipleCharacteristics[characteristic].length > 1) {
           return (
@@ -139,11 +134,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 {multipleCharacteristics[characteristic].map((characteristicValue) => {
                   return (<MenuItem align="right" value={characteristicValue} >{characteristicValue}</MenuItem>)
                 })}
-
-
               </Select>
             </FormControl>
-
           )
         }
         return null
@@ -153,7 +145,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
       return "Loading..."
     }
   }
-
   const InlineCharacteristics = () => {
     if (multipleCharacteristics !== undefined) {
       return Object.keys(multipleCharacteristics).map((characteristic) => {
@@ -169,7 +160,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
     axios
       .get(`http://localhost:8000/api/count_item/${id}`)
       .then((response) => {
-        // console.table(response.data['quantity'][0]['count']);
         setCountItem(response.data['quantity'][0]['count']);
       })
       .catch((error) => {
@@ -198,12 +188,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
         return response.json()
       })
       .then(data => {
-        // console.log(data)
         setMultipleCharacteristics(data)
       })
   }
-
-
   const fetchUserData = () => {
     fetch(
       `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
@@ -250,14 +237,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
 
     const getUrl = (event) => {
         return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
-        // event.preventDefault();
-        // axios
-        //   .post(
-        //     `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
-        //   )
-        //   .then((axiosReponse) => {
-        //     // window.location = axiosReponse.data.url;
-        //   });
     };
     function handleChangeQuantity(e, stock) {
         if (Number(e.target.value) > stock) {
@@ -313,19 +292,37 @@ function Articleunique({ categorie, sous_categorie, id }) {
         }
     };
 
-    let bite = localStorage.getItem("id")
+    let userId = localStorage.getItem("id")
 
-    function getnotedkid(note, id) {
-        alert("Votre note a bien été ajoutée")  
-        handleClose()
-        axios.post('http://localhost:8000/api/notedefou', {"id_user":bite, "id_article": id, "rating": note})
-            .then((response) => {
-                console.log("flex");
-            })
-            .catch((response) => {
-                console.log("err")
-            })
+    function getnotedkid(note,articleId) {
+        axios.get(`http://localhost:8000/api/rating/${userId}/${articleId}`)
+        .then(response => {
+            console.table(response.data);
+            if(response.data.hasNoted) {
+                return axios.put(`http://localhost:8000/api/rating/${response.data.ratingId}`, {
+                    "id_user": userId,
+                    "id_article": articleId,
+                    "rating": note
+                });
+                
+            } else {
+                return axios.post('http://localhost:8000/api/notedefou', {
+                    "id_user": userId,
+                    "id_article": articleId,
+                    "rating": note
+                });
+            }
+        })
+        .then(response => {
+            alert("Votre note a bien été traitée");
+            handleClose();
+            window.location.reload(true);
+        })
+        .catch(error => {
+            console.log("Error processing note:", error);
+        });
     }
+    
 
     return (
         <div className="App">
@@ -460,7 +457,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 </Box>
                             </Modal>
                         </Grid>
-                        <Typography fontSize={10} color="blue">
+                        <Typography fontSize={10} color="blue" onClick={()=>alert("mdr pranked")} style={{cursor:"pointer"}}>
                             être informé d'une baisse de prix
                         </Typography>
                     </Grid>
@@ -510,10 +507,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
             <br></br>
 
             <hr className="Marginextop"></hr>
-
         </div>
-
     );
 }
-
 export default Articleunique;

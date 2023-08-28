@@ -4,7 +4,6 @@ import Header from "./Header";
 import Footer from "./Footer";
 import React, { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import '../style/Panier.css';
 import Grid from "@mui/material/Unstable_Grid2";
 import Video from "../assets/Julien.mp4";
@@ -12,6 +11,9 @@ import Box from "@mui/material/Box";
 import Pub from "../assets/Pub.png";
 import { Modal, Typography } from "@mui/material";
 import { time } from 'uniqid';
+import sign from "jwt-encode";
+// import { TextField } from "@mui/material";
+import { json, useNavigate } from "react-router-dom";
 
 export default function Panier({ }) {
 
@@ -22,7 +24,22 @@ export default function Panier({ }) {
     const [countItem, setCountItem] = React.useState(0);
     const [orderId, setOrderId] = React.useState(0);
     const [articlesPanier, setArticlesPanier] = useState([]);
+    const [deliveryMode, setDeliveryMode] = React.useState('');
+    const [deliveryType, setDeliveryType] = useState('normal');
+    const deliveryCosts = {
+        normal: 0,
+        express: 5,
+        day24: 10
+    };
+    const [deliveryAddress, setDeliveryAddress] = useState('');
+    const [deliveryCountry, setDeliveryCountry] = useState('');
 
+
+    const updateTotalPrice = () => {
+        let basePrice = Number(String(result).replace("EUR", ""));
+        let deliveryCost = deliveryCosts[deliveryType];
+        return basePrice + deliveryCost;
+    };
     useEffect(() => {
         handleItems()
         fetchArticlos()
@@ -44,15 +61,17 @@ export default function Panier({ }) {
             .get(`http://localhost:8000/api/count_item/${id}`)
             .then((response) => {
                 // console.table(response.data['quantity'][0]['count']);
-                setCountItem(response.data['quantity'][0]['count']);
+                setCountItem(response.data["quantity"][0]["count"]);
             })
             .catch((error) => {
-                console.error('Erreur veuillez vous connecter pour visualiser votre panier : ', error.response.data);
+                console.error(
+                    "Erreur veuillez vous connecter pour visualiser votre panier : ",
+                    error.response.data
+                );
             });
 
-        console.log("in quantity function " + countItem);
-    }
-
+        // console.log("in quantity function " + countItem);
+    };
     const calcPrice = (ArticlesToGetPrice) => {
         var price_calc = 0;
         for (let count = 0; count < ArticlesToGetPrice.length; count++) {
@@ -62,15 +81,15 @@ export default function Panier({ }) {
         setPrice(price_calc);
 
         return price_calc;
-    }
+    };
 
     function updateQuantity(article, quantity, order_item_id, operation) {
-        console.log(".join-btn-quan"+article.idefix);
+        console.log(".join-btn-quan" + article.idefix);
 
-        let timeout = setTimeout(()=>{
-            document.getElementById("join-btn-quan"+article.idefix+"left").style.pointerEvents = "none";
-            document.getElementById("join-btn-quan"+article.idefix+"right").style.pointerEvents = "none";
-        },4000);
+        let timeout = setTimeout(() => {
+            document.getElementById("join-btn-quan" + article.idefix + "left").style.pointerEvents = "none";
+            document.getElementById("join-btn-quan" + article.idefix + "right").style.pointerEvents = "none";
+        }, 4000);
 
         if (operation === "inc") {
             quantity = quantity + 1;
@@ -100,8 +119,8 @@ export default function Panier({ }) {
         calcQuantity(orderId)
         calcPrice(articlesPanier)
         handleItems();
-        document.getElementById("join-btn-quan"+article.idefix+"left").style.pointerEvents = "";
-        document.getElementById("join-btn-quan"+article.idefix+"right").style.pointerEvents = "";
+        document.getElementById("join-btn-quan" + article.idefix + "left").style.pointerEvents = "";
+        document.getElementById("join-btn-quan" + article.idefix + "right").style.pointerEvents = "";
     }
 
     const handleDeleteFromBasket = (id) => {
@@ -118,7 +137,7 @@ export default function Panier({ }) {
                     // setPrice("")
                     // console.log(articles.length);
                     // setNoItems("Aucuns articles")
-                    setResult('Aucuns articles')
+                    setResult("Aucuns articles");
                     setArticlesPanier([]);
                 }
                 // setResult((noItems !== "") ? noItems : price +" EUR");
@@ -126,11 +145,11 @@ export default function Panier({ }) {
                 alert(noItems);
             })
             .catch((error) => {
-                console.error('Erreur dans la suppression de l\'article');
+                console.error("Erreur dans la suppression de l'article");
             });
 
         console.log("count item : " + countItem);
-    }
+    };
 
     function handleItems() {
         axios
@@ -138,28 +157,30 @@ export default function Panier({ }) {
             .then((response) => {
                 if (response.data.length >= 1) {
                     setArticlesPanier(response.data);
-                    setNoItems("")
+                    setNoItems("");
                     console.log(response);
-                    console.table(response.data[0].order_id)
+                    console.table(response.data[0].order_id);
                     console.log("PRIX => ", calcPrice(response.data));
                     calcPrice(response.data);
                     setResult(calcPrice(response.data) + " EUR");
                 } else {
-                    setPrice("")
-                    setNoItems("Aucuns articles")
-                    setResult("Aucuns articles")
+                    setPrice("");
+                    setNoItems("Aucuns articles");
+                    setResult("Aucuns articles");
                 }
                 setOrderId(response.data[0].order_id);
                 calcQuantity(response.data[0].order_id);
                 return response.data[0].order_id;
             })
             .catch((error) => {
-                console.error('Erreur aucun article dans le panier : ');
+                console.error("Erreur aucun article dans le panier : ");
             });
         console.log("hello test " + orderId);
     }
 
-    console.table(articlesPanier)
+    // console.table(articlesPanier);
+
+
 
     const handlePanier = (e, item, item_id) => {
 
@@ -188,11 +209,72 @@ export default function Panier({ }) {
         } else {
             alert('Vous devez vous connecter pour ajouter un article au panier');
         }
-
         // console.log(articlesPanier);
-        calcQuantity(orderId)
-        calcPrice(articlesPanier)
+        calcQuantity(orderId);
+        calcPrice(articlesPanier);
+    };
+
+
+    // console.log("count item : " + countItem);
+
+
+    function handleItems() {
+        axios
+            .get(`http://localhost:8000/api/order/by/${localStorage.getItem("id")}`)
+            .then((response) => {
+                if (response.data.length >= 1) {
+                    setArticlesPanier(response.data);
+                    setNoItems("");
+                    // console.log(response);
+                    // console.table(response.data[0].order_id)
+                    // console.log("PRIX => ", calcPrice(response.data));
+                    calcPrice(response.data);
+                    setResult(calcPrice(response.data) + " EUR");
+                } else {
+                    setPrice("");
+                    setNoItems("Aucuns articles");
+                    setResult("Aucuns articles");
+                }
+                setOrderId(response.data[0].order_id);
+                calcQuantity(response.data[0].order_id);
+                return response.data[0].order_id;
+            })
+            .catch((error) => {
+                console.error("Erreur aucun article dans le panier : ");
+            });
+        console.log("hello test " + orderId);
     }
+
+    const updateDeliveryMethodInDB = () => {
+        axios
+            .put(`http://localhost:8000/api/order/${localStorage.getItem("id")}`, {
+                delivery_method: deliveryType,
+                country: deliveryCountry,
+                delivery_adress: deliveryAddress,
+            })
+            .then((response) => {
+                console.log("Mise à jour réussie :", response.data);
+                // Appeler la fonction buyPanier ici, une fois que la mise à jour est terminée
+                buyPanier();
+            })
+            .catch((error) => {
+                console.error(
+                    "Erreur lors de la mise à jour de la méthode de livraison: ",
+                    error
+                );
+            });
+    };
+
+    const buyPanier = () => {
+        const secret = "secret";
+        axios
+            .post(
+                `http://localhost:8000/api/checkoutPanier/${localStorage.getItem("id")}`
+            )
+            .then((axiosReponse) => {
+                window.location = axiosReponse.data.url;
+            });
+    };
 
     return (
         <div class="main">
@@ -210,13 +292,13 @@ export default function Panier({ }) {
                                         <span>{article.name}</span>
                                     </div>
                                     <div className="quantity">
-                                        <button id={"join-btn-quan"+article.idefix+"left"} style={{ cursor: "pointer", pointerEvents:"auto" }} onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "dec")}>
+                                        <button id={"join-btn-quan" + article.idefix + "left"} style={{ cursor: "pointer", pointerEvents: "auto" }} onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "dec")}>
                                             <svg onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "dec")} fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M20 12L4 12"></path>
                                             </svg>
                                         </button>
                                         <label id='label'><span>{article.quantity}</span></label>
-                                        <button id={"join-btn-quan"+article.idefix+"right"} style={{ cursor: "pointer", pointerEvents:"auto" }} onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "inc")}>
+                                        <button id={"join-btn-quan" + article.idefix + "right"} style={{ cursor: "pointer", pointerEvents: "auto" }} onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "inc")}>
                                             <svg onClick={(e) => updateQuantity(article, article.quantity, article.asterix, "inc")} fill="none" viewBox="0 0 24 24" height="14" width="14" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" stroke="#47484b" d="M12 4V20M20 12H4"></path>
                                             </svg>
@@ -235,15 +317,70 @@ export default function Panier({ }) {
                     </div>
 
 
+                    <Typography variant="h6" style={{ marginTop: '20px' }}>Adresse de livraison:</Typography>
+                    <TextField
+                        fullWidth
+                        label="Adresse"
+                        variant="outlined"
+                        margin="normal"
+                        value={deliveryAddress}
+                        onChange={(e) => setDeliveryAddress(e.target.value)}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Pays"
+                        variant="outlined"
+                        margin="normal"
+                        value={deliveryCountry}
+                        onChange={(e) => setDeliveryCountry(e.target.value)}
+                    />
                     <div class="card checkout">
                         <label class="title">Montant</label>
                         <div class="details">
-                            <span>Sous-total :</span>
-                            <span>{String(result).replace("EUR", "")}€</span>
+                            <span>Options de livraison:</span>
+                            <div>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="normal"
+                                        checked={deliveryType === 'normal'}
+                                        onChange={(e) => setDeliveryType(e.target.value)}
+                                    />
+                                    Livraison normale (0€)
+                                </label>
+                                <br></br>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="express"
+                                        checked={deliveryType === 'express'}
+                                        onChange={(e) => setDeliveryType(e.target.value)}
+                                    />
+                                    Livraison express (5€)
+                                </label>
+                                <br></br>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="day24"
+                                        checked={deliveryType === 'day24'}
+                                        onChange={(e) => setDeliveryType(e.target.value)}
+                                    />
+                                    Livraison 24h (10€)
+                                </label>
+                            </div>
                         </div>
+
+
                         <div class="checkout--footer">
-                            <label class="price"><sup>€</sup>{String(result).replace("EUR", "")}</label>
-                            <button style={{ cursor: "pointer", }} class="checkout-btn">Paiement</button>
+                            <label class="price">
+                                <sup>€</sup>
+                                {updateTotalPrice()}
+                            </label>
+
+                            <button class="checkout-btn" onClick={updateDeliveryMethodInDB}>
+                                Paiement
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -282,9 +419,7 @@ export default function Panier({ }) {
                     </Grid>
                 ))}
             </Grid>
-
             <Footer />
         </div>
     );
-
 }

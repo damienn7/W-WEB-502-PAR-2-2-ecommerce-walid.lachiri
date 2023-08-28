@@ -227,6 +227,10 @@
     transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
   }
 
+  .checkout-btn:hover {
+    cursor: pointer;
+    background: linear-gradient(180deg, #113fa3 0%, #3268dd 50%, #0550ED 100%);
+  }
   .app{
     display: flex;
     flex-direction: row;

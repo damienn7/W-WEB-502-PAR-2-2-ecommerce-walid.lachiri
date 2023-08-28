@@ -30,7 +30,7 @@ const BreadcrumbsComponent = (props) => {
                     color: segment !== dernierSegment ? 'gray' : 'black',
                   }}
                   >
-                        {segment.replace(/-/g, " ")}
+                        {decodeURIComponent(segment.replace(/-/g, " "))}
                     </span>
         ) : (
           <FontAwesomeIcon icon={faHouseUser} style={{ color: "grey"}} />

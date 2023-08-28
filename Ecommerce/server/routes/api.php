@@ -11,6 +11,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Order_itemController;
 use App\Http\Controllers\ShippingFeeController;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -142,6 +143,8 @@ Route::post('rating', [RatingController::class, 'create']);
 // READ 
 Route::get('rating', [RatingController::class, 'index']);
 Route::get('rating/{id}', [RatingController::class, 'show']);
+Route::get('rating/{userId}/{articleId}',[RatingController::class, 'checkNote']);
+
 // --------------------------------
 
 // UPDATE 
@@ -185,13 +188,14 @@ Route::get('articles/searchSuggestion/{request}', [ArticleController::class, 'se
 Route::get('categoriess', [CategoriesController::class, 'showCategories']); 
 
 //Route for payment (method post)
-Route::post('checkout/{titre}/{description}/{prix}/{stock}/{views}', [StripeController::class, 'checkout']); 
 
-Route::post("success?titre={titre}&description={description}&prix={prix}&stock={stock}&views={view}&session_id={CHECKOUT_SESSION_ID}", [StripeController::class, 'success']);
+Route::post('checkout/{token}', [StripeController::class, 'checkout']);
+Route::post('checkoutPanier/{id}', [StripeController::class, 'checkoutPanier']);
+Route::get('successPanier/{id}', [StripeController::class, 'successPanier']);
+Route::post("success/{token}", [StripeController::class, 'success']);
 Route::get('ratingavg/{id}', [ArticleController::class, 'averagerating']);
 Route::get('characteristic/{id}', [CharacteristicsController::class, 'showCharacteristics']);
 Route::get('characteristic/', [CharacteristicsController::class, 'index']);
-
 
 
 //CRUD Categories pour ADMIN ONLY ATTENTION
