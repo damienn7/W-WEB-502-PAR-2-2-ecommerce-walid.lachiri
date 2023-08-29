@@ -61,6 +61,7 @@ const TableStyle = () => {
       .then((response) => {
         
         const orderData = response.data;
+        console.log("test")
         console.log(orderData);
         setOrder(orderData);
       })

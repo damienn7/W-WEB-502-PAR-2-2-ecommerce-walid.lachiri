@@ -58,6 +58,16 @@ class OrderController extends Controller
         ->orderBy('order_items.created_at', 'desc')
         ->get();
     }
+    public function overall($id)
+    {
+        return DB::table('orders')
+        ->select('*')
+        // ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+        // ->join('items', 'items.id', '=', 'order_items.item_id')
+        ->where('user_id', '=', $id)
+        ->whereIn('status', ['payé', 'livré'])
+        ->get();
+    }
 
     public function create(Request $request)
     {
