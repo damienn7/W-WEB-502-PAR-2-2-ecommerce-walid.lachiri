@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 const TableStyle = () => {  
   const location = useLocation();
 
-  const [order, setOrder] = useState({});
+  const [order, setOrder] = useState([]);
   const [result, setResult] = React.useState(0);
   const [noItems, setNoItems] = React.useState("");
   const [price, setPrice] = React.useState(0);
@@ -31,7 +31,7 @@ const TableStyle = () => {
         );
       });
 
-    console.log("in quantity function " + countItem);
+    // console.log("in quantity function " + countItem);
   };
 
   const calcPrice = (ArticlesToGetPrice) => {
@@ -59,7 +59,9 @@ const TableStyle = () => {
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/order/user/${id}`)
       .then((response) => {
-        const orderData = response.data[0];
+        
+        const orderData = response.data;
+        console.log(orderData);
         setOrder(orderData);
       })
       .catch((error) => {
@@ -97,12 +99,16 @@ const TableStyle = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{order.order_date}</td>
-            <td>{order.delivery_address}</td>
-            <td>{order.name}</td>
-            <td>{order.status}</td>
-          </tr>
+          {order.map((listValue, index) => {
+          return (
+            <tr key={index}>
+              <td>{listValue.order_date}</td>
+              <td>{listValue.delivery_address}</td>
+              <td>{listValue.name}</td>
+              <td>{listValue.status}</td>
+            </tr>
+          );
+        })}
         </tbody>
       </table>
     </div>
