@@ -20,6 +20,16 @@ class OrderController extends Controller
         return response()
             ->json($articles, 200, ['X-Total-Count' => Order::count(), 'Access-Control-Expose-Headers' => 'X-Total-Count']);
     }
+    public function order_user($userId)
+    {
+        $order = Order::where('user_id', $userId)
+                ->where('user_id', $userId)
+                ->first();
+    
+        if ($order) {
+            return response()->json(['orderId' => $order->id, 'status' => $order->status, ]);
+        }
+    }
 
     public function show($id)
     {
@@ -29,11 +39,22 @@ class OrderController extends Controller
     public function showByUserId($id)
     {
         return DB::table('orders')
-        ->select('*', 'items.id as idefix', 'order_items.id as asterix',)     
+        ->select('*', 'items.id as idefix', 'order_items.id as asterix')
         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
         ->join('items', 'items.id', '=', 'order_items.item_id')
         ->where('user_id', '=', $id)
         ->where('status','=','panier')
+        ->orderBy('order_items.created_at', 'desc')
+        ->get();
+    }
+    public function showCommands($id)
+    {
+        return DB::table('orders')
+        ->select('*', 'items.id as idefix', 'order_items.id as asterix')
+        ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+        ->join('items', 'items.id', '=', 'order_items.item_id')
+        ->where('user_id', '=', $id)
+        ->whereIn('status', ['payé', 'livré'])
         ->orderBy('order_items.created_at', 'desc')
         ->get();
     }

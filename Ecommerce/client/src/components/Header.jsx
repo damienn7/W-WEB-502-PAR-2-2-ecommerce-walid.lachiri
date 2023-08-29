@@ -78,6 +78,9 @@ function logout() {
   function signup() {
     window.location.href = "/signup";
   }
+  function Commands() {
+    window.location.href = "/command";
+  }
 
 function HandleConnexion() {
   var token = localStorage.getItem("token");
@@ -86,6 +89,8 @@ function HandleConnexion() {
         <>
         <MenuItem onClick={Profile} color="white">Profil</MenuItem>
         <MenuItem onClick={logout} sx={{color:'red'}}>Se déconnecter</MenuItem>
+        <MenuItem onClick={Commands} sx={{color:'yellow'}}>Mes Commandes</MenuItem>
+
         </>
       );
     } else {

@@ -155,7 +155,6 @@ class StripeController extends Controller
             ->where('user_id', '=', $id)
             ->where('status','=','panier')
             ->orderBy('order_items.created_at', 'desc')
-            ->limit(1)
             ->get();
     
         $total = $panierUser->sum(function($item) {
@@ -192,3 +191,4 @@ class StripeController extends Controller
     }
     
 }
+    
