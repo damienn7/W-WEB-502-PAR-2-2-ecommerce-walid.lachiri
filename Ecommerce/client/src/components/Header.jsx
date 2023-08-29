@@ -88,7 +88,6 @@ function HandleConnexion() {
       return (
         <>
         <MenuItem onClick={Profile} color="white">Profil</MenuItem>
-        <MenuItem onClick={Commands} sx={{color:'yellow'}}>Mes Commandes</MenuItem>
         <MenuItem onClick={logout} sx={{color:'red'}}>Se déconnecter</MenuItem>
         <MenuItem onClick={Commands} sx={{color:'yellow'}}>Mes Commandes</MenuItem>
 
