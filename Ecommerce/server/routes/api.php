@@ -120,7 +120,8 @@ Route::get('order/user/{id}', [OrderController::class, 'order_user']);
 Route::get('order/{id}', [OrderController::class, 'show']);
 Route::get('order/by/{id}', [OrderController::class, 'showByUserId']);
 // --------------------------------
-Route::get('order/user/{id}', [OrderController::class, 'showByUserId']);
+Route::get('order/user/{id}', [OrderController::class, 'showCommands']);
+
 
 // UPDATE 
 Route::put('order/{id}', [OrderController::class, 'update']);

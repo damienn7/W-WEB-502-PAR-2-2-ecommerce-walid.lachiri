@@ -4,7 +4,6 @@
     align-items: center;
     height: 100vh;
   }
-  
   .styled-table {
     border-collapse: collapse;
     width: 80%;
@@ -13,23 +12,25 @@
     background-color: #f7f7f7;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
-  
   .styled-table th,
   .styled-table td {
     padding: 12px 15px;
     text-align: left;
   }
-  
   .styled-table th {
     background-color: #343a40;
     color: white;
   }
+
+
+  .styled-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .styled-table tbody tr:hover {
+    background-color: #e0e0e0;
+  }
+
   
   .styled-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
   }
-  
-  .styled-table tbody tr:hover {
-    background-color: #e0e0e0;
-  }
-  
