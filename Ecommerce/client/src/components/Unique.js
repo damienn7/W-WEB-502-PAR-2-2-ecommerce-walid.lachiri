@@ -15,10 +15,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-// import {result,noItems,price,countItem,orderId,articlesPanier,setResult,setNoItems,setPrice,setCountItem,setOrderId,setArticlesPanier,calcPrice,calcQuantity} from './StatePanier';
-
-
-
 const style = {
     position: "absolute",
     top: "50%",
@@ -66,9 +62,63 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const handleOpen = () => setFopen(true);
     const [fopen, setFopen] = useState(false);
     const handleClose = () => setFopen(false);
+
+    function isAvailable2(quantite = 0) {
+        if (quantite > 0) {
+          return "Ajouter au panier"
+          // return true
+        }
+        else if (quantite === 0) {
+          return <p id="outofstock">Indisponible</p>
+          // return false
+        }
+      }
+
+      function calcCharacters(description) {
+       try {
+           console.log(description.length*16);
+           console.log(Number(window.screen.width/3));
+           if ((Number(window.screen.width)/2)<(description.length*16)){
+               return description.substring(0, Number(window.screen.width)/2/16)+"...";
+           }else{
+               return description;
+           }
+       } catch (error) {
+          console.log(error);
+       }
+      }
+
+      function isbuyable(article, idefix, stock){
+        if (stock > 0)
+      return (<>      <TextField
+        id={"outlined-number-" + articles.id}
+        label="Number"
+        type="number"
+        InputProps={{
+            inputProps: { min: "1", max: articles.stock, step: "1" },
+        }}
+        onChange={(e) => handleChangeQuantity(e, articles.stock)}
+        value={quantity}
+    />
+    <Button
+        variant="outlined"
+        sx={{ marginBottom: "10px" }}
+        onClick={(e) => {
+            handlePanier(e, articles, articles.id);
+        }}
+    >
+        Ajouter au panier
+    </Button>
+    <Button variant="contained" onClick={openModal}>
+        Acheter l'article
+    </Button></>)
+      else if (stock === 0){
+        return <p id="outofstock">INDISPONIBLE</p>
+      }
+      }
+
   const Characteristics = () => {
     if (multipleCharacteristics !== undefined) {
-
       return Object.keys(multipleCharacteristics).map((characteristic) => {
         if (multipleCharacteristics[characteristic].length > 1) {
           return (
@@ -84,11 +134,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 {multipleCharacteristics[characteristic].map((characteristicValue) => {
                   return (<MenuItem align="right" value={characteristicValue} >{characteristicValue}</MenuItem>)
                 })}
-
-
               </Select>
             </FormControl>
-
           )
         }
         return null
@@ -98,7 +145,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
       return "Loading..."
     }
   }
-
   const InlineCharacteristics = () => {
     if (multipleCharacteristics !== undefined) {
       return Object.keys(multipleCharacteristics).map((characteristic) => {
@@ -114,7 +160,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
     axios
       .get(`http://localhost:8000/api/count_item/${id}`)
       .then((response) => {
-        // console.table(response.data['quantity'][0]['count']);
         setCountItem(response.data['quantity'][0]['count']);
       })
       .catch((error) => {
@@ -143,12 +188,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
         return response.json()
       })
       .then(data => {
-        // console.log(data)
         setMultipleCharacteristics(data)
       })
   }
-
-
   const fetchUserData = () => {
     fetch(
       `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
@@ -192,42 +234,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
     calcQuantity(orderId)
     calcPrice(articlesPanier)
   }
-  // function handlePanier(e, item, item_id) {
-  //   let quantity = e.target.parentElement.parentElement.querySelector(
-  //     "#outlined-number-" + item_id
-  //   ).value;
-  //   // console.log(quantity);
-  //   console.log("user id " + user_id);
-  //   var data = new FormData();
-  //   data.set("item_id", item.id);
-  //   data.set("user_id", user_id);
-  //   data.set("unit_price", item.price);
-  //   data.set("delivery_address", "24 rue Pasteur");
-  //   data.set("quantity", quantity);
-  //   axios
-  //     .post("http://localhost:8000/api/order", data)
-  //     .then((response) => {
-  //       console.log("Nouvel article ajouté au panier : ", response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error(
-  //         "Erreur l'ajout de l'article au panier : ",
-  //         error.response.data
-  //       );
-  //     });
-  //   setQuantity(1);
-  // }
 
     const getUrl = (event) => {
         return navigate(`/paymentForm/${categorie}/${sous_categorie}/${id}`);
-        // event.preventDefault();
-        // axios
-        //   .post(
-        //     `http://localhost:8000/api/checkout/${articles.name}/${articles.description}/${articles.price}/${articles.stock}/${articles.views}`
-        //   )
-        //   .then((axiosReponse) => {
-        //     // window.location = axiosReponse.data.url;
-        //   });
     };
     function handleChangeQuantity(e, stock) {
         if (Number(e.target.value) > stock) {
@@ -283,25 +292,43 @@ function Articleunique({ categorie, sous_categorie, id }) {
         }
     };
 
-    let bite = localStorage.getItem("id")
+    let userId = localStorage.getItem("id")
 
-    function getnotedkid(note, id) {
-        alert("Votre note a bien été ajoutée")  
-        handleClose()
-        axios.post('http://localhost:8000/api/notedefou', {"id_user":bite, "id_article": id, "rating": note})
-            .then((response) => {
-                console.log("flex");
-            })
-            .catch((response) => {
-                console.log("err")
-            })
+    function getnotedkid(note,articleId) {
+        axios.get(`http://localhost:8000/api/rating/${userId}/${articleId}`)
+        .then(response => {
+            console.table(response.data);
+            if(response.data.hasNoted) {
+                return axios.put(`http://localhost:8000/api/rating/${response.data.ratingId}`, {
+                    "id_user": userId,
+                    "id_article": articleId,
+                    "rating": note
+                });
+                
+            } else {
+                return axios.post('http://localhost:8000/api/notedefou', {
+                    "id_user": userId,
+                    "id_article": articleId,
+                    "rating": note
+                });
+            }
+        })
+        .then(response => {
+            alert("Votre note a bien été traitée");
+            handleClose();
+            window.location.reload(true);
+        })
+        .catch(error => {
+            console.log("Error processing note:", error);
+        });
     }
+    
 
     return (
         <div className="App">
             <Header articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier} calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult} />
             <div className="Unique">
-                <Grid className="Unique" container spacing={2}>
+                <Grid className="Unique" sx={{overflow:"none"}} container spacing={2}>
                     <Grid xs={10}>
                         {/* NOM du produit */}
                         <Button onClick={handleOpen}>{isthistheblood()}
@@ -337,15 +364,15 @@ function Articleunique({ categorie, sous_categorie, id }) {
               <InlineCharacteristics />
                         </Typography>
                         <Typography>{articles.stock} restant(s)</Typography>
-                        <div className="Description">
+                        <div className="Description" style={{maxWidth:"70%"}}>
                             <Grid container spacing={2} disableEqualOverflow>
                                 <Grid xs={3}>
                                     {/* Image du produit */}
                                     <img src={articles.image} width="100%"></img>
                                 </Grid>
-                                <Grid xs={9} sx={{ display: "flex" }}>
+                                <Grid xs={9} sx={{ display: "flex", zIndex:"-1", textOverflow:"clip" }}>
                                     {/* Description du produit */}
-                                    <Typography sx={{}}>{articles.description}</Typography>
+                                    <Typography sx={{textOverflow:"ellipsis",overflow:"none", maxWidth:"400px", zIndex:"-1"}}>{calcCharacters(articles.description)}</Typography>
                                 </Grid>
                             </Grid>
                         </div>
@@ -385,28 +412,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 justifyContent: "space-evenly",
                             }}
                         >
-                            <TextField
-                                id={"outlined-number-" + articles.id}
-                                label="Number"
-                                type="number"
-                                InputProps={{
-                                    inputProps: { min: "1", max: articles.stock, step: "1" },
-                                }}
-                                onChange={(e) => handleChangeQuantity(e, articles.stock)}
-                                value={quantity}
-                            />
-                            <Button
-                                variant="outlined"
-                                sx={{ marginBottom: "10px" }}
-                                onClick={(e) => {
-                                    handlePanier(e, articles, articles.id);
-                                }}
-                            >
-                                Ajouter au panier
-                            </Button>
-                            <Button variant="contained" onClick={openModal}>
-                                Acheter l'article
-                            </Button>
+                            {isbuyable(articles, articles.id,articles.stock)}
                             <Modal
                                 open={open}
                                 onClose={closeModal}
@@ -451,7 +457,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 </Box>
                             </Modal>
                         </Grid>
-                        <Typography fontSize={10} color="blue">
+                        <Typography fontSize={10} color="blue" onClick={()=>alert("mdr pranked")} style={{cursor:"pointer"}}>
                             être informé d'une baisse de prix
                         </Typography>
                     </Grid>
@@ -501,10 +507,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
             <br></br>
 
             <hr className="Marginextop"></hr>
-
         </div>
-
     );
 }
-
 export default Articleunique;

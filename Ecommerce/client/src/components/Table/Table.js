@@ -100,17 +100,6 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     }
   }
 
-
-
-  function handleChangeQuantity(e,stock){
-    if (Number(e.target.value) > stock) {
-      setQuantity(stock);
-    }else{
-      setQuantity(e.target.value);
-    }
-    e.target.value = quantity;
-  }
-
   function vuePanier(user_id){
       axios
         .get(`http://localhost:8000/api/order/by/${user_id}`)
@@ -124,18 +113,16 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
   }
 
   function handlePanier(e,item,item_id, quantite){
-
-    let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
-    console.log(quantity);
-    quantity = (Number(quantity)) ? quantity  : 1;
+    // let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-"+item_id).value;
+    console.log(quantite);
+    quantite = (Number(quantite)) ? quantite  : 1;
     var data = new FormData();
     data.set('item_id',item.idefix);
     if (localStorage.getItem('id') !== null) {   
-      console.log('user id '+localStorage.getItem('id'));   
       data.set('user_id',localStorage.getItem('id'));
       data.set('unit_price',item.price);
       data.set('delivery_address','24 rue Pasteur');
-      data.set('quantity',quantity);
+      data.set('quantity',1);
       axios
         .post('http://localhost:8000/api/order', data)
         .then((response) => {
@@ -160,13 +147,15 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     calcPrice(articlesPanier)
   } 
 
+
+
  function isbuyable(article, idefix, stock){
   if (stock > 0)
 return <Button onClick={(e) => {handlePanier(e,article,idefix, stock)}}>{isAvailable2(stock)}</Button>;
 else if (stock === 0){
   return <p id="outofstock">INDISPONIBLE</p>
 }
-}
+ }
   return (
 
     <TableContainer component={Paper}>
@@ -178,7 +167,6 @@ else if (stock === 0){
             <TableCell align="right">Note</TableCell>
             <TableCell align="right">Disponibilité</TableCell>
             <TableCell align="right">Prix</TableCell>
-            <TableCell align="right">Quantité</TableCell>
             <TableCell align="right">Panier</TableCell>
           </TableRow>
         </TableHead>
@@ -197,15 +185,6 @@ else if (stock === 0){
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
               <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.price}€</TableCell>
-              <TableCell align="right">        
-              <TextField
-                id={'outlined-number-'+article.idefix}
-                label="Number"
-                Placeholder="1"
-                sx={{width:"75px", justifyContent:"center"}}
-                InputProps={{inputProps:{min: "1", max: article.stock, step:"1"}}}
-                onChange={(e)=>handleChangeQuantity(e,article.stock)}
-                /></TableCell>
               <TableCell align="right">{isbuyable(article, article.idefix,article.stock)}</TableCell>
             </TableRow>
           ))}

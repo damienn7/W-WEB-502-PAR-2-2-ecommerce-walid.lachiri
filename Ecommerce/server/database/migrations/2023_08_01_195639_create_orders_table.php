@@ -15,6 +15,8 @@ class CreateOrdersTable extends Migration
             $table->string('status');
             $table->string('delivery_address');
             $table->string('country')->nullable();
+            $table->string('delivery_method')->nullable();
+
             
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

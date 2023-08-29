@@ -47,6 +47,7 @@ class OrderController extends Controller
         ->orderBy('order_items.created_at', 'desc')
         ->get();
     }
+
     public function create(Request $request)
     {
         foreach ($request as $key => $value) {
