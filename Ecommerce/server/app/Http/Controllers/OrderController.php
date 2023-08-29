@@ -43,7 +43,7 @@ class OrderController extends Controller
         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
         ->join('items', 'items.id', '=', 'order_items.item_id')
         ->where('user_id', '=', $id)
-        ->where('status','=','panier')
+        ->whereIn('status', ['payé', 'livré']) // Utilisation de whereIn pour plusieurs valeurs
         ->orderBy('order_items.created_at', 'desc')
         ->get();
     }
