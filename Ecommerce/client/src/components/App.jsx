@@ -11,6 +11,7 @@ import Category from "./categorie";
 import Admin from "./admin/AdminPage";
 import Profile from "./user/Profile";
 import Command from "./Command";
+import CommandDetail from "./CommandDetail";
 import Payment from "./Payment";
 import PaymentForm from "./PaymentForm";
 import React, { useEffect, useState } from "react";
@@ -59,6 +60,7 @@ function App() {
       />
       <Route path="/myprofile" element={<Profile/>}/>
       <Route path="/command" element={<Command/>}/>
+      <Route path="/command/detail/:id" element={<CommandDetail/>}/>
       <Route path="/articles/search/:categorie/:sub_categorie/:id/payment" element={< Payment options={{
         categorieName: categorieName,
         sous_categorieName: sous_categorieName,
