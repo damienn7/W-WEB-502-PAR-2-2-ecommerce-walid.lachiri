@@ -53,9 +53,19 @@ class OrderController extends Controller
         ->select('*', 'items.id as idefix', 'order_items.id as asterix')
         ->join('order_items', 'orders.id', '=', 'order_items.order_id')
         ->join('items', 'items.id', '=', 'order_items.item_id')
-        ->where('user_id', '=', $id)
+        ->where('orders.id', '=', $id)
         ->whereIn('status', ['payé', 'livré'])
         ->orderBy('order_items.created_at', 'desc')
+        ->get();
+    }
+    public function overall($id)
+    {
+        return DB::table('orders')
+        ->select('*')
+        // ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+        // ->join('items', 'items.id', '=', 'order_items.item_id')
+        ->where('user_id', '=', $id)
+        ->whereIn('status', ['payé', 'livré'])
         ->get();
     }
 
@@ -78,7 +88,7 @@ class OrderController extends Controller
             $article->status = 'panier';
             $article->delivery_address = $request->delivery_address;
             $article->save();
- 
+
             $article2 = DB::table('orders')
             ->where('user_id', '=', $request->user_id)
             ->where('status','=','panier')
