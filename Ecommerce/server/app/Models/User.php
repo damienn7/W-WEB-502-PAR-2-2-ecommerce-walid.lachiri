@@ -13,7 +13,7 @@ class User extends Model implements Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
     protected $table = 'users';
-    protected $fillable = ['mail','name', 'password', 'admin'];
+    protected $fillable = ['mail','name', 'password', 'admin','delivery_adress','country'];
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);

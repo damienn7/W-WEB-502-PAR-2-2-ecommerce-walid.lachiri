@@ -5,7 +5,8 @@ import {
   Edit,
   SimpleForm,
   TextInput,
-  Create
+  Create,
+  BooleanInput
 } from 'react-admin';
 
 export const Shippinglist = (props) => (
@@ -14,6 +15,8 @@ export const Shippinglist = (props) => (
       <TextField source="id" />
       <TextField source="country" />
       <TextField source="price" />
+      <TextField  source="ban" />
+
     </Datagrid>
   </List>
 );
@@ -22,6 +25,8 @@ export const ShippingEdit = props => (
     <SimpleForm>
       <TextInput source="country" />
       <TextInput source="price" />
+      <BooleanInput  source="ban" />
+
     </SimpleForm>
   </Edit>
 );
@@ -30,6 +35,7 @@ export const ShippingCreate = props => (
   <SimpleForm>
       <TextInput source="country" />
       <TextInput source="price" />
+      <BooleanInput  source="ban" />
     </SimpleForm>
   </Create>
 );

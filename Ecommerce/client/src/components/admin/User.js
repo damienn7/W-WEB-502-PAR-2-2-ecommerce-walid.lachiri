@@ -31,6 +31,8 @@ export const UserEdit = props => (
       <TextInput source="password" />
       <TextInput source="mail" />
       <TextInput source="remember_token"/>
+      <BooleanInput label="recommandation" source="r" />
+
     </SimpleForm>
   </Edit>
 );

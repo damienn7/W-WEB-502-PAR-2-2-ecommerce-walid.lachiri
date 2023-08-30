@@ -62,9 +62,14 @@ class RatingController extends Controller
             return response()->json(['hasNoted' => false, 'ratingId' => null]);
         }
     }
-    
+    public function getRatingsWithUserNames($id)
+    {
+        return Rating::query()
+        ->select("users.name", "comment",'rating')
+        ->join('users', 'id_user', '=', 'users.id')
+        ->where("id_article", "=", $id)
+        ->get();
+
     }
-
-
-    
+}
 

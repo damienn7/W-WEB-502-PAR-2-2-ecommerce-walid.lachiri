@@ -4,7 +4,7 @@ import { TextField, Button, Container, Typography, Box } from "@mui/material";
 
 const Profile = () => {
   const id = localStorage.getItem("id");
-  
+
   const [formData, setFormData] = useState({
     name: '',
     mail: '',
@@ -15,8 +15,8 @@ const Profile = () => {
     // Fetch user details from the backend
     axios.get(`http://localhost:8000/api/users/${id}`)
       .then((response) => {
-        const { name, mail } = response.data; // Assuming the response contains these fields
-        setFormData(prev => ({ ...prev, name, mail }));
+        const { name, mail,country,delivery_adress } = response.data;
+        setFormData(prev => ({ ...prev, name, mail,country,delivery_adress }));
       })
       .catch(error => {
         console.error('Error fetching user details:', error);
@@ -47,39 +47,57 @@ const Profile = () => {
           Modifier mes informations
         </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField 
-            fullWidth 
-            margin="normal" 
-            label="Name" 
-            name="name" 
-            value={formData.name} 
-            variant="outlined" 
-            onChange={handleChange} 
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Name"
+            name="name"
+            value={formData.name}
+            variant="outlined"
+            onChange={handleChange}
           />
-          <TextField 
-            fullWidth 
-            margin="normal" 
-            label="Email" 
-            type="email" 
-            name="mail" 
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email"
+            type="email"
+            name="mail"
             value={formData.mail}
-            variant="outlined" 
-            onChange={handleChange} 
+            variant="outlined"
+            onChange={handleChange}
           />
-          <TextField 
-            fullWidth 
-            margin="normal" 
-            label="Nouveau mot de passe" 
-            type="password" 
-            name="new" 
-            variant="outlined" 
-            onChange={handleChange} 
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Adresse"
+            name="delivery_adress"
+            value={formData.delivery_adress}
+            variant="outlined"
+            onChange={handleChange}
           />
-          <Button 
-            fullWidth 
-            type="submit" 
-            variant="contained" 
-            color="primary" 
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Pays"
+            name="country"
+            value={formData.country}
+            variant="outlined"
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Nouveau mot de passe"
+            type="password"
+            name="new"
+            variant="outlined"
+            onChange={handleChange}
+          />
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            color="primary"
             mt={3}
           >
             Mettre à jour
