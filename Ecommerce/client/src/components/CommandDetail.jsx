@@ -3,7 +3,7 @@ import '../style/TableStyle.css';
 import axios from 'axios';
 import Header from "./Header";
 import PrimarySearchAppBar from "./Header";
-import { useLocation } from 'react-router-dom';
+import { useLocation , useParams } from 'react-router-dom';
 
 const TableStyle = () => {  
   const location = useLocation();
@@ -16,7 +16,7 @@ const TableStyle = () => {
   const [orderId, setOrderId] = React.useState(0);
   const [articlesPanier, setArticlesPanier] = useState([]);
   
-  const id = localStorage.getItem('id');
+  const { id } = useParams();
   const calcQuantity = (id) => {
     axios
       .get(`http://localhost:8000/api/count_item/${id}`)
@@ -55,13 +55,12 @@ const TableStyle = () => {
     const textDecoder = new TextDecoder();
     return textDecoder.decode(decryptedData);
   };
-
+  
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/order/user/${id}`)
+    axios.get(`http://127.0.0.1:8000/api/order/user/command/${id}`)
       .then((response) => {
         
         const orderData = response.data;
-        console.log("test")
         console.log(orderData);
         setOrder(orderData);
       })
@@ -93,25 +92,20 @@ const TableStyle = () => {
       <table className="styled-table">
         <thead>
           <tr>
-          <th>Id de commande</th>
-            <th>Date de commande</th>
-            <th>Adresse</th>
-            <th>Mode d'expédition</th>
-            <th>Status</th>
+          <th>Nom</th>
             <th></th>
+            <th>description</th>
+            <th>prix</th>
           </tr>
         </thead>
         <tbody>
           {order.map((listValue, index) => {
           return (
             <tr key={index}>
-              <td>{listValue.id}</td>
-              <td>{listValue.order_date}</td>
-              <td>{listValue.delivery_address}</td>
-              <td>{listValue.delivery_method}</td>
-              <td>{listValue.status}</td>
-              <td><a href={`http://localhost:3000/command/detail/${listValue.id}`}>En savoir plus</a></td>
-
+              <td>{listValue.name}</td>
+              <td><img src={listValue.image} alt="photo de l'article" width="150px" height="100px"/></td>
+              <td>{listValue.description}</td>
+              <td>{listValue.price}</td>
             </tr>
           );
         })}
