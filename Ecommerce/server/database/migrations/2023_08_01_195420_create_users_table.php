@@ -16,6 +16,9 @@ class CreateUsersTable extends Migration
             $table->boolean('admin');
             $table->string('remember_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('delivery_adress')->nullable();
+            $table->string('country')->nullable();
+
             $table->timestamps();
         });
     }

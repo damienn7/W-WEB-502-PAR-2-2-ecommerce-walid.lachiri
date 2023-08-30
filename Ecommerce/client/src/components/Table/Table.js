@@ -120,7 +120,7 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     data.set('item_id',item.idefix);
     if (localStorage.getItem('id') !== null) {   
       data.set('user_id',localStorage.getItem('id'));
-      data.set('unit_price',item.price);
+      data.set('unit_price',(item.price * (1 - item.promotion/100)));
       data.set('delivery_address','24 rue Pasteur');
       data.set('quantity',1);
       axios
@@ -132,8 +132,8 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
           else if (quantite > 0){
             console.log('Nouvel article ajouté au panier : ', response.data);
             let quantity = (Number(quantity)) ? quantity  : 1;
-          let price = item.price * quantity;
-          setResult(item.price+" EUR");
+          let price =(item.price * (1 - item.promotion/100)) * quantity;
+          setResult((item.price * (1 - item.promotion/100))+" EUR");
           }
         })
         .catch((error) => {
@@ -184,7 +184,14 @@ else if (stock === 0){
 
               </TableCell>
               <TableCell align-self="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{isAvailable(article.stock)}</TableCell>
-              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.price}€</TableCell>
+              <TableCell align="right" onClick={()=> window.location.href=`/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>
+    {article.promotion 
+        ? <>
+            <del>{article.price}€</del> <span>{(article.price * (1 - article.promotion/100)).toFixed(2)}€</span>
+          </>
+        : `${article.price}€`}
+</TableCell>
+
               <TableCell align="right">{isbuyable(article, article.idefix,article.stock)}</TableCell>
             </TableRow>
           ))}

@@ -13,10 +13,12 @@ class CreateRatingsTable extends Migration
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_article');
             $table->integer('rating');
+            $table->string('comment')->nullable();
             $table->timestamps();
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_article')->references('id')->on('items')->onDelete('cascade');
         });
+        
     }
 
     public function down()

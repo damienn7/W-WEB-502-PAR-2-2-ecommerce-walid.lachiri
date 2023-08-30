@@ -12,6 +12,7 @@ class CreateShippingfeeTable extends Migration
             $table->id();
             $table->string('country');
             $table->integer('price');
+            $table->boolean('ban')->nullable();
             $table->timestamps();
         });
     }

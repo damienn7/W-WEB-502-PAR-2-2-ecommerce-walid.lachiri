@@ -32,6 +32,26 @@ export default function Panier({ }) {
     };
     const [deliveryAddress, setDeliveryAddress] = useState('');
     const [deliveryCountry, setDeliveryCountry] = useState('');
+    const [countryError, setCountryError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleCountryChange = async (e) => {
+        const country = e.target.value;
+        setDeliveryCountry(country);
+
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/checkCountryBan/${country}`);
+            if (response.data.ban) {
+                setCountryError(response.data.message);
+                setErrorMessage(response.data.message);
+
+            } else {
+                setCountryError(null);
+            }
+        } catch (error) {
+            console.error("Erreur lors de la vérification du pays:", error);
+        }
+    };
 
 
     const updateTotalPrice = () => {
@@ -43,6 +63,17 @@ export default function Panier({ }) {
         handleItems()
         fetchArticlos()
     }, [])
+    useEffect(() => {
+        async function fetchUserData() {
+            let response = await fetch('http://127.0.0.1:8000/api/users/' + localStorage.getItem('id'));
+            let data = await response.json();
+            setDeliveryAddress(data.delivery_adress);
+            setDeliveryCountry(data.country);
+        }
+
+        fetchUserData();
+    }, []);
+
 
     const fetchArticlos = () => {
         fetch("http://127.0.0.1:8000/api/gozizi")
@@ -331,8 +362,12 @@ export default function Panier({ }) {
                         variant="outlined"
                         margin="normal"
                         value={deliveryCountry}
-                        onChange={(e) => setDeliveryCountry(e.target.value)}
+                        onChange={handleCountryChange}
+                        error={!!countryError}
+                        helperText={countryError}
                     />
+
+
                     <div class="card checkout">
                         <label class="title">Montant</label>
                         <div class="details">
@@ -376,8 +411,7 @@ export default function Panier({ }) {
                                 <sup>€</sup>
                                 {updateTotalPrice()}
                             </label>
-
-                            <button class="checkout-btn" onClick={updateDeliveryMethodInDB}>
+                            <button class="checkout-btn" onClick={updateDeliveryMethodInDB} disabled={!!countryError}>
                                 Paiement
                             </button>
                         </div>
@@ -422,3 +456,6 @@ export default function Panier({ }) {
         </div>
     );
 }
+
+
+

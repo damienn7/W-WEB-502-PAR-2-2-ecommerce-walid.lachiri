@@ -5,7 +5,9 @@ import {
   Edit,
   SimpleForm,
   TextInput,
-  Create
+  Create,
+  BooleanInput,
+
 } from 'react-admin';
 
 export const Articlelist = (props) => (
@@ -18,6 +20,8 @@ export const Articlelist = (props) => (
       <TextField source="price" />
       <TextField source="stock" />
       <TextField source="views" />
+      <TextField source="recommandation" />
+
     </Datagrid>
   </List>
 );
@@ -32,6 +36,8 @@ export const ArticleEdit = props => (
       <TextInput source="stock"/>
       <TextInput source="id_category"/>
       <TextInput source="views" />
+      <BooleanInput label="recommandation" source="recommandation" />
+
     </SimpleForm>
   </Edit>
 );
@@ -44,8 +50,9 @@ export const ArticleCreate = props => (
       <TextInput source="price" />
       <TextInput source="stock"/>
       <TextInput source="id_category"/>
-
       <TextInput source="views" />
+      <BooleanInput  source="recommandation" />
+
     </SimpleForm>
   </Create>
 );

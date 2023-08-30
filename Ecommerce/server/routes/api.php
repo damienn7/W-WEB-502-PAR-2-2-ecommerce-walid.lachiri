@@ -147,6 +147,8 @@ Route::post('rating', [RatingController::class, 'create']);
 Route::get('rating', [RatingController::class, 'index']);
 Route::get('rating/{id}', [RatingController::class, 'show']);
 Route::get('rating/{userId}/{articleId}',[RatingController::class, 'checkNote']);
+Route::get('comments/{id}',[RatingController::class, 'getRatingsWithUserNames']);
+
 
 // --------------------------------
 
@@ -208,3 +210,4 @@ Route::get("shippingfee/", [ShippingFeeController::class, "index"]);
 Route::get("shippingfee/{id}", [ShippingFeeController::class, "show"]);
 Route::put("shippingfee/{id}", [ShippingFeeController::class, "update"]);
 Route::delete("shippingfee/{id}", [ShippingFeeController::class, "delete"]);
+Route::get('/checkCountryBan/{country}',[ShippingFeeController::class, "checkBanStatus"]);

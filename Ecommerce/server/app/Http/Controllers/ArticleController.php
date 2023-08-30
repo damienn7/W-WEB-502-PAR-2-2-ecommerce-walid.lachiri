@@ -109,8 +109,8 @@ public function peripheriquenordsortieA3(Request $request){
             ->select('*', 'items.id as idefix')     
             ->join('categories', 'categories.id', '=', 'items.id_category')
             ->leftJoin('ratings', 'items.id', '=', 'id_article')
-
             // ->avg('ratings')
+           ->orderBy('recommandation', 'desc')
            ->orderBy('views', 'desc')
            // ->get();
 

@@ -49,4 +49,14 @@ class ShippingFeeController extends Controller
         return response()->json(['message' => 'Shippingfee supprimée.']);
     }
 
+    public function checkBanStatus($country) {
+        $shippingFee = Shippingfee::where('country','=', $country)->first();
+        
+        if ($shippingFee->ban) {
+            return response()->json(['ban' => true, 'message' => 'Impossible de livrer dans ce pays']);
+        }
+        return response()->json(['ban' => false]);
+    }
+   
+
 }
