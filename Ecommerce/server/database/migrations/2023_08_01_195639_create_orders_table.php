@@ -13,7 +13,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->timestamp('order_date')->useCurrent();
             $table->string('status');
-            $table->string('delivery_address');
+            $table->string('delivery_address')->nullable();
             $table->string('country')->nullable();
             $table->string('delivery_method')->nullable();
 

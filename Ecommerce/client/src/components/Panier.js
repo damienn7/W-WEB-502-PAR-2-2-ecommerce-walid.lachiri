@@ -34,6 +34,7 @@ export default function Panier({ }) {
     const [deliveryCountry, setDeliveryCountry] = useState('');
     const [countryError, setCountryError] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
+    const [caca, setCaca] = useState();
 
     const handleCountryChange = async (e) => {
         const country = e.target.value;
@@ -223,7 +224,7 @@ export default function Panier({ }) {
             console.log('user id ' + localStorage.getItem('id'));
             data.set('user_id', localStorage.getItem('id'));
             data.set('unit_price', item.price);
-            data.set('delivery_address', '24 rue Pasteur');
+            data.set('delivery_address', deliveryAddress);
             data.set('quantity', quantity);
             axios
                 .post('http://localhost:8000/api/order', data)
@@ -275,12 +276,13 @@ export default function Panier({ }) {
         console.log("hello test " + orderId);
     }
 
-    const updateDeliveryMethodInDB = () => {
+    const updateDeliveryMethodInDB = async () => {
+
         axios
-            .put(`http://localhost:8000/api/order/${localStorage.getItem("id")}`, {
+            .put(`http://localhost:8000/api/order/`+orderId, {
                 delivery_method: deliveryType,
                 country: deliveryCountry,
-                delivery_adress: deliveryAddress,
+                delivery_address: deliveryAddress
             })
             .then((response) => {
                 console.log("Mise à jour réussie :", response.data);

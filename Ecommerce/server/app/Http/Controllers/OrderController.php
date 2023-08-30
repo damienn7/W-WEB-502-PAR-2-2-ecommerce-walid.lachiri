@@ -58,6 +58,14 @@ class OrderController extends Controller
         ->orderBy('order_items.created_at', 'desc')
         ->get();
     }
+    public function showorder($id)
+    {
+        return DB::table('orders')
+        ->select("id")
+        ->where('user_id', '=', $id)
+        ->where('status','=',"panier")
+        ->get()->first();
+    }
     public function overall($id)
     {
         return DB::table('orders')

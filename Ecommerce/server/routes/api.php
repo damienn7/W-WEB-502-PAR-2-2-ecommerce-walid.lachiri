@@ -125,6 +125,8 @@ Route::get('order/user/command/{id}', [OrderController::class, 'showCommands']);
 
 // UPDATE 
 Route::put('order/{id}', [OrderController::class, 'update']);
+Route::get('orderid/{id}', [OrderController::class, 'showorder']);
+
 // --------------------------------
 
 

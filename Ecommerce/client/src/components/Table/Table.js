@@ -121,7 +121,6 @@ export default function BasicTable({ articlesPanier,setArticlesPanier,calcQuanti
     if (localStorage.getItem('id') !== null) {   
       data.set('user_id',localStorage.getItem('id'));
       data.set('unit_price',(item.price * (1 - item.promotion/100)));
-      data.set('delivery_address','24 rue Pasteur');
       data.set('quantity',1);
       axios
         .post('http://localhost:8000/api/order', data)

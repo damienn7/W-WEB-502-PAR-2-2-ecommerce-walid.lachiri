@@ -227,7 +227,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
         if (localStorage.getItem('id') !== null) {
             data.set('user_id', localStorage.getItem('id'));
             data.set('unit_price', item.price);
-            data.set('delivery_address', '24 rue Pasteur');
             data.set('quantity', quantity);
             axios
                 .post('http://localhost:8000/api/order', data)

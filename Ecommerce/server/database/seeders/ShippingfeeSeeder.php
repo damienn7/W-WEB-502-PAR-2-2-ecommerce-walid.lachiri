@@ -55,7 +55,7 @@ class ShippingfeeSeeder extends Seeder
             ['country' => 'Indonésie', 'price' => 18],
             ['country' => 'Arabie Saoudite', 'price' => 16],
             ['country' => 'Émirats Arabes Unis', 'price' => 16],
-            ['country' => 'Israël', 'price' => 3,'ban' => 1],
+            ['country' => 'Israël', 'price' => 3],
             ['country' => 'Égypte', 'price' => 15],
             ['country' => 'Palestine', 'price' => 1],
             ['country' => 'Maroc', 'price' => 12],

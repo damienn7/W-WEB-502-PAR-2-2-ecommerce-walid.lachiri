@@ -69,10 +69,10 @@ const TableStyle = () => {
       });
   }, [id]);
 
+ 
   return (
-    // <BreadcrumbsComponent navigation={location} />
     <>
-          <Header
+      <Header
         articlesPanier={articlesPanier}
         setArticlesPanier={setArticlesPanier}
         calcQuantity={calcQuantity}
@@ -88,30 +88,30 @@ const TableStyle = () => {
         result={result}
         setResult={setResult}
       />
-    <div className="table-container">
-      <table className="styled-table">
-        <thead>
-          <tr>
-          <th>Nom</th>
-            <th></th>
-            <th>description</th>
-            <th>prix</th>
-          </tr>
-        </thead>
-        <tbody>
-          {order.map((listValue, index) => {
-          return (
-            <tr key={index}>
-              <td>{listValue.name}</td>
-              <td><img src={listValue.image} alt="photo de l'article" width="150px" height="100px"/></td>
-              <td>{listValue.description}</td>
-              <td>{listValue.price}</td>
+      <div className="table-container">
+        <table className="styled-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Image</th>
+              <th>Description</th>
+              <th>Prix</th>
             </tr>
-          );
-        })}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {order.map((listValue, index) => {
+              return (
+                <tr key={index}>
+                  <td>{listValue.name}</td>
+                  <td><img src={listValue.image} alt={`photo de ${listValue.name}`} width="150" height="100" /></td>
+                  <td>{listValue.description}</td>
+                  <td>{listValue.price}€</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };
