@@ -16,7 +16,7 @@ export default function SuccessBuyPanier({ id }) {
         setArticleInPanier(response.data);
 
         // Calculate total price
-        const total = response.data.reduce((acc, article) => acc + article.price* (1 - article.promotion/100), 0);
+        const total = response.data.reduce((acc, article) => acc + article.price* (1 - article.promotion/100).toFixed(1), 0);
         setTotalPrice(total);
       })
       .catch(error => {
@@ -46,7 +46,7 @@ export default function SuccessBuyPanier({ id }) {
     panier.forEach(article => {
       content += `Produit: ${article.name}\n`;
       content += `Description: ${article.description}\n`;
-      content += `Prix: ${article.price* (1 - article.promotion/100)}€\n`;
+      content += `Prix: ${article.price* (1 - article.promotion/100).toFixed(1)}€\n`;
     });
     
     return content;
@@ -88,7 +88,7 @@ export default function SuccessBuyPanier({ id }) {
           <div className="image" style={{ display: "flex", justifyContent: "center" }}>
             <img src={article.image} alt="image" height={300} width={300} style={{ objectFit: "cover" }} />
           </div>
-          <h3>Prix de l'article : {article.price* (1 - article.promotion/100)}€</h3>
+          <h3>Prix de l'article : {article.price* (1 - article.promotion/100).toFixed(1)}€</h3>
         </div>
       ))}
     </div>
