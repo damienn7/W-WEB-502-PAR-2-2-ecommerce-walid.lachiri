@@ -16,8 +16,7 @@ class CreateOrdersTable extends Migration
             $table->string('delivery_address')->nullable();
             $table->string('country')->nullable();
             $table->string('delivery_method')->nullable();
-
-            
+            $table->boolean('gift')->default(false);            
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

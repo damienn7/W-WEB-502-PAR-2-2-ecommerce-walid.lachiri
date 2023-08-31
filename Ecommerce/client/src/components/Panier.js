@@ -34,7 +34,7 @@ export default function Panier({ }) {
     const [deliveryCountry, setDeliveryCountry] = useState('');
     const [countryError, setCountryError] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
-    const [caca, setCaca] = useState();
+    const [gift, setGift] = useState('false');
 
     const handleCountryChange = async (e) => {
         const country = e.target.value;
@@ -282,11 +282,10 @@ export default function Panier({ }) {
             .put(`http://localhost:8000/api/order/`+orderId, {
                 delivery_method: deliveryType,
                 country: deliveryCountry,
-                delivery_address: deliveryAddress
+                delivery_address: deliveryAddress,
+                gift:gift
             })
             .then((response) => {
-                console.log("Mise à jour réussie :", response.data);
-                // Appeler la fonction buyPanier ici, une fois que la mise à jour est terminée
                 buyPanier();
             })
             .catch((error) => {
@@ -405,6 +404,13 @@ export default function Panier({ }) {
                                     Livraison 24h (10€)
                                 </label>
                             </div>
+                            <label>
+                                    <input
+                                        type="checkbox"
+                                        onChange={(e) => setGift(e.target.checked)}
+                                    />
+                                    Emballage cadeau pour votre commande
+                                </label>
                         </div>
 
 
