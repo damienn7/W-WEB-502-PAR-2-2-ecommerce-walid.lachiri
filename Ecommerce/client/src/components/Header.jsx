@@ -180,7 +180,7 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
                 alt="product"
               />
               <p>{article.name}</p>
-              <p align="right">{" "+article.price* (1 - article.promotion/100).toFixed(1)}€</p>
+              <p align="right">{" "+article.price}€</p>
             </a>
           ))}
         </div>
@@ -339,8 +339,8 @@ export default function PrimarySearchAppBar({ articlesPanier,setArticlesPanier,c
             >
               {article.quantity+" "}
                x
-              {" "+article.price* (1 - article.promotion/100).toFixed(1)}€
-              {"("+(article.price* (1 - article.promotion/100).toFixed(1))*article.quantity.toFixed(1)+"€)"}    
+              {" "+(article.price * (1 - article.promotion/100)).toFixed(2)}€
+              {"("+((article.price* (1 - article.promotion/100)).toFixed(2))*article.quantity.toFixed(1)+"€)"}    
 
 
             </span>

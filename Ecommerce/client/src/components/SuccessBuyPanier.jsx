@@ -22,50 +22,57 @@ export default function SuccessBuyPanier({ id }) {
   const [country, setCountry] = useState("");
   const [date, setDate] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+  const [delivertmethod, setDeliveryMethod] = useState(0);
+  const [pricedelivery, setPriceDelivery] = useState(0);
+  const [countryprice, setCountryPrice] = useState(0);
+
+
+
 
   const renderPanier = () => {
-    axios
-      .get(`http://localhost:8000/api/order_item/by/${id}`)
-      .then((response) => {
-        console.table(response.data);
-        setArticleInPanier(response.data);
-
-        // Calculate total price
-        const total = response.data.reduce((acc, article) => acc + article.price* (1 - article.promotion/100).toFixed(1), 0);
-        setTotalPrice(total);
+    // Define axios calls
+    const orderDetailsRequest = axios.get(`http://localhost:8000/api/order/${id}`);
+    const orderItemsRequest = axios.get(`http://localhost:8000/api/order_item/by/${id}`);
+    
+    // Execute both requests concurrently
+    Promise.all([orderDetailsRequest, orderItemsRequest])
+      .then(responses => {
+        const orderDetails = responses[0].data;
+        const orderItems = responses[1].data;
+  
+        setAddress(orderDetails.delivery_address);
+        setCountry(orderDetails.country);
+        setDate(orderDetails.created_at);
+  
+        const deliveryPrices = {
+          normal: 0,
+          express: 5,
+          day24: 10
+        };
+  
+        setDeliveryMethod(orderItems[0].delivery_method);
+        setPriceDelivery(deliveryPrices[orderItems[0].delivery_method]);
+        setArticleInPanier(orderItems);
+          axios.get(`http://localhost:8000/api/shippingfee/pays/${orderDetails.country}`)
+          .then((response) => {
+            setCountryPrice(response.data[0].price);
+            
+            const total = orderItems.reduce((acc, article) => {
+              return acc + article.price * (1 - article.promotion / 100);
+            }, 0);
+  
+            const finalTotal = total + deliveryPrices[orderItems[0].delivery_method] + response.data[0].price;
+            setTotalPrice(finalTotal.toFixed(0));
+  
+          });
+  
       })
       .catch(error => {
         console.error("Error fetching data:", error);
       });
-      axios
-      .get(`http://localhost:8000/api/order/${id}`)
-      .then((response) => {
-        setAddress(response.data.delivery_address);
-        setCountry(response.data.country);
-        setDate(response.data.created_at);
-      })
   };
+  
 
-  useEffect(() => {
-    renderPanier();
-  }, []);
-
-  const generateOrderContent = () => {
-    let content = "Détails de la commande:\n\n";
-    
-    content += `Adresse: ${delivery_address}\n`;
-    content += `Pays: ${country}\n`;
-    content += `Date: ${new Date(date).toLocaleDateString()}\n`;
-    content += `Prix total: ${totalPrice}€\n\n`;
-
-    panier.forEach(article => {
-      content += `Produit: ${article.name}\n`;
-      content += `Description: ${article.description}\n`;
-      content += `Prix: ${article.price* (1 - article.promotion/100).toFixed(1)}€\n`;
-    });
-    
-    return content;
-  };
 
   const handleDownload = () => {
     const element = document.body;
@@ -79,7 +86,9 @@ export default function SuccessBuyPanier({ id }) {
 
     html2pdf().from(element).set(opt).save();
   };
-
+  useEffect(() => {
+    renderPanier();
+  }, []);
   return (
     <Container>
       <AppBar position="static">
@@ -95,9 +104,11 @@ export default function SuccessBuyPanier({ id }) {
 
       <Box my={4}>
         <Typography variant="h5">Adresse: {delivery_address}</Typography>
-        <Typography variant="h5">Pays: {country}</Typography>
+        <Typography variant="h5">Pays: {country} ({countryprice}€)</Typography>
         <Typography variant="h5">Date: {new Date(date).toLocaleDateString()}</Typography>
-        <Typography variant="h5" color="primary">Prix total: {totalPrice}€</Typography>
+        <Typography variant="h5">Méthode de livraison: {delivertmethod} ({pricedelivery}€)</Typography>
+
+        <Typography variant="h5" color="primary">Prix total:{totalPrice}€</Typography>
       </Box>
 
       <Grid container spacing={3}>
@@ -114,7 +125,7 @@ export default function SuccessBuyPanier({ id }) {
                 <Typography variant="h6" gutterBottom>{article.name}</Typography>
                 <Typography variant="body2" color="textSecondary" gutterBottom>{article.description}</Typography>
                 <Typography variant="h6" color="primary">
-                  Prix: {article.price * (1 - article.promotion / 100).toFixed(1)}€
+                  Prix: {(article.price * (1 - article.promotion / 100)).toFixed(1)}€
                 </Typography>
               </CardContent>
             </Card>

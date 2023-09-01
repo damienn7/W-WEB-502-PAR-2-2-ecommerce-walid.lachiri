@@ -134,7 +134,7 @@ export default function Panier({ }) {
         axios
             .put(`http://localhost:8000/api/order_item/${order_item_id}`,
                 {
-                    unit_price: article.unit_price,
+                    unit_price: article.unit_price*(1 - article.promotion/100),
                     quantity: quantity,
                     item_id: article.item_id,
                     order_id: article.order_id
@@ -223,7 +223,7 @@ export default function Panier({ }) {
         if (localStorage.getItem('id') !== null) {
             console.log('user id ' + localStorage.getItem('id'));
             data.set('user_id', localStorage.getItem('id'));
-            data.set('unit_price', item.price);
+            data.set('unit_price', item.price*(1 - item.promotion/100));
             data.set('delivery_address', deliveryAddress);
             data.set('quantity', quantity);
             axios
@@ -335,7 +335,7 @@ export default function Panier({ }) {
                                             </svg>
                                         </button>
                                     </div>
-                                    <label className="price small">€{article.price}</label>
+                                    <label className="price small">€{(article.price*(1 - article.promotion/100)).toFixed(0)}</label>
                                     <Button
                                         onClick={() =>
                                             handleDeleteFromBasket(article.asterix)}
