@@ -34,7 +34,7 @@ export default function Panier({ }) {
     const [deliveryCountry, setDeliveryCountry] = useState('');
     const [countryError, setCountryError] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
-    const [gift, setGift] = useState('false');
+    const [gift, setGift] = useState(0);
 
     const handleCountryChange = async (e) => {
         const country = e.target.value;
