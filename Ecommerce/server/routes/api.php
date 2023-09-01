@@ -210,6 +210,8 @@ Route::get('characteristic/', [CharacteristicsController::class, 'index']);
 Route::post("shippingfee/", [ShippingFeeController::class, "create"]);
 Route::get("shippingfee/", [ShippingFeeController::class, "index"]);
 Route::get("shippingfee/{id}", [ShippingFeeController::class, "show"]);
+Route::get("shippingfee/pays/{country}", [ShippingFeeController::class, "pays"]);
+
 Route::put("shippingfee/{id}", [ShippingFeeController::class, "update"]);
 Route::delete("shippingfee/{id}", [ShippingFeeController::class, "delete"]);
 Route::get('/checkCountryBan/{country}',[ShippingFeeController::class, "checkBanStatus"]);

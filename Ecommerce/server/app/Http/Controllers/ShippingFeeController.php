@@ -57,6 +57,13 @@ class ShippingFeeController extends Controller
         }
         return response()->json(['ban' => false]);
     }
+    public function pays($country)
+    {
+        return Shippingfee::query()
+        ->select("price")
+        ->where('country','=', $country)
+        ->get();
+    }
    
 
 }
