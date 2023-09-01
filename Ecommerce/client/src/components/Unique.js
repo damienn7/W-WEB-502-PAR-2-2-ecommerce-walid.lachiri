@@ -63,10 +63,13 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const [orderId, setOrderId] = React.useState(0);
     const [articlesPanier, setArticlesPanier] = useState([]);
     const commentRef = useRef();
-
+    const [currentArticle, setCurrentArticle] = useState({})
     const handleOpen = () => setFopen(true);
     const [fopen, setFopen] = useState(false);
     const handleClose = () => setFopen(false);
+    const [comments, setComments] = useState([]);
+    const params = useParams();
+    const articleId = params.id;
 
     function isAvailable2(quantite = 0) {
         if (quantite > 0) {
@@ -119,21 +122,21 @@ function Articleunique({ categorie, sous_categorie, id }) {
             return <p id="outofstock">INDISPONIBLE</p>
         }
     }
-    const [comments, setComments] = useState([]);
-    const params = useParams();
-    const articleId = params.id;
-    useEffect(() => {
+    
+    const fetchComments = () => {
         axios.get(`http://localhost:8000/api/comments/${articleId}`)
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 setComments(response.data);
                 //console.table('caca'+ Object.values(response.data))
             })
             .catch(error => {
                 console.error("Error fetching comments:", error);
             });
-    }, [articleId]);
-    const Characteristics = () => {
+    }
+
+
+    const CharacteristicsSelector = () => {
         if (multipleCharacteristics !== undefined) {
             return Object.keys(multipleCharacteristics).map((characteristic) => {
                 if (multipleCharacteristics[characteristic].length > 1) {
@@ -161,9 +164,11 @@ function Articleunique({ categorie, sous_categorie, id }) {
             return "Loading..."
         }
     }
-    const InlineCharacteristics = () => {
+    const CharacteristicLine = () => {
         if (multipleCharacteristics !== undefined) {
             return Object.keys(multipleCharacteristics).map((characteristic) => {
+                currentArticle[characteristic] = multipleCharacteristics[characteristic][0];
+                console.log("fais un truc stp =>", currentArticle[characteristic] , " devient", multipleCharacteristics[characteristic][0])
                 return characteristic + " : " + multipleCharacteristics[characteristic][0] + " - ";
             })
         }
@@ -206,8 +211,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
                 setMultipleCharacteristics(data)
             })
     }
-    const fetchUserData = () => {
-        fetch(
+    const fetchUserData = async () => {
+        await fetch(
             `http://localhost:8000/api/articles/search/${categorie}/${sous_categorie}/${id}`
         )
             .then((response) => {
@@ -216,6 +221,10 @@ function Articleunique({ categorie, sous_categorie, id }) {
             .then((data) => {
                 setArticles(data[0]);
             });
+        setCurrentArticle({
+            "id":articles.id,
+            "price":articles.price*(1 - articles.promotion/100)
+        })
     };
 
     const handlePanier = (e, item, item_id) => {
@@ -284,8 +293,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
         fetchArticles();
         fetchArticlos();
         fetchCharacteristics();
-
+        fetchComments()
     }, []);
+
     const isthistheblood = () => {
         if (rating.test === undefined) {
             return (
@@ -336,6 +346,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
             });
     }
 
+    console.log(currentArticle)
+
     return (
         <div className="App">
             <Header articlesPanier={articlesPanier} setArticlesPanier={setArticlesPanier} calcQuantity={calcQuantity} orderId={orderId} setOrderId={setOrderId} calcPrice={calcPrice} countItem={countItem} setCountItem={setCountItem} price={price} setPrice={setPrice} noItems={noItems} setNoItems={setNoItems} result={result} setResult={setResult} />
@@ -380,7 +392,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             variant="h8"
                             sx={{ fontStyle: "oblique", color: "grey" }}
                         >
-                            <InlineCharacteristics />
+                            <CharacteristicLine />
                         </Typography>
                         <Typography>{articles.stock} restant(s)</Typography>
                         <div className="Description" style={{ maxWidth: "70%" }}>
