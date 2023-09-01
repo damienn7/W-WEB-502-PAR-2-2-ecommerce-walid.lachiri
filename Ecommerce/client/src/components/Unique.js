@@ -63,7 +63,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const [orderId, setOrderId] = React.useState(0);
     const [articlesPanier, setArticlesPanier] = useState([]);
     const commentRef = useRef();
-    const [currentArticle, setCurrentArticle] = useState({})
+    const [currentArticle, setCurrentArticle] = useState([])
     const handleOpen = () => setFopen(true);
     const [fopen, setFopen] = useState(false);
     const handleClose = () => setFopen(false);
@@ -136,6 +136,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
     }
 
 
+
     const CharacteristicsSelector = () => {
         if (multipleCharacteristics !== undefined) {
             return Object.keys(multipleCharacteristics).map((characteristic) => {
@@ -147,6 +148,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
                                 value={""}
+                                onChange={(e) => currentArticle[characteristic] = e.target.value}
                                 label={characteristic}
                                 name={characteristic}
                             >
@@ -168,7 +170,6 @@ function Articleunique({ categorie, sous_categorie, id }) {
         if (multipleCharacteristics !== undefined) {
             return Object.keys(multipleCharacteristics).map((characteristic) => {
                 currentArticle[characteristic] = multipleCharacteristics[characteristic][0];
-                console.log("fais un truc stp =>", currentArticle[characteristic] , " devient", multipleCharacteristics[characteristic][0])
                 return characteristic + " : " + multipleCharacteristics[characteristic][0] + " - ";
             })
         }
@@ -220,15 +221,12 @@ function Articleunique({ categorie, sous_categorie, id }) {
             })
             .then((data) => {
                 setArticles(data[0]);
+                currentArticle["id"] = data[0].id
+                currentArticle["price"] = data[0].price
             });
-        setCurrentArticle({
-            "id":articles.id,
-            "price":articles.price*(1 - articles.promotion/100)
-        })
     };
 
     const handlePanier = (e, item, item_id) => {
-
         let quantity = e.target.parentElement.parentElement.querySelector("#outlined-number-" + item_id).value;
         quantity = (Number(quantity)) ? quantity : 1;
         var data = new FormData();
@@ -346,7 +344,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
             });
     }
 
-    console.log(currentArticle)
+console.log(currentArticle)
 
     return (
         <div className="App">
@@ -498,6 +496,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                         <Typography fontSize={10} color="blue" onClick={() => alert("mdr pranked")} style={{ cursor: "pointer" }}>
                             être informé d'une baisse de prix
                         </Typography>
+                        <CharacteristicsSelector/>
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
