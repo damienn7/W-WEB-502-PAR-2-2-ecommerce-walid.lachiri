@@ -130,7 +130,7 @@ class StripeController extends Controller
     {
         $token = $request->get('token');
         $options = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
-        $total = $options->price * $options->stock;
+        $total = ($options->price* (1 - $options->promotion/100)) * $options->stock;
         $user = DB::table('users')->where('id', auth()->id())->first();
         $userEmail = $user->mail;
         $country = DB::table('orders')->where('id', auth()->id())->first()->country;

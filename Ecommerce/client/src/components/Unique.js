@@ -328,6 +328,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
             .then(response => {
                 alert("Votre note et commentaire ont bien été traités");
                 handleClose();
+                window.location.reload(true);
 
             })
             .catch(error => {
@@ -514,8 +515,8 @@ function Articleunique({ categorie, sous_categorie, id }) {
             comments.map((comment) => (
                 <ListItem>
                     <ListItemText 
-                        primary={comment.name}
-                        secondary={`${comment.comment} - ${comment.rating}/5`}
+                        secondary={comment.name}
+                        primary={`${(comment.comment!=null?comment.comment+" -":"")}  ${comment.rating}/5`}
                         />
                 </ListItem>
                 

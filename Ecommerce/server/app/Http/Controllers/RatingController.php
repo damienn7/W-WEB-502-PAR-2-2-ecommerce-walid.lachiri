@@ -27,6 +27,7 @@ class RatingController extends Controller
         $article->id_user = $request->id_user;
         $article->id_article = $request->id_article;
         $article->rating = $request->rating;
+        $article->comment = $request->comment;
 
 
         $article->save();
