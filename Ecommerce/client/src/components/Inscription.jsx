@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Container, Typography, Box } from "@mui/material";
 
+const sign = require("jwt-encode");
+
 const CreateUser = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -37,9 +39,12 @@ const CreateUser = () => {
               return response.json();
             })
             .then((data) => {
+              const secret = "secret";
+              const jwt = sign(data[0], secret);
+
               axios
               .post(
-              `http://localhost:8000/api/checkout/${data[0].name}/${data[0].description}/${data[0].price}/${data[0].stock}/${data[0].views}`
+              `http://localhost:8000/api/checkout/${jwt}`
             )
             .then((axiosReponse) => {
               window.location = axiosReponse.data.url;
