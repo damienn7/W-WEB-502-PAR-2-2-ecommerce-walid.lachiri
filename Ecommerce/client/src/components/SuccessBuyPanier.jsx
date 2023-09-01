@@ -1,5 +1,20 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { 
+  Button, 
+  Typography, 
+  Card, 
+  CardContent, 
+  CardMedia, 
+  Grid, 
+  Container, 
+  Box,
+  AppBar,
+  Toolbar
+} from "@mui/material";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import html2pdf from "html2pdf.js";
+
 
 export default function SuccessBuyPanier({ id }) {
   const [panier, setArticleInPanier] = useState([]);
@@ -53,44 +68,59 @@ export default function SuccessBuyPanier({ id }) {
   };
 
   const handleDownload = () => {
-    const content = generateOrderContent();
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const href = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    
-    link.href = href;
-    link.download = "details_commande.txt";
-    link.click();
-    
-    URL.revokeObjectURL(href);
+    const element = document.body;
+    const opt = {
+      margin: 10,
+      filename: 'details_commande.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().from(element).set(opt).save();
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <button onClick={handleDownload} style={{ margin: "1em" }}>Télécharger</button>
+    <Container>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Détails de la commande
+          </Typography>
+          <Button variant="outlined" color="inherit" startIcon={<FileDownloadIcon />} onClick={handleDownload}>
+            Télécharger
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-      <h2>Adresse: {delivery_address}</h2>
-      <h2>Pays: {country}</h2>
-      <h2>Date: {new Date(date).toLocaleDateString()}</h2>
-      <h2>Prix total: {totalPrice}€</h2>
+      <Box my={4}>
+        <Typography variant="h5">Adresse: {delivery_address}</Typography>
+        <Typography variant="h5">Pays: {country}</Typography>
+        <Typography variant="h5">Date: {new Date(date).toLocaleDateString()}</Typography>
+        <Typography variant="h5" color="primary">Prix total: {totalPrice}€</Typography>
+      </Box>
 
-      {panier.map((article) => (
-        <div
-          key={article.id}
-          style={{ backgroundColor: "#7ea3e7", marginTop: "1em", padding: "1em" }}
-        >
-          <h1 style={{ textAlign: "center", fontSize: "2em", fontFamily: "monospace" }}>
-            Produit acheté : {article.name}
-          </h1>
-          <h2 style={{ fontSize: "1.5em", fontFamily: "monospace" }}>
-            Description du produit : {article.description}
-          </h2>
-          <div className="image" style={{ display: "flex", justifyContent: "center" }}>
-            <img src={article.image} alt="image" height={300} width={300} style={{ objectFit: "cover" }} />
-          </div>
-          <h3>Prix de l'article : {article.price* (1 - article.promotion/100).toFixed(1)}€</h3>
-        </div>
-      ))}
-    </div>
+      <Grid container spacing={3}>
+        {panier.map((article) => (
+          <Grid item xs={12} sm={6} md={4} key={article.id}>
+            <Card>
+              <CardMedia
+                component="img"
+                height="150"
+                image={article.image}
+                alt="image"
+              />
+              <CardContent>
+                <Typography variant="h6" gutterBottom>{article.name}</Typography>
+                <Typography variant="body2" color="textSecondary" gutterBottom>{article.description}</Typography>
+                <Typography variant="h6" color="primary">
+                  Prix: {article.price * (1 - article.promotion / 100).toFixed(1)}€
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 }
