@@ -452,48 +452,55 @@ function Articleunique({ categorie, sous_categorie, id }) {
                         >
                             {isbuyable(articles, articles.id, articles.stock)}
                             <Modal
-                                open={open}
-                                onClose={closeModal}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                            >
-                                <Box sx={style}>
-                                    <Button
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: "#85ec83",
-                                            color: "black",
-                                            marginRight: "1em",
-                                            fontSize: "0.9em",
-                                        }}
-                                        href={`http://localhost:3000/login?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}
-                                    >
-                                        Me connecter
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: "#83d7ec",
-                                            color: "black",
-                                            marginRight: "1em",
-                                        }}
-                                        href={`http://localhost:3000/inscription?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}
-                                    >
-                                        S'inscrire
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        style={{
-                                            backgroundColor: "#eaec83",
-                                            color: "black",
-                                            marginRight: "1em",
-                                        }}
-                                        onClick={getUrl}
-                                    >
-                                        Payer directement
-                                    </Button>
-                                </Box>
-                            </Modal>
+            open={open}
+            onClose={closeModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                {/* */}
+                {!userId && (
+                    <>
+                        <Button
+                            variant="contained"
+                            style={{
+                                backgroundColor: "#85ec83",
+                                color: "black",
+                                marginRight: "1em",
+                                fontSize: "0.9em",
+                            }}
+                            href={`http://localhost:3000/login?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}
+                        >
+                            Me connecter
+                        </Button>
+                        <Button
+                            variant="contained"
+                            style={{
+                                backgroundColor: "#83d7ec",
+                                color: "black",
+                                marginRight: "1em",
+                            }}
+                            href={`http://localhost:3000/inscription?categorie=${categorie}&sous_categorie=${sous_categorie}&id=${id}`}
+                        >
+                            S'inscrire
+                        </Button>
+                    </>
+                )}
+
+                {/**/}
+                <Button
+                    variant="contained"
+                    style={{
+                        backgroundColor: "#eaec83",
+                        color: "black",
+                        marginRight: "1em",
+                    }}
+                    onClick={getUrl}
+                >
+                    Payer directement
+                </Button>
+            </Box>
+        </Modal>
                         </Grid>
                         <Typography fontSize={10} color="blue" onClick={() => alert("mdr pranked")} style={{ cursor: "pointer" }}>
                             être informé d'une baisse de prix
