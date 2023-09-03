@@ -70,19 +70,19 @@ class CPUSeeder extends Seeder
         $chars = [["Rouge", "Bleu", "Jaune"], [4, 6, 8, 16, 32], ["3.6Ghz", "4.2Ghz", "5.2Ghz"], ["AM4", "AM5"]];
 
         for ($o = 2; $o < 31; $o++) {
-            for ($z = 0; $z < 3; $z++) {
+            for ($z = 0; $z < 4; $z++) {
                 DB::table('characteristics')->insert([
                     'item_id' => $o,
                     'characteristic' => $char[$z],
                     'value' => $chars[$z][rand(0, count($chars[$z]) - 1)],
-                    'multiplier' => rand(0.5, 2.5)
+                    'multiplier' => rand(-250,100)
                 ]);
             }
         }
 
 
         for ($u = 1; $u < 31; $u++) {
-            $var = rand(0, 2);
+            $var = rand(0, 3);
             DB::table('characteristics')->insert([
                 'item_id' => $u,
                 'characteristic' => $char[$var],
