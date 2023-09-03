@@ -69,6 +69,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
     const handleClose = () => setFopen(false);
     const [comments, setComments] = useState([]);
     const params = useParams();
+    const [charInSelect, setCharInSelect] = useState("")
     const articleId = params.id;
 
     function isAvailable2(quantite = 0) {
@@ -111,6 +112,7 @@ function Articleunique({ categorie, sous_categorie, id }) {
                     sx={{ marginBottom: "10px" }}
                     onClick={(e) => {
                         handlePanier(e, articles, articles.id);
+                        console.log("Votre achat => ", currentArticle)
                     }}
                 >
                     Ajouter au panier
@@ -135,7 +137,10 @@ function Articleunique({ categorie, sous_categorie, id }) {
             });
     }
 
-
+const handleChangeChar = (e) => {
+    setCharInSelect(e.target.value);
+    // console.log("La bonne couleur =>", e.target.value)
+  };
 
     const CharacteristicsSelector = () => {
         if (multipleCharacteristics !== undefined) {
@@ -147,8 +152,9 @@ function Articleunique({ categorie, sous_categorie, id }) {
                             <Select
                                 labelId="demo-simple-select-standard-label"
                                 id="demo-simple-select-standard"
-                                value={""}
-                                onChange={(e) => currentArticle[characteristic] = e.target.value}
+                                value={charInSelect}
+                                onChange={(e) => {currentArticle[characteristic] = e.target.value
+                                handleChangeChar(e)}}
                                 label={characteristic}
                                 name={characteristic}
                             >

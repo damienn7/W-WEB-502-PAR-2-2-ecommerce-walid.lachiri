@@ -28,6 +28,11 @@ class CharacteristicsController extends Controller
             ->pluck("value")
             ->toArray();
     }
+    
+    public function showPricesIncreases($id) {
+        return Characteristics::query()
+        ->select("multiplier");
+    }
 
     function create(Request $request)
     {
