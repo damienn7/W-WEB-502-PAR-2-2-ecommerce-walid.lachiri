@@ -191,7 +191,6 @@ export default function BasicTable({ articlesPanier, setArticlesPanier, calcQuan
                 setMousePosition({ x: 0, y: 0 });
               }}
             >
-
               <TableCell component="th" onClick={() => window.location.href = `/articles/search/${article.category}/${article.sub_category}/${article.idefix}`} scope="row">{istop3(article.name)}</TableCell>
               <TableCell align="right" onClick={() => window.location.href = `/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>{article.sub_category}</TableCell>
               <TableCell align="right" onClick={() => window.location.href = `/articles/search/${article.category}/${article.sub_category}/${article.idefix}`}>

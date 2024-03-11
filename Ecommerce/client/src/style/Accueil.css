@@ -3,7 +3,34 @@
     height: fit-content;
 
 }
-
+div.MuiBox-root.css-tvxkav {
+    width: 100%;
+    height: 100%; 
+}
+div.carouselini.css-ohwg9z {
+    width: 100%;
+    height: 100%; 
+}
+.button.MuiButtonBase {
+    width: 100%;
+    height: 100%; 
+}
+div.MuiBox-root.css-8wulhr {
+    width: 100%;
+    height: 100%; 
+}
+div.MuiStack-root.css-1sazv7p-MuiStack-root {
+    width: 100%;
+    height: 100%;
+}
+.button.MuiStack-root {
+    width: 100%;
+    height: 100%; 
+}
+div.css {
+    width: 100%;
+    height: 100%; 
+}
 .greenbox,
 .redbox {
     width: 10px;
