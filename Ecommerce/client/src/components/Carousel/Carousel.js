@@ -10,7 +10,7 @@ function Example(props)
     return (
         <Carousel  navButtonsAlwaysVisible={true} swipe={true} animation='slide' className="carouselini">
             {
-                slides.map( (item, i) => <Item key={item.id} item={item} /> )
+                slides.map( (item, i) => <Item key={item.id} item={item} />)
             }
         </Carousel>
     )
